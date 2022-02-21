@@ -1,7 +1,7 @@
 # project2022-groep-7
 
 ## Mission statements
-### Fitness App
+### <ins>Fitness App</ins>
 #### kernfunctie
 We zouden een app maken die verschillende gezondheid en fitness gegevens bijhoud zoals stappen
 tellen en voeding bijhouden.
@@ -9,7 +9,7 @@ tellen en voeding bijhouden.
 #### basisbehoefte
 
 
-### vlietuigtickets vergelijker
+### <ins>Vlietuigtickets vergelijker</ins>
 #### kernfunctie
 We zouden een app maken die de prijzen van verschillende vliegtuigtickets vergelijkt en de meest
 voordelige uitkiest.
@@ -17,7 +17,7 @@ voordelige uitkiest.
 #### basisbehoefte
 
 
-### Gameprogress tracker
+### <ins>Gameprogress tracker</ins>
 #### kernfunctie
 We zouden een app maken om je progress in games mee bij te houden samen met verschillende andere
 data erover.
