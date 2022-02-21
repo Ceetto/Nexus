@@ -7,6 +7,10 @@ We zouden een app maken die verschillende gezondheid en fitness gegevens bijhoud
 tellen en voeding bijhouden.
 
 #### basisbehoefte
+Het is handig om een centrale app te hebben waar je al je fitness gegevens kunt opslaan en eventueel meten.
+Zo krijg je een handig overzicht zodat je je gemakkelijk kan focussen op je doelen omdat al je informatie op
+1 plaats te vinden is. Hierdoor zou je ook gemakkelijk je vooruitgang kunnen zien door de grafieken die door
+de app worden voorgesteld.
 
 
 ### <ins>Vlietuigtickets vergelijker</ins>
@@ -15,6 +19,9 @@ We zouden een app maken die de prijzen van verschillende vliegtuigtickets vergel
 voordelige uitkiest.
 
 #### basisbehoefte
+Het is handig om een centrale app te hebben waar je je vlucht informatie kan invullen en daarna
+een overzicht krijgt met al de mogelijke vliegtickets die te koop zijn. Zo kan je dan het goedkoopste
+vliegticket kopen en moet je niet zelf zoeken op meerdere websites om de prijzen te vergelijken.
 
 
 ### <ins>Gameprogress tracker</ins>
