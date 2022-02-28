@@ -40,5 +40,5 @@ Men zou als data kunnen bijhouden
 - wanneer gespeeld
 
 
-##Gekozen app: Gameprogress tracker
+## Gekozen app: Gameprogress tracker
 [Marvel mockup](https://marvelapp.com/prototype/2dhfbf46)
