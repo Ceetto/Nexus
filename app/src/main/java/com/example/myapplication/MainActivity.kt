@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
+
+    val TAG = MainActivity::class.java.name
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -27,6 +31,32 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i(TAG, "onStart function")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(TAG, "onResume function")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i(TAG, "onPause function")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(TAG, "onStop function")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(TAG, "onDestroy function")
+    }
+
 }
 
 @Composable

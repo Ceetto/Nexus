@@ -38,3 +38,7 @@ Men zou als data kunnen bijhouden
 - tijd gespeeld
 - games aan het spelen / gespeeld / nog zal spelen
 - wanneer gespeeld
+
+
+##Gekozen app: Gameprogress tracker
+[Marvel mockup](https://marvelapp.com/prototype/2dhfbf46)
