@@ -1,8 +1,8 @@
 # project2022-groep-7
 
+![logo](https://github.ugent.be/SELab1/project2022-groep-7/blob/main/logo.jpg)
 ## Gekozen app: neXus (Gameprogress tracker)
 [Marvel mockup](https://marvelapp.com/prototype/2dhfbf46)
-![logo] https://github.ugent.be/SELab1/project2022-groep-7/blob/main/logo.jpg
 
 ### Feedback op de mockup:
 - Contrast van bepaalde icoontjes niet duidelijk
