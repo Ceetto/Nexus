@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,12 +30,68 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    ScaffoldWithNavigationBar()
                 }
             }
         }
     }
 
+    @Composable
+    fun ScaffoldWithNavigationBar(){
+        Scaffold(bottomBar = { BottomNavigationBar() }){
+            Box(modifier = Modifier
+                .fillMaxSize())
+        }
+    }
+
+    //TODO: add colors to ui.theme files, also new icon for friend page
+    @Composable
+    fun BottomNavigationBar(){
+        val currentPage = remember {mutableStateOf(0)}
+        BottomNavigation(
+            elevation = 8.dp, backgroundColor = Color.DarkGray
+        ) {
+            BottomNavigationItem(
+                selected = (currentPage.value == 0),
+                onClick = {
+                    currentPage.value = 0
+                },
+                icon = {Icon(imageVector = Icons.Default.Home, "Home")},
+            )
+
+            BottomNavigationItem(
+                selected = (currentPage.value == 1),
+                onClick = {
+                    currentPage.value = 1
+                },
+                icon = {Icon(imageVector = Icons.Default.Notifications, "Notifications")},
+            )
+
+            BottomNavigationItem(
+                selected = (currentPage.value == 2),
+                onClick = {
+                    currentPage.value = 2
+                },
+                icon = {Icon(imageVector = Icons.Default.List, "List")},
+            )
+
+            BottomNavigationItem(
+                selected = (currentPage.value == 3),
+                onClick = {
+                    currentPage.value = 3
+                },
+                icon = {Icon(imageVector = Icons.Default.AccountCircle, "Friends")},
+            )
+
+            BottomNavigationItem(
+                selected = (currentPage.value == 4),
+                onClick = {
+                    currentPage.value = 4
+                },
+                icon = {Icon(imageVector = Icons.Default.Person, "Profile")},
+            )
+        }
+    }
     override fun onStart() {
         super.onStart()
         Log.i(TAG, "onStart function")
@@ -57,17 +117,4 @@ class MainActivity : ComponentActivity() {
         Log.i(TAG, "onDestroy function")
     }
 
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyApplicationTheme {
-        Greeting("Android")
-    }
 }
