@@ -20,6 +20,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
+import com.google.accompanist.navigation.animation.*
 
 @ExperimentalAnimationApi
 @Composable
@@ -37,6 +38,7 @@ fun Home(
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
+
                 }
             },
             modifier = Modifier.fillMaxHeight(),
