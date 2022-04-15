@@ -1,19 +1,20 @@
 package com.example.nexus
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -41,7 +42,9 @@ fun Home(
 
                 }
             },
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(65.dp)
         )
     }){
         Row(modifier = Modifier
@@ -56,53 +59,26 @@ fun Home(
 fun BottomNavigationBar(
     selectedNavigation: Screen,
     onNavigationSelected: (Screen) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
 ){
     BottomNavigation(
-        elevation = 8.dp, backgroundColor = Color.DarkGray
+        elevation = 16.dp, backgroundColor = Color(25, 25, 25, 150),
+        modifier = modifier
     ) {
-        BottomNavigationItem(
-            selected = (selectedNavigation == Screen.Home),
-            onClick = {
-                onNavigationSelected(Screen.Home)
-            },
-            icon = { Icon(imageVector = Icons.Default.Home, "Home") },
-        )
-
-        BottomNavigationItem(
-            selected = (selectedNavigation == Screen.Notifications),
-            onClick = {
-                onNavigationSelected(Screen.Notifications)
-            },
-            icon = { Icon(imageVector = Icons.Default.Notifications, "Notifications") },
-        )
-
-        BottomNavigationItem(
-            selected = (selectedNavigation == Screen.List),
-            onClick = {
-                onNavigationSelected(Screen.List)
-            },
-            icon = { Icon(imageVector = Icons.Default.List, "List") },
-        )
-
-        BottomNavigationItem(
-            selected = (selectedNavigation == Screen.Friends),
-            onClick = {
-                onNavigationSelected(Screen.Friends)
-            },
-            icon = { Icon(imageVector = Icons.Default.AccountCircle, "Friends") },
-        )
-
-        BottomNavigationItem(
-            selected = (selectedNavigation == Screen.Profile),
-            onClick = {
-                onNavigationSelected(Screen.Profile)
-            },
-            icon = { Icon(imageVector = Icons.Default.Person, "Profile") },
-        )
+        HomeNavigationItems.forEach {item ->
+            BottomNavigationItem(
+                selected = (selectedNavigation == item.screen),
+                onClick = {
+                    onNavigationSelected(item.screen)
+                },
+                icon = { Icon(imageVector = item.icon, item.screen.route,
+                    modifier = Modifier.fillMaxSize(0.6f), tint = Color.White)},
+                label = { Text(text= item.label, fontSize = 15.sp, overflow = TextOverflow.Clip)},
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
-
 
 /**
  * Adds an [NavController.OnDestinationChangedListener] to this [NavController] and updates the
@@ -145,3 +121,17 @@ private fun NavController.currentScreenAsState(): State<Screen> {
 
     return selectedItem
 }
+
+private class HomeNavigationItem(
+    val screen: Screen,
+    val icon: ImageVector,
+    val label: String
+)
+
+private val HomeNavigationItems = listOf(
+    HomeNavigationItem(Screen.Home, Icons.Default.Home, "Home"),
+    HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notifs"),
+    HomeNavigationItem(Screen.List, Icons.Default.List, "My List"),
+    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends"),
+    HomeNavigationItem(Screen.Profile, Icons.Default.Person, "Profile"),
+)
