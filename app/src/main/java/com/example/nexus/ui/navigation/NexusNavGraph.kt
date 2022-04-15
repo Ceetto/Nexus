@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.*
 import com.example.nexus.ui.routes.*
+import com.example.nexus.ui.routes.list.NexusListRoute
 
 
 sealed class Screen(val route: String){
@@ -22,7 +23,23 @@ sealed class Screen(val route: String){
     object Profile : Screen("profile")
 }
 
+sealed class LeafScreen(
+    private val route: String
+) {
+    fun createRoute(root: Screen) = "${root.route}/$route"
 
+//    object All : Screen("all")
+//    object Playing : Screen("playing")
+//    object Completed : Screen("completed")
+//    object Planned : Screen("planned")
+//    object Dropped : Screen("dropped")
+
+    object List: LeafScreen("list/{listCategory}"){
+        fun createRoute(root: Screen, listCategory: String): String {
+            return "${root.route}/list/$listCategory"
+        }
+    }
+}
 
 @ExperimentalAnimationApi
 @Composable
@@ -73,6 +90,7 @@ private fun NavGraphBuilder.addNotificationsScreen(
     }
 }
 
+@ExperimentalAnimationApi
 private fun NavGraphBuilder.addListScreen(
     navController: NavHostController,
 ){
