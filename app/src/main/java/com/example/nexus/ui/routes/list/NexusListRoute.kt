@@ -19,10 +19,11 @@ import androidx.compose.ui.graphics.Color
 fun NexusListRoute(
     vM: NexusListViewModel
 ){
+    vM.storeBackendGamesInDb()
     Scaffold(topBar = {
         TopNavigationBar(vM.selectedCategory.value, vM::onSelectedCategoryChanged)
     }){
-        ListCategoryRoute(category = vM.selectedCategory.value)
+        ListCategoryRoute(category = vM.selectedCategory.value, vM)
     }
 }
 
