@@ -10,4 +10,4 @@ fun ListCategoryRoute(
     Text(
         text = category.value
     )
-    }
+}

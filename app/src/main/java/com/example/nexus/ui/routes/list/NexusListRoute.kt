@@ -77,19 +77,6 @@ fun TopNavigationBox(
     }
 }
 
-//private class ListNavigationItem(
-//    val tabValue: String,
-//    val value: ListCategory
-//)
-//
-//private val ListNavigationItems = listOf(
-//    ListNavigationItem("All", ListCategory.ALL),
-//    ListNavigationItem("Playing", ListCategory.PLAYING),
-//    ListNavigationItem("Completed", ListCategory.COMPLETED),
-//    ListNavigationItem("Planned", ListCategory.PLANNED),
-//    ListNavigationItem("Dropped", ListCategory.DROPPED),
-//)
-
 enum class ListCategory(val value: String){
     ALL("All"),
     PLAYING("Playing"),
