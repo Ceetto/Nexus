@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.*
 import com.example.nexus.ui.routes.*
+import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.ui.routes.list.NexusListRoute
 
 

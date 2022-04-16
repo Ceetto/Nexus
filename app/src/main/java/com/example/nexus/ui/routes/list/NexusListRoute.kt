@@ -3,6 +3,7 @@ package com.example.nexus.ui.routes.list
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -16,114 +17,96 @@ import androidx.navigation.compose.rememberNavController
 import com.example.nexus.ui.navigation.ListNavGraph
 import com.example.nexus.ui.navigation.ListScreen
 import com.example.nexus.viewmodels.NexusListViewModel
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.graphics.Color
 
 @ExperimentalAnimationApi
 @Composable
 fun NexusListRoute(
     vM: NexusListViewModel
 ){
-    val navController = rememberNavController()
     Scaffold(topBar = {
-        val currentSelectedItem by navController.currentScreenAsState()
-        TopNavigationBar(selectedNavigation = currentSelectedItem,
-            onNavigationSelected = { selected ->
-                navController.navigate(selected.route) {
-                    launchSingleTop = true
-                    restoreState = true
-
-                    popUpTo(navController.graph.findStartDestination().id){
-                        saveState = true
-                    }
-                }
-            }
-        )
-    }) {
-        ListNavGraph(navController)
+        TopNavigationBar(vM.selectedCategory.value, vM::onSelectedCategoryChanged)
+    }){
+        ListCategoryRoute(category = vM.selectedCategory.value)
     }
-
-
-}
-
-@Stable
-@Composable
-private fun NavController.currentScreenAsState(): State<ListScreen> {
-    val selectedItem = remember { mutableStateOf<ListScreen>(ListScreen.All) }
-
-    DisposableEffect(this) {
-        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
-            when {
-                destination.hierarchy.any { it.route == ListScreen.All.route } -> {
-                    selectedItem.value = ListScreen.All
-                }
-                destination.hierarchy.any { it.route == ListScreen.Playing.route } -> {
-                    selectedItem.value = ListScreen.Playing
-                }
-                destination.hierarchy.any { it.route == ListScreen.Completed.route } -> {
-                    selectedItem.value = ListScreen.Completed
-                }
-                destination.hierarchy.any { it.route == ListScreen.Planned.route } -> {
-                    selectedItem.value = ListScreen.Planned
-                }
-                destination.hierarchy.any { it.route == ListScreen.Dropped.route } -> {
-                    selectedItem.value = ListScreen.Dropped
-                }
-            }
-        }
-        addOnDestinationChangedListener(listener)
-
-        onDispose {
-            removeOnDestinationChangedListener(listener)
-        }
-    }
-
-    return selectedItem
 }
 
 @Composable
 fun TopNavigationBar(
-    selectedNavigation: ListScreen,
-    onNavigationSelected: (ListScreen) -> Unit
+    selectedCategory: ListCategory,
+    onSelectedCategoryChanged: (ListCategory) -> Unit
 ){
-    Row(modifier = Modifier
-        .horizontalScroll(rememberScrollState())
-        .fillMaxWidth()
-        .height(60.dp)) {
-        ListNavigationItems.forEach {item ->
-            TextButton(
-                onClick = {
-                    onNavigationSelected(item.screen)
-                },
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text(
-                    text = item.tabValue,
-                    style = MaterialTheme.typography.body2,
-                    color= MaterialTheme.colors.primary,
-                    modifier = Modifier.padding(5.dp),
-                    fontSize = 25.sp)
 
-            }
+    LazyRow(modifier = Modifier
+        .fillMaxWidth()
+        .height(60.dp),
+        state = rememberLazyListState()
+    ){
+        items(getAllListCategories()) { it ->
+            TopNavigationBox(
+                category = it,
+                isSelected = it == selectedCategory,
+                onSelectedCategoryChanged = {onSelectedCategoryChanged(it)})
         }
     }
 }
 
-private class ListNavigationItem(
-    val screen: ListScreen,
-    val tabValue: String,
-)
+@Composable
+fun TopNavigationBox(
+    category: ListCategory,
+    isSelected: Boolean,
+    onSelectedCategoryChanged: (ListCategory) -> Unit
+) {
+    Surface(
+        modifier = Modifier.padding(end = 8.dp),
+        elevation = 8.dp,
+        shape = MaterialTheme.shapes.medium,
+        color = if(isSelected) Color.LightGray else MaterialTheme.colors.secondary
+    ){
+        Row(modifier = Modifier
+            .toggleable(
+                value = isSelected,
+                onValueChange = {
+                    onSelectedCategoryChanged(category)
+                }
+            )
+        ) {
+            Text(
+                text = category.value,
+                style = MaterialTheme.typography.body2,
+                color= MaterialTheme.colors.primary,
+                modifier = Modifier.padding(5.dp),
+                fontSize = 25.sp)
+        }
 
-private val ListNavigationItems = listOf(
-    ListNavigationItem(ListScreen.All, ListCategory.ALL.value),
-    ListNavigationItem(ListScreen.Playing, ListCategory.PLAYING.value),
-    ListNavigationItem(ListScreen.Completed, ListCategory.COMPLETED.value),
-    ListNavigationItem(ListScreen.Planned, ListCategory.PLANNED.value),
-    ListNavigationItem(ListScreen.Dropped, ListCategory.DROPPED.value),
-)
+    }
+}
+
+//private class ListNavigationItem(
+//    val tabValue: String,
+//    val value: ListCategory
+//)
+//
+//private val ListNavigationItems = listOf(
+//    ListNavigationItem("All", ListCategory.ALL),
+//    ListNavigationItem("Playing", ListCategory.PLAYING),
+//    ListNavigationItem("Completed", ListCategory.COMPLETED),
+//    ListNavigationItem("Planned", ListCategory.PLANNED),
+//    ListNavigationItem("Dropped", ListCategory.DROPPED),
+//)
 
 enum class ListCategory(val value: String){
-    ALL("all"),
-    PLAYING("playing"),
-    COMPLETED("completed"),
-    PLANNED("planned"),
-    DROPPED("dropped")
+    ALL("All"),
+    PLAYING("Playing"),
+    COMPLETED("Completed"),
+    PLANNED("Planned"),
+    DROPPED("Dropped")
 }
+
+fun getAllListCategories(): List<ListCategory> =
+    listOf(ListCategory.ALL, ListCategory.PLAYING, ListCategory.COMPLETED,
+        ListCategory.PLANNED, ListCategory.DROPPED
+    )
