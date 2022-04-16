@@ -1,21 +1,13 @@
 package com.example.nexus.ui.routes.list
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.rememberNavController
-import com.example.nexus.ui.navigation.ListNavGraph
-import com.example.nexus.ui.navigation.ListScreen
 import com.example.nexus.viewmodels.NexusListViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState

@@ -28,18 +28,6 @@ sealed class LeafScreen(
     private val route: String
 ) {
     fun createRoute(root: Screen) = "${root.route}/$route"
-
-//    object All : Screen("all")
-//    object Playing : Screen("playing")
-//    object Completed : Screen("completed")
-//    object Planned : Screen("planned")
-//    object Dropped : Screen("dropped")
-
-    object List: LeafScreen("list/{listCategory}"){
-        fun createRoute(root: Screen, listCategory: String): String {
-            return "${root.route}/list/$listCategory"
-        }
-    }
 }
 
 @ExperimentalAnimationApi
@@ -122,45 +110,5 @@ private fun NavGraphBuilder.addProfileScreen(
     }
 }
 
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviEnterTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
-): EnterTransition {
-    val initialNavGraph = initial.destination.hostNavGraph
-    val targetNavGraph = target.destination.hostNavGraph
-    // If we're crossing nav graphs (bottom navigation graphs), we crossfade
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeIn()
-    }
-    // Otherwise we're in the same nav graph, we can imply a direction
-    return fadeIn() + slideIntoContainer(AnimatedContentScope.SlideDirection.Start)
-}
-
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviExitTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
-): ExitTransition {
-    val initialNavGraph = initial.destination.hostNavGraph
-    val targetNavGraph = target.destination.hostNavGraph
-    // If we're crossing nav graphs (bottom navigation graphs), we crossfade
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeOut()
-    }
-    // Otherwise we're in the same nav graph, we can imply a direction
-    return fadeOut() + slideOutOfContainer(AnimatedContentScope.SlideDirection.Start)
-}
-
 val NavDestination.hostNavGraph: NavGraph
     get() = hierarchy.first { it is NavGraph } as NavGraph
-
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviPopEnterTransition(): EnterTransition {
-    return fadeIn() + slideIntoContainer(AnimatedContentScope.SlideDirection.End)
-}
-
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviPopExitTransition(): ExitTransition {
-    return fadeOut() + slideOutOfContainer(AnimatedContentScope.SlideDirection.End)
-}

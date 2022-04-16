@@ -3,7 +3,6 @@ package com.example.nexus.viewmodels
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.nexus.data.FriendsRepository
 import com.example.nexus.data.ListRepository
 import com.example.nexus.ui.routes.list.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
