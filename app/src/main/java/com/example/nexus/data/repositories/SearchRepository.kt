@@ -2,14 +2,12 @@ package com.example.nexus.data.repositories
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.viewModelScope
 import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.covers
 import com.api.igdb.request.games
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import proto.Cover
 import proto.Game
@@ -37,7 +35,7 @@ class SearchRepository @Inject constructor() {
     }
 
     suspend fun getCovers() = withContext(Dispatchers.IO){
-        var ids : String = "("
+        var ids = "("
         try {
             for(game in gameList.value) {
                 println(game.cover)
