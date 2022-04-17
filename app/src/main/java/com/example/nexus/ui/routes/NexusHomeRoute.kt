@@ -1,10 +1,7 @@
 package com.example.nexus.ui.routes
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,6 +12,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -31,6 +29,8 @@ import com.api.igdb.request.games
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
+import com.example.nexus.ui.components.SearchResultComponent
+import com.example.nexus.viewmodels.NexusHomeViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,7 +44,7 @@ import javax.inject.Inject
 @ExperimentalComposeUiApi
 @Composable
 fun NexusHomeRoute(
-    vM: tmpVm,
+    vM: NexusHomeViewModel,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     onSearch: () -> Unit? = {vM.onSearchEvent(); keyboardController?.hide()}
 ){
@@ -72,26 +72,8 @@ fun NexusHomeRoute(
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
-
             vM.gameList.value.forEach { game ->
-                Column() {
-                    Text(text = game.id.toString())
-                    Text(text = game.name)
-                    Text(text = game.rating.toString() + " based on: " + game.ratingCount)
-//                    Text(text = "cover url: " + imageBuilder(game.cover!!.imageId.toString(), ImageSize.SCREENSHOT_HUGE, ImageType.PNG))
-//                    Image(
-//                        painter = rememberAsyncImagePainter(imageBuilder(game.cover.imageId.toString(), ImageSize.SCREENSHOT_HUGE, ImageType.JPEG)),
-//                        contentDescription = "cover image of: " + game.game.name,
-//                        modifier = Modifier.size(32.dp)
-//                    )
-                }
-            }
-            vM.coverList.value.forEach{ cover ->
-                Image(
-                        painter = rememberAsyncImagePainter(imageBuilder(cover.imageId.toString(), ImageSize.SCREENSHOT_HUGE, ImageType.JPEG)),
-                        contentDescription = "cover image",
-                        modifier = Modifier.size(64.dp)
-                    )
+                SearchResultComponent(vM = vM, game = game)
             }
         }
     }
@@ -100,56 +82,79 @@ fun NexusHomeRoute(
 
 
 
-@HiltViewModel
-class tmpVm @Inject constructor() : ViewModel(){
-    var gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
-    var coverList : MutableState<List<Cover>> = mutableStateOf(ArrayList())
-    val searchTerm = mutableStateOf("")
-    init {
-        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
-    }
-
-    fun onSearchEvent(){
-        viewModelScope.launch {
-            try{
-                getGames()
-            } catch(e: Exception){
-
-            }
-        }
-    }
-
-    suspend fun getGames() = withContext(Dispatchers.IO){
-        val apicalypse = APICalypse().fields("*").limit(20).search(searchTerm.value)
-        try{
-            val games: List<Game> = IGDBWrapper.games(apicalypse)
-            gameList.value = games
-            getCovers()
-        } catch(e: RequestException) {
-            // Do something or error
-        }
-    }
-
-    suspend fun getCovers() = withContext(Dispatchers.IO){
-        val covers : MutableList<Cover> = ArrayList()
-        for(game in gameList.value) {
-            val apicalypse = APICalypse().fields("*").where("game = ${game.id}")
-            try {
-                covers.add(IGDBWrapper.covers(apicalypse)[0])
-            } catch (e: RequestException) {
-                print("NEXUS API FETCH ERROR:")
-                println(e.result)
-            }
-        }
-        coverList.value = covers
-    }
-
-    fun setSearchTerm(term: String){
-        this.searchTerm.value = term
-    }
-}
-
-data class GameAndCover(
-    val game: Game,
-    val cover: Cover?
-)
+//@HiltViewModel
+//class tmpVm @Inject constructor() : ViewModel(){
+//    var gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
+//    var coverList : MutableState<List<Cover>> = mutableStateOf(ArrayList())
+//    val searchTerm = mutableStateOf("")
+//    init {
+//        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
+//    }
+//
+//    fun onSearchEvent(){
+//        viewModelScope.launch {
+//            try{
+//                getGames()
+//                getCovers()
+//            } catch(e: Exception){
+//
+//            }
+//        }
+//    }
+//
+//    suspend fun getGames() = withContext(Dispatchers.IO){
+//        val apicalypse = APICalypse().fields("*").limit(3).search(searchTerm.value)
+//        try{
+//            val games: List<Game> = IGDBWrapper.games(apicalypse)
+//            gameList.value = games
+//        } catch(e: RequestException) {
+//            print("NEXUS API FETCH ERROR:")
+//            println(e.result)
+//        }
+//    }
+//
+//    suspend fun getCovers() = withContext(Dispatchers.IO){
+////        val covers : MutableList<Cover> = ArrayList()
+//        var ids : String = "("
+//            try {
+//                for(game in gameList.value) {
+////                    val apicalypse = APICalypse().fields("*").where("(id = ${game.cover.id});")
+////                    val cover: Cover = IGDBWrapper.covers(apicalypse)[0]
+//////                    println(cover)
+////                    covers.add(cover)
+//////                    println(covers)
+//                    println(game.cover)
+//                    ids += game.id.toString() + ","
+//                }
+//                ids = ids.dropLast(1)
+//                ids += ")"
+//                println(ids)
+//                val apicalypse = APICalypse().fields("*").where("game =$ids;")
+//                val covers : List<Cover> = IGDBWrapper.covers(apicalypse)
+//                println(covers)
+//                coverList.value = covers
+//            } catch (e: RequestException) {
+//                print("NEXUS API FETCH ERROR:")
+//                println(e.result)
+//            }
+//
+//    }
+//
+//    fun getCoverWithId(id : Long) : Cover? {
+//        for (cover in coverList.value){
+//            if(cover.id == id){
+//                return cover
+//            }
+//        }
+//        return null
+//    }
+//
+//    fun setSearchTerm(term: String){
+//        this.searchTerm.value = term
+//    }
+//}
+//
+//data class GameAndCover(
+//    val game: Game,
+//    val cover: Cover?
+//)
