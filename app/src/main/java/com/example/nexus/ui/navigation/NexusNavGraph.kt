@@ -24,6 +24,7 @@ sealed class Screen(val route: String){
     object List : Screen("list")
     object Friends : Screen("friends")
     object Profile : Screen("profile")
+    object Search: Screen("search")
 }
 
 sealed class LeafScreen(
@@ -51,6 +52,18 @@ fun NexusNavGraph(
         addListScreen(navController)
         addFriendsScreen(navController)
         addProfileScreen(navController)
+        addSearchScreen(navController)
+    }
+}
+
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addSearchScreen(
+    navController: NavHostController,
+){
+    composable(
+        route = Screen.Search.route
+    ){
+        NexusSearchRoute(vM = hiltViewModel())
     }
 }
 

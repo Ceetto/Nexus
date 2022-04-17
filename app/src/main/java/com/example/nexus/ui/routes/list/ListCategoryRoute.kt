@@ -33,6 +33,10 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import com.example.nexus.data.web.ListEntry
+import com.example.nexus.ui.theme.Completed
+import com.example.nexus.ui.theme.Dropped
+import com.example.nexus.ui.theme.Planned
+import com.example.nexus.ui.theme.Playing
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -122,20 +126,26 @@ fun ListColumn(
 @Composable
 fun ListItem(
     game: ListEntity
-){
+) {
     Surface(
         modifier = Modifier.padding(end = 8.dp)
-    ){
+    ) {
         Column() {
-            Text(text = game.title,
-                fontSize = 20.sp)
+            Text(
+                text = game.title,
+                fontSize = 20.sp
+            )
             Row() {
                 Text(text = "${game.hoursPlayed}h", Modifier.padding(end = 30.dp))
                 Icon(imageVector = Icons.Default.Star, contentDescription = "starIcon")
                 Text(text = game.score.toString())
             }
         }
-
     }
 }
+
+val ListCategoryColors = mapOf(ListCategory.PLAYING.value to Playing,
+                                ListCategory.COMPLETED.value to Completed,
+                                ListCategory.DROPPED.value to Dropped,
+                                ListCategory.PLANNED.value to Planned)
 

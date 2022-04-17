@@ -22,6 +22,10 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
+import com.example.nexus.ui.theme.NexusBlack
+import com.example.nexus.ui.theme.NexusBlackTransparent
+import com.example.nexus.ui.theme.NexusBlue
+import com.example.nexus.ui.theme.NexusGray
 import com.google.accompanist.navigation.animation.*
 
 @ExperimentalComposeUiApi
@@ -47,9 +51,24 @@ fun Home(
                 .fillMaxWidth()
                 .height(65.dp)
         )
-    }){
+    },
+        backgroundColor = NexusGray,
+        topBar = {NexusTopBar (onProfileClick = {
+            navController.navigate(Screen.Profile.route) {
+                launchSingleTop = true
+                restoreState = true
+
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+            }
+        })}
+    ){
         Row(Modifier.fillMaxSize()) {
-            NexusNavGraph(navController, modifier = Modifier.fillMaxSize().weight(1f).padding(0.dp, 0.dp, 0.dp, 65.dp))
+            NexusNavGraph(navController, modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
+                .padding(0.dp, 0.dp, 0.dp, 65.dp))
         }
     }
 }
@@ -62,12 +81,14 @@ fun BottomNavigationBar(
     modifier: Modifier,
 ){
     BottomNavigation(
-        elevation = 16.dp, backgroundColor = Color(25, 25, 25, 150),
+        elevation = 16.dp, backgroundColor = NexusBlackTransparent,
         modifier = modifier
     ) {
         HomeNavigationItems.forEach {item ->
             BottomNavigationItem(
                 selected = (selectedNavigation == item.screen),
+                selectedContentColor = NexusBlue,
+                unselectedContentColor = NexusGray,
                 onClick = {
                     onNavigationSelected(item.screen)
                 },
@@ -79,6 +100,26 @@ fun BottomNavigationBar(
         }
     }
 }
+
+
+@Composable
+fun NexusTopBar(
+    onProfileClick: () -> Unit
+){
+    TopAppBar(
+        title = {Text("nexus")},
+        backgroundColor = NexusBlack,
+        actions = {
+            IconButton(onClick = onProfileClick){
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "profile"
+                )
+            }
+        }
+    )
+}
+
 
 /**
  * Adds an [NavController.OnDestinationChangedListener] to this [NavController] and updates the
@@ -130,8 +171,8 @@ private class HomeNavigationItem(
 
 private val HomeNavigationItems = listOf(
     HomeNavigationItem(Screen.Home, Icons.Default.Home, "Home"),
-    HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notification"),
+    HomeNavigationItem(Screen.Search, Icons.Default.Search, "Search"),
     HomeNavigationItem(Screen.List, Icons.Default.List, "My List"),
-    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends"),
-    HomeNavigationItem(Screen.Profile, Icons.Default.Person, "Profile"),
+    HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notification"),
+    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends")
 )
