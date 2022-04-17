@@ -11,7 +11,11 @@ private val DarkColorPalette = darkColors(
     primary = NexusGray,
     primaryVariant = NexusBlack,
     secondary = NexusBlue,
+    background = NexusGray,
     onPrimary = Color.White,
+    onBackground = Color.White,
+    surface = NexusGray,
+    onSurface = Color.White
 )
 
 private val LightColorPalette = lightColors(
