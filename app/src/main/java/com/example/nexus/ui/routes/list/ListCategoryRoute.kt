@@ -3,9 +3,6 @@ package com.example.nexus.ui.routes.list
 import android.text.Layout
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
@@ -29,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -133,10 +131,26 @@ fun ListItem(
         Column() {
             Text(
                 text = game.title,
-                fontSize = 20.sp
+                fontSize = 25.sp
             )
             Row() {
-                Text(text = "${game.hoursPlayed}h", Modifier.padding(end = 30.dp))
+                Surface(
+                    modifier = Modifier.fillMaxWidth(0.7f)
+                ){
+                    var hoursPlayed = ""
+                    hoursPlayed = if (game.status == ListCategory.PLANNED.value){
+                        ListCategory.PLANNED.value
+                    } else {
+                        "${game.hoursPlayed}h"
+                    }
+                    ListCategoryColors[game.status]?.let {
+                        Text(text = hoursPlayed,
+                            Modifier.padding(end = 30.dp),
+                            color = it
+                        )
+                    }
+                }
+
                 Icon(imageVector = Icons.Default.Star, contentDescription = "starIcon")
                 Text(text = game.score.toString())
             }
