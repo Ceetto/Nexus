@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.db.ListEntity
+import com.example.nexus.data.repositories.FriendsRepository
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.web.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
