@@ -49,7 +49,6 @@ fun ListCategoryRoute(
     //val games by vM.getCategory(category.value).collectAsState()
     //val games by vM.allGames.collectAsState()
     //ListCategoryScreen(games)
-
     when(category){
         ListCategory.ALL -> AllScreen(vM)
         ListCategory.PLAYING -> PlayingScreen(vM)

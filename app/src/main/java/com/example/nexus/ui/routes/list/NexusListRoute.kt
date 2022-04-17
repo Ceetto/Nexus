@@ -37,8 +37,7 @@ fun TopNavigationBar(
 ){
 
     LazyRow(modifier = Modifier
-        .fillMaxWidth()
-        .height(60.dp),
+        .fillMaxWidth(),
         state = rememberLazyListState()
     ){
         items(getAllListCategories()) { it ->
