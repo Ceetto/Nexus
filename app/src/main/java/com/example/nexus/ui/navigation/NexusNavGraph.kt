@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.*
 import com.example.nexus.ui.routes.*
+import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.list.NexusListRoute
 
 
 sealed class Screen(val route: String){
@@ -24,7 +26,11 @@ sealed class Screen(val route: String){
     object Profile : Screen("profile")
 }
 
-
+sealed class LeafScreen(
+    private val route: String
+) {
+    fun createRoute(root: Screen) = "${root.route}/$route"
+}
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
@@ -79,6 +85,7 @@ private fun NavGraphBuilder.addNotificationsScreen(
     }
 }
 
+@ExperimentalAnimationApi
 private fun NavGraphBuilder.addListScreen(
     navController: NavHostController,
 ){
@@ -109,45 +116,5 @@ private fun NavGraphBuilder.addProfileScreen(
     }
 }
 
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviEnterTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
-): EnterTransition {
-    val initialNavGraph = initial.destination.hostNavGraph
-    val targetNavGraph = target.destination.hostNavGraph
-    // If we're crossing nav graphs (bottom navigation graphs), we crossfade
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeIn()
-    }
-    // Otherwise we're in the same nav graph, we can imply a direction
-    return fadeIn() + slideIntoContainer(AnimatedContentScope.SlideDirection.Start)
-}
-
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviExitTransition(
-    initial: NavBackStackEntry,
-    target: NavBackStackEntry,
-): ExitTransition {
-    val initialNavGraph = initial.destination.hostNavGraph
-    val targetNavGraph = target.destination.hostNavGraph
-    // If we're crossing nav graphs (bottom navigation graphs), we crossfade
-    if (initialNavGraph.id != targetNavGraph.id) {
-        return fadeOut()
-    }
-    // Otherwise we're in the same nav graph, we can imply a direction
-    return fadeOut() + slideOutOfContainer(AnimatedContentScope.SlideDirection.Start)
-}
-
 val NavDestination.hostNavGraph: NavGraph
     get() = hierarchy.first { it is NavGraph } as NavGraph
-
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviPopEnterTransition(): EnterTransition {
-    return fadeIn() + slideIntoContainer(AnimatedContentScope.SlideDirection.End)
-}
-
-@ExperimentalAnimationApi
-fun AnimatedContentScope<*>.defaultTiviPopExitTransition(): ExitTransition {
-    return fadeOut() + slideOutOfContainer(AnimatedContentScope.SlideDirection.End)
-}
