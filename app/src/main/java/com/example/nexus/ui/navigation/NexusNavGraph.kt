@@ -3,6 +3,8 @@ package com.example.nexus.ui.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -24,15 +26,18 @@ sealed class Screen(val route: String){
 
 
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun NexusNavGraph(
     navController: NavHostController,
     startDestination: String = Screen.Home.route,
+    modifier: Modifier
 ){
     NavHost(
         navController = navController,
         startDestination = startDestination,
+        modifier = modifier,
     ){
         addLoginScreen(navController)
         addHomeScreen(navController)
@@ -53,6 +58,7 @@ private fun NavGraphBuilder.addLoginScreen(
     }
 }
 
+@ExperimentalComposeUiApi
 private fun NavGraphBuilder.addHomeScreen(
     navController: NavHostController,
 ){

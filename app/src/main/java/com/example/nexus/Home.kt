@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,6 +24,7 @@ import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
 import com.google.accompanist.navigation.animation.*
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun Home(
@@ -39,7 +41,6 @@ fun Home(
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
-
                 }
             },
             modifier = Modifier
@@ -47,9 +48,8 @@ fun Home(
                 .height(65.dp)
         )
     }){
-        Row(modifier = Modifier
-            .fillMaxSize()){
-            NexusNavGraph(navController)
+        Row(Modifier.fillMaxSize()) {
+            NexusNavGraph(navController, modifier = Modifier.fillMaxSize().weight(1f).padding(0.dp, 0.dp, 0.dp, 65.dp))
         }
     }
 }
