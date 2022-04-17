@@ -1,7 +1,10 @@
 package com.example.nexus.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,13 +14,13 @@ import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
-import com.example.nexus.viewmodels.NexusHomeViewModel
+import com.example.nexus.viewmodels.NexusSearchViewModel
 import proto.Game
 import kotlin.math.roundToInt
 
 @Composable
 fun SearchResultComponent(
-    vM: NexusHomeViewModel,
+    vM: NexusSearchViewModel,
     game: Game,
 ){
         Row(modifier = Modifier.padding(5.dp)){
@@ -31,7 +34,7 @@ fun SearchResultComponent(
             Column {
                 Text(text = game.name)
                 if (game.ratingCount > 0) {
-                    Text(text = "Score: " + game.rating.roundToInt().toString())
+                    Text(text = "Score: " + ((game.rating*10).roundToInt().toDouble()/100).toString())
                 } else {
                     Text(text = "Score: N/A")
                 }
