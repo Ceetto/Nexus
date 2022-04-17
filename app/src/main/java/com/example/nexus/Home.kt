@@ -178,5 +178,5 @@ private val HomeNavigationItems = listOf(
     HomeNavigationItem(Screen.Search, Icons.Default.Search, "Search"),
     HomeNavigationItem(Screen.List, Icons.Default.List, "My List"),
     HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notification"),
-    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends"),
+    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends")
 )

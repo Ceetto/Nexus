@@ -1,9 +1,10 @@
 package com.example.nexus.ui.routes.list
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import android.text.Layout
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
 import androidx.compose.runtime.collectAsState
@@ -13,9 +14,27 @@ import androidx.compose.ui.unit.dp
 import com.example.nexus.data.db.ListEntity
 import com.example.nexus.viewmodels.NexusListViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Surface
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import com.example.nexus.data.web.ListEntry
+import com.example.nexus.ui.theme.Completed
+import com.example.nexus.ui.theme.Dropped
+import com.example.nexus.ui.theme.Planned
+import com.example.nexus.ui.theme.Playing
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -24,9 +43,9 @@ fun ListCategoryRoute(
     category: ListCategory,
     vM: NexusListViewModel
 ) {
-    Text(
-        text = category.value
-    )
+//    Text(
+//        text = category.value
+//    )
     //val games by vM.getCategory(category.value).collectAsState()
     //val games by vM.allGames.collectAsState()
     //ListCategoryScreen(games)
@@ -93,7 +112,8 @@ fun ListColumn(
     games: List<ListEntity>
 ){
     LazyColumn(
-        modifier = Modifier.padding(16.dp)
+//        modifier = Modifier
+//            .padding(16.dp)
     ){
         items(games) {game ->
             ListItem(game = game)
@@ -104,13 +124,42 @@ fun ListColumn(
 @Composable
 fun ListItem(
     game: ListEntity
-){
+) {
     Surface(
         modifier = Modifier.padding(end = 8.dp)
-    ){
-        Text(text = game.title,
-            fontSize = 20.sp)
-    }
+    ) {
+        Column() {
+            Text(
+                text = game.title,
+                fontSize = 25.sp
+            )
+            Row() {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(0.7f)
+                ){
+                    var hoursPlayed = ""
+                    hoursPlayed = if (game.status == ListCategory.PLANNED.value){
+                        ListCategory.PLANNED.value
+                    } else {
+                        "${game.hoursPlayed}h"
+                    }
+                    ListCategoryColors[game.status]?.let {
+                        Text(text = hoursPlayed,
+                            Modifier.padding(end = 30.dp),
+                            color = it
+                        )
+                    }
+                }
 
+                Icon(imageVector = Icons.Default.Star, contentDescription = "starIcon")
+                Text(text = game.score.toString())
+            }
+        }
+    }
 }
+
+val ListCategoryColors = mapOf(ListCategory.PLAYING.value to Playing,
+                                ListCategory.COMPLETED.value to Completed,
+                                ListCategory.DROPPED.value to Dropped,
+                                ListCategory.PLANNED.value to Planned)
 

@@ -22,6 +22,7 @@ class ListBackend{
         ListEntry(123, "game8", 10, 69, ListCategory.PLAYING.value),
         ListEntry(123, "game9", 10, 69, ListCategory.COMPLETED.value),
         ListEntry(123, "game10", 10, 69, ListCategory.PLANNED.value),
+        ListEntry(123, "game11", 10, 69, ListCategory.DROPPED.value),
     )
 
     fun getGames() : List<ListEntry>{

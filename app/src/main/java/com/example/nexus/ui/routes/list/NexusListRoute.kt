@@ -13,6 +13,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.graphics.Color
+import com.example.nexus.ui.theme.NexusBlue
+import com.example.nexus.ui.theme.NexusGray
 
 @ExperimentalAnimationApi
 @Composable
@@ -58,7 +60,7 @@ fun TopNavigationBox(
         modifier = Modifier.padding(end = 8.dp),
         elevation = 8.dp,
         shape = MaterialTheme.shapes.medium,
-        color = if(isSelected) Color.LightGray else MaterialTheme.colors.secondary
+        color = if(isSelected) NexusBlue else NexusGray
     ){
         Row(modifier = Modifier
             .toggleable(
@@ -71,9 +73,8 @@ fun TopNavigationBox(
             Text(
                 text = category.value,
                 style = MaterialTheme.typography.body2,
-                color= MaterialTheme.colors.primary,
                 modifier = Modifier.padding(5.dp),
-                fontSize = 25.sp)
+                fontSize = 22.sp)
         }
 
     }
