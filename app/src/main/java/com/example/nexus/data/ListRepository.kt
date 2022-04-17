@@ -18,6 +18,10 @@ class ListRepository @Inject constructor(
 
     suspend fun deleteListEntry(entity: ListEntity) = dao.deleteListEntry(entity)
 
+    fun getCategory(category: String) = dao.getCategory(category)
+
+    suspend fun wipeDatabase() = dao.wipeDatabase()
+
     val allGames = dao.getAll()
 
     val playing = dao.getPlaying()

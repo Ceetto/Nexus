@@ -27,6 +27,12 @@ interface ListDao {
     @Query("select * from list where status == 'Dropped'")
     fun getDropped(): Flow<List<ListEntity>>
 
+    @Query("select * from list where status == :category")
+    fun getCategory(category: String): Flow<List<ListEntity>>
+
+    @Query("delete from list")
+    suspend fun wipeDatabase()
+
     @Insert(entity = ListEntity::class)
     suspend fun storeListEntry(entry: ListEntry)
 

@@ -20,10 +20,16 @@ import javax.inject.Inject
 class NexusListViewModel  @Inject constructor(private val repo: ListRepository) : ViewModel(){
 
     val selectedCategory: MutableState<ListCategory> = mutableStateOf(ListCategory.ALL)
+    private val searchQuery = MutableStateFlow("")
+
 
 
     fun onSelectedCategoryChanged(category: ListCategory){
         selectedCategory.value = category
+    }
+
+    fun wipeDatabase() {
+        viewModelScope.launch { repo.wipeDatabase() }
     }
 
     fun storeBackendGamesInDb(){
@@ -34,6 +40,33 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
 
     val allGames: StateFlow<List<ListEntity>> by lazy {
         repo.allGames.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
+
+    val playing: StateFlow<List<ListEntity>> by lazy {
+        repo.playing.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
+
+    val completed: StateFlow<List<ListEntity>> by lazy {
+        repo.completed.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
+
+    val planned: StateFlow<List<ListEntity>> by lazy {
+        repo.planned.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
+
+    val dropped: StateFlow<List<ListEntity>> by lazy {
+        repo.dropped.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
+
+    fun getCategory(category: String): StateFlow<List<ListEntity>> {
+        val games: StateFlow<List<ListEntity>> by lazy {
+            if (category == ListCategory.ALL.value){
+                repo.allGames.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+            } else{
+                repo.getCategory(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+            }
+        }
+        return games
     }
 
     fun storeListEntry(entry: ListEntry) = viewModelScope.launch { repo.storeListEntry(entry) }
