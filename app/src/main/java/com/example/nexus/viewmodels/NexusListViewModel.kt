@@ -38,7 +38,7 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
 
     fun storeListEntry(entry: ListEntry) = viewModelScope.launch { repo.storeListEntry(entry) }
 
-    fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { repo.deleteQuoter(entity) }
+    fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { repo.deleteListEntry(entity) }
 
     private val _backendGames = MutableStateFlow(repo.getBackendGames())
     val backendGames: StateFlow<List<ListEntry>> = _backendGames

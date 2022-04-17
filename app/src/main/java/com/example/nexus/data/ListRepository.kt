@@ -16,7 +16,7 @@ class ListRepository @Inject constructor(
 
     suspend fun storeListEntry(entry: ListEntry) = dao.storeListEntry(entry)
 
-    suspend fun deleteQuoter(entity: ListEntity) = dao.deleteListEntry(entity)
+    suspend fun deleteListEntry(entity: ListEntity) = dao.deleteListEntry(entity)
 
     val allGames = dao.getAll()
 
