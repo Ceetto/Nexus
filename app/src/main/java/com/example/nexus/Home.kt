@@ -73,7 +73,7 @@ fun BottomNavigationBar(
                 },
                 icon = { Icon(imageVector = item.icon, item.screen.route,
                     modifier = Modifier.fillMaxSize(0.6f), tint = Color.White)},
-                label = { Text(text= item.label, fontSize = 15.sp, overflow = TextOverflow.Clip)},
+//                label = { Text(text= item.label, fontSize = 9.sp, overflow = TextOverflow.Clip)},
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -130,7 +130,7 @@ private class HomeNavigationItem(
 
 private val HomeNavigationItems = listOf(
     HomeNavigationItem(Screen.Home, Icons.Default.Home, "Home"),
-    HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notifs"),
+    HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notification"),
     HomeNavigationItem(Screen.List, Icons.Default.List, "My List"),
     HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends"),
     HomeNavigationItem(Screen.Profile, Icons.Default.Person, "Profile"),
