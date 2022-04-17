@@ -2,7 +2,7 @@ package com.example.nexus.data.web
 
 import com.example.nexus.ui.routes.list.ListCategory
 
-data class ListEntry(val gameId: Int,
+data class ListEntry(val gameId: Long,
                      val title: String,
                      val score: Int,
                      val hoursPlayed: Int,
