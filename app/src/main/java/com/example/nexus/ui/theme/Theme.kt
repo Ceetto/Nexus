@@ -12,7 +12,6 @@ private val DarkColorPalette = darkColors(
     primaryVariant = NexusBlack,
     secondary = NexusBlue,
     onPrimary = Color.White,
-
 )
 
 private val LightColorPalette = lightColors(

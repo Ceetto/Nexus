@@ -86,7 +86,12 @@ dependencies {
     implementation 'com.github.husnjak:IGDB-API-JVM:1.0.5'
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
+    //coil
     implementation("io.coil-kt:coil-compose:2.0.0-rc01")
 
+    //fuel
     implementation 'com.github.kittinunf.fuel:fuel-android:2.3.1'
+
+    //system ui
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
 }

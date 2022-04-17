@@ -38,6 +38,7 @@ fun Home(
         val currentSelectedItem by navController.currentScreenAsState()
         BottomNavigationBar(selectedNavigation = currentSelectedItem,
             onNavigationSelected = { selected ->
+                println(selected.route)
                 navController.navigate(selected.route) {
                     launchSingleTop = true
                     restoreState = true
@@ -88,14 +89,13 @@ fun BottomNavigationBar(
             BottomNavigationItem(
                 selected = (selectedNavigation == item.screen),
                 selectedContentColor = NexusBlue,
-                unselectedContentColor = NexusGray,
+                unselectedContentColor = Color.White,
                 onClick = {
                     onNavigationSelected(item.screen)
                 },
                 icon = { Icon(imageVector = item.icon, item.screen.route,
                     modifier = Modifier.fillMaxSize(0.6f))},
-                    label = {Text(selectedNavigation.route)},
-//                label = { Text(text= item.label, fontSize = 9.sp, overflow = TextOverflow.Clip)},
+                label = { Text(text= item.label, fontSize = 9.sp, overflow = TextOverflow.Visible)},
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -152,6 +152,9 @@ private fun NavController.currentScreenAsState(): State<Screen> {
                 destination.hierarchy.any { it.route == Screen.Profile.route } -> {
                     selectedItem.value = Screen.Profile
                 }
+                destination.hierarchy.any { it.route == Screen.Search.route } -> {
+                    selectedItem.value = Screen.Search
+                }
             }
         }
         addOnDestinationChangedListener(listener)
@@ -174,7 +177,6 @@ private val HomeNavigationItems = listOf(
     HomeNavigationItem(Screen.Home, Icons.Default.Home, "Home"),
     HomeNavigationItem(Screen.Search, Icons.Default.Search, "Search"),
     HomeNavigationItem(Screen.List, Icons.Default.List, "My List"),
-
     HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notification"),
     HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends"),
 )
