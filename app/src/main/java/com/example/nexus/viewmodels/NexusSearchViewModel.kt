@@ -1,21 +1,11 @@
 package com.example.nexus.viewmodels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.api.igdb.apicalypse.APICalypse
-import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
-import com.api.igdb.request.covers
-import com.api.igdb.request.games
 import com.example.nexus.data.repositories.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import proto.Cover
-import proto.Game
 import javax.inject.Inject
 
 @HiltViewModel
