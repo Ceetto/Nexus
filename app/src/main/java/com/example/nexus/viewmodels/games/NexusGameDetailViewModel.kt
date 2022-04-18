@@ -1,5 +1,6 @@
 package com.example.nexus.viewmodels.games
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,6 +22,12 @@ class NexusGameDetailViewModel @Inject constructor(
     var gameList = repo.gameList
     var platformList = repo.gamePlatforms
     val gameId: Long = savedStateHandle["gameId"]!!
+
+    var gameFormOpen = mutableStateOf(false)
+
+    fun onGameFormOpenChanged(boolean: Boolean){
+        gameFormOpen.value = boolean
+    }
 
     fun onGetGameEvent(){
         viewModelScope.launch {
