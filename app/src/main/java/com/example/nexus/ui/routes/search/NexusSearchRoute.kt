@@ -1,4 +1,4 @@
-package com.example.nexus.ui.routes
+package com.example.nexus.ui.routes.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,8 +20,8 @@ import com.example.nexus.ui.components.SearchResultComponent
 import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
 import com.example.nexus.ui.theme.NexusLightGray
-import com.example.nexus.viewmodels.NexusHomeViewModel
-import com.example.nexus.viewmodels.NexusSearchViewModel
+import com.example.nexus.viewmodels.games.NexusSearchViewModel
+import proto.Game
 
 
 @ExperimentalComposeUiApi
@@ -29,7 +29,8 @@ import com.example.nexus.viewmodels.NexusSearchViewModel
 fun NexusSearchRoute(
     vM: NexusSearchViewModel,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
-    onSearch: () -> Unit? = {vM.onSearchEvent(); keyboardController?.hide()}
+    onSearch: () -> Unit? = {vM.onSearchEvent(); keyboardController?.hide()},
+    onOpenGameDetails : (gameId: Long) -> Unit
 ) {
     Column {
         TextField(
@@ -63,7 +64,7 @@ fun NexusSearchRoute(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
             vM.gameList.value.forEach { game ->
-                SearchResultComponent(vM = vM, game = game)
+                SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails)
             }
         }
     }

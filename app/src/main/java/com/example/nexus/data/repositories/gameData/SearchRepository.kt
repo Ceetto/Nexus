@@ -1,4 +1,4 @@
-package com.example.nexus.data.repositories
+package com.example.nexus.data.repositories.gameData
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -38,21 +38,29 @@ class SearchRepository @Inject constructor() {
         var ids = "("
         try {
             for(game in gameList.value) {
-                println(game.cover)
                 ids += game.id.toString() + ","
             }
             ids = ids.dropLast(1)
             ids += ")"
-            println(ids)
             val apicalypse = APICalypse().fields("*").where("game =$ids;")
             val covers : List<Cover> = IGDBWrapper.covers(apicalypse)
-            println(covers)
             coverList.value = covers
         } catch (e: RequestException) {
             print("NEXUS API FETCH ERROR:")
             println(e.result)
         }
     }
+
+//    suspend fun getGameById(gameId : Long) = withContext(Dispatchers.IO){
+//        val apicalypse = APICalypse().fields("*").where("id = $gameId")
+//        try{
+//            val gameRes: List<Game> = IGDBWrapper.games(apicalypse)
+//            gameList.value = gameRes
+//        } catch(e: RequestException) {
+//            print("NEXUS API FETCH ERROR:")
+//            println(e.result)
+//        }
+//    }
 
     fun getCoverWithId(id : Long) : Cover? {
         for (cover in coverList.value){

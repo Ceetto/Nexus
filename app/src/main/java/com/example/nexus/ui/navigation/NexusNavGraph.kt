@@ -5,15 +5,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavDestination
+import androidx.navigation.*
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.nexus.ui.routes.*
 import com.example.nexus.ui.routes.list.NexusListRoute
+import com.example.nexus.ui.routes.search.NexusGameDetailRoute
+import com.example.nexus.ui.routes.search.NexusSearchRoute
+import proto.Game
 
 
 sealed class Screen(val route: String){
@@ -30,6 +30,20 @@ sealed class LeafScreen(
     private val route: String
 ) {
     fun createRoute(root: Screen) = "${root.route}/$route"
+
+    object GameDetail : LeafScreen("game/{gameId}"){
+        fun createRoute(root : Screen, gameId: Long) : String {
+            return "${root.route}/game/$gameId"
+        }
+    }
+
+    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
+        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
+            return "${root.route}/game/$gameId/$gameName"
+        }
+    }
+
+    object Search : LeafScreen("search")
 }
 
 @ExperimentalComposeUiApi
@@ -51,18 +65,58 @@ fun NexusNavGraph(
         addListScreen(navController)
         addFriendsScreen(navController)
         addProfileScreen(navController)
-        addSearchScreen(navController)
+        addSearchScreenTopLevel(navController)
     }
+}
+
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addSearchScreenTopLevel(
+    navController: NavHostController,
+){
+    navigation(
+        route = Screen.Search.route,
+        startDestination = LeafScreen.Search.createRoute(Screen.Search)
+    ) {
+        addSearchScreen(navController, Screen.Search)
+        addGameDetails(navController, Screen.Search)
+    }
+//    composable(
+//        route = Screen.Search.route
+//    ){
+//        NexusSearchRoute(vM = hiltViewModel(),
+//        onOpenGameDetails = {
+//            gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(Screen.Search, gameId))
+//        })
+//    }
 }
 
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addSearchScreen(
     navController: NavHostController,
+    root : Screen
 ){
     composable(
-        route = Screen.Search.route
+        route = LeafScreen.Search.createRoute(root)
     ){
-        NexusSearchRoute(vM = hiltViewModel())
+    NexusSearchRoute(vM = hiltViewModel(),
+        onOpenGameDetails = {
+                gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+        })
+    }
+}
+
+private fun NavGraphBuilder.addGameDetails(
+    navController: NavHostController,
+    root: Screen
+){
+    println(LeafScreen.GameDetail.createRoute(root))
+    composable(
+        route = LeafScreen.GameDetail.createRoute(root),
+        arguments = listOf(
+            navArgument("gameId"){type = NavType.LongType}
+        )
+    ){
+        NexusGameDetailRoute(vM = hiltViewModel())
     }
 }
 

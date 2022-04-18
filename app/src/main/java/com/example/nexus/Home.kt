@@ -53,7 +53,7 @@ fun Home(
                 .height(65.dp)
         )
     },
-        backgroundColor = NexusGray,
+//        backgroundColor = NexusGray,
         topBar = {NexusTopBar (onProfileClick = {
             navController.navigate(Screen.Profile.route) {
                 launchSingleTop = true
@@ -82,7 +82,8 @@ fun BottomNavigationBar(
     modifier: Modifier,
 ){
     BottomNavigation(
-        elevation = 16.dp, backgroundColor = NexusBlackTransparent,
+        elevation = 16.dp,
+        backgroundColor = NexusBlackTransparent,
         modifier = modifier
     ) {
         HomeNavigationItems.forEach {item ->
