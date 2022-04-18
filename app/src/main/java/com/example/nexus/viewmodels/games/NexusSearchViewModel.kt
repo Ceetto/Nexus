@@ -1,9 +1,9 @@
-package com.example.nexus.viewmodels
+package com.example.nexus.viewmodels.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.api.igdb.request.IGDBWrapper
-import com.example.nexus.data.repositories.SearchRepository
+import com.example.nexus.data.repositories.gameData.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +26,7 @@ class NexusSearchViewModel  @Inject constructor(private val repo: SearchReposito
             }
         }
     }
+//    fun getGameById(id: Long) = repo.getGameById(id)
     fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
     fun setSearchTerm(term: String) = repo.setSearchTerm(term)
 }
