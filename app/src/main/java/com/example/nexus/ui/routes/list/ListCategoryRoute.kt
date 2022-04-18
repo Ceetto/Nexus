@@ -130,7 +130,9 @@ fun ListItem(
                         timePlayed = if (game.status == ListCategory.PLANNED.value){
                             ListCategory.PLANNED.value
                         } else {
-                            "${game.minutesPlayed}h"
+                            val minutes = game.minutesPlayed.mod(60)
+                            val hours = (game.minutesPlayed - minutes)/60
+                            "${hours}h ${minutes}m"
                         }
                         ListCategoryColors[game.status]?.let {
                             Text(text = timePlayed,
