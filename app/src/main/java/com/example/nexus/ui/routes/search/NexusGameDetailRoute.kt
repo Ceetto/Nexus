@@ -2,6 +2,7 @@ package com.example.nexus.ui.routes.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
+import com.example.nexus.data.web.ListEntry
+import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import kotlin.math.roundToInt
 
@@ -59,6 +62,18 @@ fun NexusGameDetailRoute(
             }
             Text("platforms: " + vM.platformList.value)
             Text(game.summary)
+            val listEntry = ListEntry(game.id, game.name, 10, 42, ListCategory.PLAYING.value,
+                vM.getCoverWithId(game.cover.id)
+                    ?.let {
+                        imageBuilder(
+                            it.imageId,
+                            ImageSize.COVER_BIG,
+                            ImageType.JPEG
+                        )
+                    })
+            Button(onClick = {vM.storeListEntry(listEntry)}){
+                Text(text = "Add game")
+            }
         }
     } else {
         Text("Loading game...")

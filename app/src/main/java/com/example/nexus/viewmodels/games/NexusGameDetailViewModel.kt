@@ -3,7 +3,9 @@ package com.example.nexus.viewmodels.games
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nexus.data.db.ListEntity
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
+import com.example.nexus.data.web.ListEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import proto.Game
@@ -34,4 +36,8 @@ class NexusGameDetailViewModel @Inject constructor(
     }
     fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
     fun getPlatforms(ids: MutableList<Platform>) = repo.getPlatforms(ids)
+
+    fun storeListEntry(entry: ListEntry) = viewModelScope.launch { repo.storeListEntry(entry) }
+
+    fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { repo.deleteListEntry(entity) }
 }

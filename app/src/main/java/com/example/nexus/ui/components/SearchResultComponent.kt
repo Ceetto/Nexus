@@ -3,6 +3,7 @@ package com.example.nexus.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,9 +24,11 @@ fun SearchResultComponent(
     game: Game,
     onClick: (gameId: Long) -> Unit
 ){
-    Row(modifier = Modifier.padding(bottom = 5.dp).fillMaxWidth()
-        .pointerInput(Unit){
-            detectTapGestures(onTap = {onClick(game.id)})
+    Row(modifier = Modifier
+        .padding(bottom = 5.dp)
+        .fillMaxWidth()
+        .pointerInput(Unit) {
+            detectTapGestures(onTap = { onClick(game.id) })
         }
     ){
         Image(

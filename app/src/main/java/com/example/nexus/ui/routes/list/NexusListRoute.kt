@@ -21,8 +21,8 @@ import com.example.nexus.ui.theme.NexusGray
 fun NexusListRoute(
     vM: NexusListViewModel
 ){
-    vM.wipeDatabase()
-    vM.storeBackendGamesInDb()
+//    vM.wipeDatabase()
+//    vM.storeBackendGamesInDb()
     Scaffold(topBar = {
         TopNavigationBar(vM.selectedCategory.value, vM::onSelectedCategoryChanged)
     }){
