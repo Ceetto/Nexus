@@ -49,6 +49,7 @@ android {
 
 dependencies {
 
+    implementation("androidx.compose.foundation:foundation:1.2.0-alpha07")
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
@@ -81,6 +82,17 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:2.5.0-alpha04"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.16.0"
 
+
     //IGDB
     implementation 'com.github.husnjak:IGDB-API-JVM:1.0.5'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+
+    //fuel
+    implementation 'com.github.kittinunf.fuel:fuel-android:2.3.1'
+
+    //system ui
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
 }

@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,8 +22,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
+import com.example.nexus.ui.theme.NexusBlack
+import com.example.nexus.ui.theme.NexusBlackTransparent
+import com.example.nexus.ui.theme.NexusBlue
+import com.example.nexus.ui.theme.NexusGray
 import com.google.accompanist.navigation.animation.*
 
+@ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
 fun Home(
@@ -32,6 +38,7 @@ fun Home(
         val currentSelectedItem by navController.currentScreenAsState()
         BottomNavigationBar(selectedNavigation = currentSelectedItem,
             onNavigationSelected = { selected ->
+                println(selected.route)
                 navController.navigate(selected.route) {
                     launchSingleTop = true
                     restoreState = true
@@ -39,17 +46,30 @@ fun Home(
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
-
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(65.dp)
         )
-    }){
-        Row(modifier = Modifier
-            .fillMaxSize()){
-            NexusNavGraph(navController)
+    },
+//        backgroundColor = NexusGray,
+        topBar = {NexusTopBar (onProfileClick = {
+            navController.navigate(Screen.Profile.route) {
+                launchSingleTop = true
+                restoreState = true
+
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+            }
+        })}
+    ){
+        Row(Modifier.fillMaxSize()) {
+            NexusNavGraph(navController, modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
+                .padding(0.dp, 0.dp, 0.dp, 65.dp))
         }
     }
 }
@@ -62,23 +82,46 @@ fun BottomNavigationBar(
     modifier: Modifier,
 ){
     BottomNavigation(
-        elevation = 16.dp, backgroundColor = Color(25, 25, 25, 150),
+        elevation = 16.dp,
+        backgroundColor = NexusBlackTransparent,
         modifier = modifier
     ) {
         HomeNavigationItems.forEach {item ->
             BottomNavigationItem(
                 selected = (selectedNavigation == item.screen),
+                selectedContentColor = NexusBlue,
+                unselectedContentColor = Color.White,
                 onClick = {
                     onNavigationSelected(item.screen)
                 },
                 icon = { Icon(imageVector = item.icon, item.screen.route,
-                    modifier = Modifier.fillMaxSize(0.6f), tint = Color.White)},
-                label = { Text(text= item.label, fontSize = 15.sp, overflow = TextOverflow.Clip)},
+                    modifier = Modifier.fillMaxSize(0.6f))},
+                label = { Text(text= item.label, fontSize = 9.sp, overflow = TextOverflow.Visible)},
                 modifier = Modifier.fillMaxSize()
             )
         }
     }
 }
+
+
+@Composable
+fun NexusTopBar(
+    onProfileClick: () -> Unit
+){
+    TopAppBar(
+        title = {Text("nexus")},
+        backgroundColor = NexusBlack,
+        actions = {
+            IconButton(onClick = onProfileClick){
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "profile"
+                )
+            }
+        }
+    )
+}
+
 
 /**
  * Adds an [NavController.OnDestinationChangedListener] to this [NavController] and updates the
@@ -110,6 +153,9 @@ private fun NavController.currentScreenAsState(): State<Screen> {
                 destination.hierarchy.any { it.route == Screen.Profile.route } -> {
                     selectedItem.value = Screen.Profile
                 }
+                destination.hierarchy.any { it.route == Screen.Search.route } -> {
+                    selectedItem.value = Screen.Search
+                }
             }
         }
         addOnDestinationChangedListener(listener)
@@ -130,8 +176,8 @@ private class HomeNavigationItem(
 
 private val HomeNavigationItems = listOf(
     HomeNavigationItem(Screen.Home, Icons.Default.Home, "Home"),
-    HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notifs"),
+    HomeNavigationItem(Screen.Search, Icons.Default.Search, "Search"),
     HomeNavigationItem(Screen.List, Icons.Default.List, "My List"),
-    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends"),
-    HomeNavigationItem(Screen.Profile, Icons.Default.Person, "Profile"),
+    HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notification"),
+    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends")
 )
