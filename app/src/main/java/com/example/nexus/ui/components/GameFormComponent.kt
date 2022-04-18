@@ -28,6 +28,11 @@ import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import proto.Game
 import kotlin.math.roundToInt
 
+//TODO keyboard focus weghalen na tap buiten keyboard
+//TODO checks toevoegen voor de hours en minutes
+//TODO data op voorhand invullen bij games die al in de lijst zitten
+//TODO updaten en verwijderen
+
 @Composable
 fun GameFormComponent(
     game: Game,
