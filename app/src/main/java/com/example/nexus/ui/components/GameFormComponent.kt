@@ -23,6 +23,7 @@ import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.web.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
+import com.example.nexus.viewmodels.games.NexusGameFormViewModel
 import proto.Game
 import kotlin.math.roundToInt
 
@@ -38,15 +39,16 @@ fun GameFormComponent(
                     focusManager.clearFocus()
                 })}.fillMaxSize()) {
         Row(){
-            IconButton(onClick = { vM.onGameFormOpenChanged(false) }) {
+            IconButton(onClick = { vM.onGameFormOpenChanged(false)
+                                    focusManager.clearFocus()}) {
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "close game form",
                 )
             }
         }
-        var gameScore by remember { mutableStateOf(0)}
-        var gameStatus by remember { mutableStateOf(ListCategory.PLAYING.value)}
+//        var gameScore by remember { mutableStateOf(0)}
+//        var gameStatus by remember { mutableStateOf(ListCategory.PLAYING.value)}
 
         Row(modifier = Modifier.padding(5.dp)) {
             Text(text = "Your score: ")
@@ -58,13 +60,13 @@ fun GameFormComponent(
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 DropdownMenuItem(onClick = { expanded = false
                                             text = "No score"
-                                            gameScore = 0}) {
+                                            vM.setGameScore(0)}) {
                     Text(text = "No score")
                 }
                 listOf(1,2,3,4,5,6,7,8,9,10).forEach { score ->
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = score.toString()
-                                                gameScore = score}) {
+                                                vM.setGameScore(score)}) {
                         Text(text = score.toString(), color = Color.White)
                     }
                 }
@@ -82,14 +84,14 @@ fun GameFormComponent(
                 ListCategory.values().forEach { status ->
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = status.value
-                                                gameStatus = status.value}) {
+                                                vM.setGameStatus(status.value)}) {
                         Text(text = status.value, color = Color.White)
                     }
                 }
             }
         }
-        var hours by remember { mutableStateOf("0")}
-        var minutes by remember { mutableStateOf("0")}
+//        var hours by remember { mutableStateOf("0")}
+//        var minutes by remember { mutableStateOf("0")}
 
         Row(modifier = Modifier
             .padding(5.dp)
@@ -100,9 +102,9 @@ fun GameFormComponent(
             }){
             Text(text = "Hours played: ")
             TextField(
-                value = hours,
+                value = vM.getHours(),
                 onValueChange = { value ->
-                        hours = value
+                        vM.setHours(value)
                     },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number,
@@ -118,9 +120,9 @@ fun GameFormComponent(
             .padding(5.dp)){
             Text(text = "Minutes played: ")
             TextField(
-                value = minutes,
+                value = vM.getMinutes(),
                 onValueChange = { value ->
-                    minutes = value
+                    vM.setMinutes(value)
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number,
@@ -133,12 +135,13 @@ fun GameFormComponent(
         }
 
         Button(onClick = {
-            val intHours = hours.toIntOrNull()
-            val intMinutes = minutes.toIntOrNull()
+            val intHours = vM.getHours().toIntOrNull()
+            val intMinutes = vM.getHours().toIntOrNull()
             if(intHours == null || intMinutes == null || intHours < 0 || intMinutes < 0){
                 vM.onShowErrorPopupChanged(true)
             } else{
-                val listEntry = ListEntry(game.id, game.name, gameScore, hours.toInt()*60+minutes.toInt(), gameStatus,
+                val listEntry = ListEntry(game.id, game.name, vM.getGameScore(),
+                    vM.getHours().toInt()*60+vM.getMinutes().toInt(), vM.getGameStatus(),
                     vM.getCoverWithId(game.cover.id)
                         ?.let {
                             imageBuilder(
@@ -153,7 +156,7 @@ fun GameFormComponent(
         }){
             Text(text = "save")
         }
-        if(vM.showErrorPopup.value){
+        if(vM.getShowErrorPopup()){
             AlertDialog(
                 onDismissRequest = { },
                 confirmButton = {

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.db.ListEntity
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.data.web.ListEntry
+import com.example.nexus.ui.routes.list.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import proto.Game
@@ -23,8 +24,52 @@ class NexusGameDetailViewModel @Inject constructor(
     var platformList = repo.gamePlatforms
     val gameId: Long = savedStateHandle["gameId"]!!
 
-    var gameFormOpen = mutableStateOf(false)
-    var showErrorPopup = mutableStateOf(false)
+    private var gameFormOpen = mutableStateOf(false)
+    private var showErrorPopup = mutableStateOf(false)
+    private val gameScore = mutableStateOf(0)
+    private val gameStatus = mutableStateOf(ListCategory.PLAYING.value)
+    private val hours = mutableStateOf("0")
+    private val minutes = mutableStateOf("0")
+
+    fun setGameScore(score: Int){
+        gameScore.value = score
+    }
+
+    fun getGameScore(): Int {
+        return gameScore.value
+    }
+
+    fun setGameStatus(status: String){
+        gameStatus.value = status
+    }
+
+    fun getGameStatus(): String {
+        return gameStatus.value
+    }
+
+    fun setHours(hours: String){
+        this.hours.value = hours
+    }
+
+    fun getHours(): String {
+        return hours.value
+    }
+
+    fun setMinutes(minutes: String){
+        this.minutes.value = minutes
+    }
+
+    fun getMinutes(): String {
+        return minutes.value
+    }
+
+    fun getGameFormOpen(): Boolean {
+        return gameFormOpen.value
+    }
+
+    fun getShowErrorPopup(): Boolean {
+        return showErrorPopup.value
+    }
 
     fun onGameFormOpenChanged(boolean: Boolean){
         gameFormOpen.value = boolean
