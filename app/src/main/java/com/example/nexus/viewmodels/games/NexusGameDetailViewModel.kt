@@ -24,9 +24,14 @@ class NexusGameDetailViewModel @Inject constructor(
     val gameId: Long = savedStateHandle["gameId"]!!
 
     var gameFormOpen = mutableStateOf(false)
+    var showErrorPopup = mutableStateOf(false)
 
     fun onGameFormOpenChanged(boolean: Boolean){
         gameFormOpen.value = boolean
+    }
+
+    fun onShowErrorPopupChanged(boolean: Boolean){
+        showErrorPopup.value = boolean
     }
 
     fun onGetGameEvent(){
