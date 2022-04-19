@@ -97,8 +97,7 @@ fun ListColumn(
     games: List<ListEntity>
 ){
     LazyColumn(
-//        modifier = Modifier
-//            .padding(16.dp)
+        //modifier = Modifier.verticalScroll(rememberScrollState()).height(100.dp)
     ){
         items(games) {game ->
             ListItem(game = game)

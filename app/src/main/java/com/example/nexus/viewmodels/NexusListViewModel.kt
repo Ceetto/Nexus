@@ -20,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NexusListViewModel  @Inject constructor(private val repo: ListRepository) : ViewModel(){
 
-    val selectedCategory: MutableState<ListCategory> = mutableStateOf(ListCategory.ALL)
+    private var _selectedCategory: MutableState<ListCategory> = mutableStateOf(ListCategory.ALL)
+    val selectedCategory = _selectedCategory
     private val searchQuery = MutableStateFlow("")
 
 

@@ -1,10 +1,8 @@
 package com.example.nexus.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -33,8 +31,12 @@ fun GameFormComponent(
     game: Game,
     vM: NexusGameDetailViewModel
 ){
-
-    Column(verticalArrangement = Arrangement.Center) {
+    val focusManager = LocalFocusManager.current
+    Column(verticalArrangement = Arrangement.Top,
+            modifier = Modifier.pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    focusManager.clearFocus()
+                })}.fillMaxSize()) {
         Row(){
             IconButton(onClick = { vM.onGameFormOpenChanged(false) }) {
                 Icon(
@@ -88,7 +90,6 @@ fun GameFormComponent(
         }
         var hours by remember { mutableStateOf("0")}
         var minutes by remember { mutableStateOf("0")}
-        val focusManager = LocalFocusManager.current
 
         Row(modifier = Modifier
             .padding(5.dp)
@@ -114,12 +115,7 @@ fun GameFormComponent(
             }
 
         Row(modifier = Modifier
-            .padding(5.dp)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = {
-                    focusManager.clearFocus()
-                })
-            }){
+            .padding(5.dp)){
             Text(text = "Minutes played: ")
             TextField(
                 value = minutes,
