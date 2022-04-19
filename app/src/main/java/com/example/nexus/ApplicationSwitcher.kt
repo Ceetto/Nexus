@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import com.example.nexus.ui.routes.NexusLoginRoute
 import com.example.nexus.viewmodels.UserState
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationSwitcher() {
     val vm = UserState.current

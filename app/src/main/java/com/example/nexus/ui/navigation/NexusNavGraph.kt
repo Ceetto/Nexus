@@ -168,7 +168,7 @@ private fun NavGraphBuilder.addFriendsScreen(
     composable(
         route = Screen.Friends.route,
     ){
-        NexusLoginRoute()
+        NexusFriendsRoute(vM = hiltViewModel())
     }
 }
 

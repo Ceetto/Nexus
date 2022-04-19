@@ -6,13 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Modifier
 import com.example.nexus.ApplicationSwitcher
-import com.example.nexus.Home
 import com.example.nexus.ui.theme.MyApplicationTheme
 import com.example.nexus.viewmodels.UserState
 import com.example.nexus.viewmodels.UserStateViewModel
