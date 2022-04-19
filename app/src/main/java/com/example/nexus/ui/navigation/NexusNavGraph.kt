@@ -126,7 +126,7 @@ private fun NavGraphBuilder.addLoginScreen(
     composable(
         route = Screen.Login.route,
     ){
-        NexusLoginRoute(vM = hiltViewModel())
+        NexusLoginRoute()
     }
 }
 
@@ -168,7 +168,7 @@ private fun NavGraphBuilder.addFriendsScreen(
     composable(
         route = Screen.Friends.route,
     ){
-        NexusFriendsRoute(vM = hiltViewModel())
+        NexusLoginRoute()
     }
 }
 
