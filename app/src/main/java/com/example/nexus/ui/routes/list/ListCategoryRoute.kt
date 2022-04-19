@@ -141,9 +141,13 @@ fun ListItem(
                             )
                         }
                     }
+                    if (game.score != 0){
+                        Icon(imageVector = Icons.Default.Star, contentDescription = "starIcon")
+                        Text(text = game.score.toString())
+                    } else {
+                        Text(text = "No score")
+                    }
 
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "starIcon")
-                    Text(text = game.score.toString())
                 }
             }
         }
