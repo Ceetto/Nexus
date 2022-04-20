@@ -54,16 +54,27 @@ fun Home(
         )
     },
 //        backgroundColor = NexusGray,
-        topBar = {NexusTopBar (onProfileClick = {
-            navController.navigate(Screen.Profile.route) {
-                launchSingleTop = true
-                restoreState = true
+        topBar = {NexusTopBar (
+            onSettingsClick = {navController.navigate(Screen.Settings.route)
+                {
+                    launchSingleTop = true
+                    restoreState = true
 
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
+                }
+            },
+
+            onProfileClick = { navController.navigate(Screen.Profile.route)
+                {
+                    launchSingleTop = true
+                    restoreState = true
+
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
                 }
             }
-        })}
+
+        )}
     ){
         Row(Modifier.fillMaxSize()) {
             NexusNavGraph(navController, modifier = Modifier
@@ -106,7 +117,7 @@ fun BottomNavigationBar(
 
 @Composable
 fun NexusTopBar(
-    onProfileClick: () -> Unit
+    onProfileClick: () -> Unit, onSettingsClick: () -> Unit
 ){
     TopAppBar(
         title = {Text("nexus")},
@@ -116,6 +127,12 @@ fun NexusTopBar(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "profile"
+                )
+            }
+            IconButton (onClick = onSettingsClick){
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "settings"
                 )
             }
         }

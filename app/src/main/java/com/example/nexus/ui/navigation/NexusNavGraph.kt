@@ -24,6 +24,7 @@ sealed class Screen(val route: String){
     object Friends : Screen("friends")
     object Profile : Screen("profile")
     object Search: Screen("search")
+    object Settings: Screen("settings")
 }
 
 sealed class LeafScreen(
@@ -43,6 +44,13 @@ sealed class LeafScreen(
         }
     }
 
+    object SettingsPages : LeafScreen("settings/{settingScreen}"){
+        fun createRoute(root: Screen, settingScreen: String): String {
+            return "${root.route}/$settingScreen"
+        }
+    }
+
+    object Settings: LeafScreen("settings")
     object Search : LeafScreen("search")
 }
 
@@ -66,12 +74,35 @@ fun NexusNavGraph(
         addFriendsScreen(navController)
         addProfileScreen(navController)
         addSearchScreenTopLevel(navController)
+        addSettingsScreenTopLevel(navController)
+    }
+}
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addSettingsScreenTopLevel(
+    navController: NavHostController,
+){
+    navigation(
+        route = Screen.Settings.route,
+        startDestination = LeafScreen.Settings.createRoute(Screen.Settings)
+    ) {
+        addSettingsScreen(navController, Screen.Settings)
     }
 }
 
+private fun NavGraphBuilder.addSettingsScreen(
+    navController: NavHostController,
+    root: Screen
+){
+    composable(
+        route = LeafScreen.Settings.createRoute(root)
+    ){
+        NexusSettingsRoute(vM = hiltViewModel())
+    }
+
+}
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addSearchScreenTopLevel(
-    navController: NavHostController,
+    navController: NavHostController
 ){
     navigation(
         route = Screen.Search.route,
@@ -178,7 +209,7 @@ private fun NavGraphBuilder.addProfileScreen(
     composable(
         route = Screen.Profile.route,
     ){
-        NexusProfileRoute(vM = hiltViewModel())
+        NexusProfileRoute(vM = hiltViewModel(), vMList = hiltViewModel())
     }
 }
 

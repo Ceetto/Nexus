@@ -132,18 +132,18 @@ fun GameFormComponent(
             )
         }
 
-//        Button(onClick = {val listEntry = ListEntry(game.id, game.name, gameScore, hours.toInt()*60+minutes.toInt(), gameStatus,
-//            vM.getCoverWithId(game.cover.id)
-//                ?.let {
-//                    imageBuilder(
-//                        it.imageId,
-//                        ImageSize.COVER_BIG,
-//                        ImageType.JPEG
-//                    )
-//                })
-//            vM.storeListEntry(listEntry)
-//            vM.onGameFormOpenChanged(false)}){
-//            Text(text = "Save")
-//        }
+        Button(onClick = {val listEntry = ListEntry(game.id, game.name, gameScore, hours.toInt()*60+minutes.toInt(), gameStatus,
+            vM.getCoverWithId(game.cover.id)
+                ?.let {
+                    imageBuilder(
+                        it.imageId,
+                        ImageSize.COVER_BIG,
+                        ImageType.JPEG
+                    )
+                })
+            vM.storeListEntry(listEntry)
+            vM.onGameFormOpenChanged(false)}){
+            Text(text = "Save")
+        }
     }
 }
