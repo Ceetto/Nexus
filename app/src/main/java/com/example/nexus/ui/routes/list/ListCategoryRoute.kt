@@ -13,10 +13,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.ui.theme.Completed
@@ -27,7 +29,8 @@ import com.example.nexus.ui.theme.Playing
 @Composable
 fun ListCategoryRoute(
     category: ListCategory,
-    vM: NexusListViewModel
+    vM: NexusListViewModel,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ) {
 //    Text(
 //        text = category.value
@@ -36,82 +39,91 @@ fun ListCategoryRoute(
     //val games by vM.allGames.collectAsState()
     //ListCategoryScreen(games)
     when(category){
-        ListCategory.ALL -> AllScreen(vM)
-        ListCategory.PLAYING -> PlayingScreen(vM)
-        ListCategory.COMPLETED -> CompletedScreen(vM)
-        ListCategory.PLANNED -> PlannedScreen(vM)
-        ListCategory.DROPPED -> DroppedScreen(vM)
+        ListCategory.ALL -> AllScreen(vM, onOpenGameDetails)
+        ListCategory.PLAYING -> PlayingScreen(vM, onOpenGameDetails)
+        ListCategory.COMPLETED -> CompletedScreen(vM, onOpenGameDetails)
+        ListCategory.PLANNED -> PlannedScreen(vM, onOpenGameDetails)
+        ListCategory.DROPPED -> DroppedScreen(vM, onOpenGameDetails)
     }
 }
 
 @Composable
 fun AllScreen(
-    vM: NexusListViewModel
+    vM: NexusListViewModel,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ){
     val games by vM.allGames.collectAsState()
-    ListColumn(games)
+    ListColumn(games, onOpenGameDetails)
 }
 
 @Composable
 fun PlayingScreen(
-    vM: NexusListViewModel
+    vM: NexusListViewModel,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ){
     val games by vM.playing.collectAsState()
-    ListColumn(games)
+    ListColumn(games, onOpenGameDetails)
 }
 
 @Composable
 fun CompletedScreen(
-    vM: NexusListViewModel
+    vM: NexusListViewModel,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ){
     val games by vM.completed.collectAsState()
-    ListColumn(games)
+    ListColumn(games, onOpenGameDetails)
 }
 
 @Composable
 fun PlannedScreen(
-    vM: NexusListViewModel
+    vM: NexusListViewModel,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ){
     val games by vM.planned.collectAsState()
-    ListColumn(games)
+    ListColumn(games, onOpenGameDetails)
 }
 
 @Composable
 fun DroppedScreen(
-    vM: NexusListViewModel
+    vM: NexusListViewModel,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ){
     val games by vM.dropped.collectAsState()
-    ListColumn(games)
+    ListColumn(games, onOpenGameDetails)
 }
 
 
-@Composable
-fun ListCategoryScreen(
-    games: List<ListEntity>
-){
-    ListColumn(games)
-}
+//@Composable
+//fun ListCategoryScreen(
+//    games: List<ListEntity>
+//){
+//    ListColumn(games)
+//}
 
 @Composable
 fun ListColumn(
-    games: List<ListEntity>
+    games: List<ListEntity>,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ){
     LazyColumn(
 //        modifier = Modifier
 //            .padding(16.dp)
     ){
         items(games) {game ->
-            ListItem(game = game)
+            ListItem(game = game, onOpenGameDetails)
         }
     }
 }
 
 @Composable
 fun ListItem(
-    game: ListEntity
+    game: ListEntity,
+    onOpenGameDetails : (gameId: Long) -> Unit
 ) {
     Surface(
-        modifier = Modifier.padding(vertical = 4.dp)
+        modifier = Modifier.padding(vertical = 4.dp).pointerInput(Unit){
+            detectTapGestures(onTap = { onOpenGameDetails(game.gameId) })
+        }
     ) {
         Row(){
             Image(painter = rememberAsyncImagePainter(game.coverUrl), contentDescription = "cover",

@@ -31,19 +31,37 @@ sealed class LeafScreen(
 ) {
     fun createRoute(root: Screen) = "${root.route}/$route"
 
+//    object GameDetail : LeafScreen("{gameOrList}/{gameId}"){
+//        fun createRoute(root : Screen, gameId: Long) : String {
+//            val route = if(root == Screen.Search){
+//                "game"
+//            } else { // root == Screen.List
+//                "list"
+//            }
+//            return "${root.route}/$route/$gameId"
+//        }
+//    }
+
     object GameDetail : LeafScreen("game/{gameId}"){
         fun createRoute(root : Screen, gameId: Long) : String {
             return "${root.route}/game/$gameId"
         }
     }
 
-    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
-        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
-            return "${root.route}/game/$gameId/$gameName"
-        }
-    }
+//    object GameDetailFromList : LeafScreen("list/{gameId}"){
+//        fun createRoute(root : Screen, gameId: Long) : String {
+//            return "${root.route}/list/$gameId"
+//        }
+//    }
+
+//    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
+//        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
+//            return "${root.route}/game/$gameId/$gameName"
+//        }
+//    }
 
     object Search : LeafScreen("search")
+    object List : LeafScreen("list")
 }
 
 @ExperimentalComposeUiApi
@@ -62,7 +80,7 @@ fun NexusNavGraph(
         addLoginScreen(navController)
         addHomeScreen(navController)
         addNotificationsScreen(navController)
-        addListScreen(navController)
+        addListScreenTopLevel(navController)
         addFriendsScreen(navController)
         addProfileScreen(navController)
         addSearchScreenTopLevel(navController)
@@ -90,6 +108,21 @@ private fun NavGraphBuilder.addSearchScreenTopLevel(
 //    }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addListScreenTopLevel(
+    navController: NavHostController
+){
+    navigation(
+        route = Screen.List.route,
+        startDestination = LeafScreen.List.createRoute(Screen.List)
+    ) {
+        addListScreen(navController, Screen.List)
+        addGameDetails(navController, Screen.List)
+    }
+}
+
+
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addSearchScreen(
     navController: NavHostController,
@@ -109,7 +142,6 @@ private fun NavGraphBuilder.addGameDetails(
     navController: NavHostController,
     root: Screen
 ){
-    println(LeafScreen.GameDetail.createRoute(root))
     composable(
         route = LeafScreen.GameDetail.createRoute(root),
         arguments = listOf(
@@ -154,11 +186,15 @@ private fun NavGraphBuilder.addNotificationsScreen(
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addListScreen(
     navController: NavHostController,
+    root : Screen
 ){
     composable(
-        route = Screen.List.route,
+        route = LeafScreen.List.createRoute(root)
     ){
-        NexusListRoute(vM = hiltViewModel())
+        NexusListRoute(vM = hiltViewModel(),
+            onOpenGameDetails = {
+                    gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+            })
     }
 }
 

@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -28,8 +29,6 @@ import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import proto.Game
 import kotlin.math.roundToInt
 
-//TODO keyboard focus weghalen na tap buiten keyboard
-//TODO checks toevoegen voor de hours en minutes
 //TODO data op voorhand invullen bij games die al in de lijst zitten
 //TODO updaten en verwijderen
 
@@ -57,14 +56,14 @@ fun GameFormComponent(
             var expanded by remember { mutableStateOf(false) }
             var text by remember { mutableStateOf("Select score")}
             OutlinedButton(onClick = { expanded = !expanded }) {
-                Text(text = text)
+                Text(text = text, color=MaterialTheme.colors.onBackground)
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 listOf(1,2,3,4,5,6,7,8,9,10).forEach { score ->
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = score.toString()
                                                 gameScore = score}) {
-                        Text(text = score.toString(), color = Color.White)
+                        Text(text = score.toString(), color = White)
                     }
                 }
             }
@@ -75,14 +74,14 @@ fun GameFormComponent(
             var expanded by remember { mutableStateOf(false) }
             var text by remember { mutableStateOf("Select status")}
             OutlinedButton(onClick = { expanded = !expanded }) {
-                Text(text = text)
+                Text(text = text, color=MaterialTheme.colors.onBackground)
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 ListCategory.values().forEach { status ->
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = status.value
                                                 gameStatus = status.value}) {
-                        Text(text = status.value, color = Color.White)
+                        Text(text = status.value)
                     }
                 }
             }
@@ -137,18 +136,20 @@ fun GameFormComponent(
             )
         }
 
-//        Button(onClick = {val listEntry = ListEntry(game.id, game.name, gameScore, hours.toInt()*60+minutes.toInt(), gameStatus,
-//            vM.getCoverWithId(game.cover.id)
-//                ?.let {
-//                    imageBuilder(
-//                        it.imageId,
-//                        ImageSize.COVER_BIG,
-//                        ImageType.JPEG
-//                    )
-//                })
-//            vM.storeListEntry(listEntry)
-//            vM.onGameFormOpenChanged(false)}){
-//            Text(text = "Save")
-//        }
+        Button(onClick = {val listEntry = ListEntry(game.id, game.name, gameScore, hours.toInt()*60+minutes.toInt(), gameStatus,
+            vM.getCoverWithId(game.cover.id)
+                ?.let {
+                    imageBuilder(
+                        it.imageId,
+                        ImageSize.COVER_BIG,
+                        ImageType.JPEG
+                    )
+                })
+            vM.storeListEntry(listEntry)
+            vM.onGameFormOpenChanged(false)
+            focusManager.clearFocus()
+        }){
+            Text(text = "Save")
+        }
     }
 }
