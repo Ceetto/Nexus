@@ -44,11 +44,12 @@ sealed class LeafScreen(
         }
     }
 
-    object SettingsPages : LeafScreen("settings/{settingScreen}"){
-        fun createRoute(root: Screen, settingScreen: String): String {
-            return "${root.route}/$settingScreen"
-        }
-    }
+    //TODO navigation van de verschillende settings pages
+//    object SettingsPages : LeafScreen("settings/{settingScreen}"){
+//        fun createRoute(root: Screen, settingsPage: String): String {
+//            return "${root.route}/$settingsPage"
+//        }
+//    }
 
     object Settings: LeafScreen("settings")
     object Search : LeafScreen("search")
@@ -96,7 +97,9 @@ private fun NavGraphBuilder.addSettingsScreen(
     composable(
         route = LeafScreen.Settings.createRoute(root)
     ){
-        NexusSettingsRoute(vM = hiltViewModel())
+        NexusSettingsRoute(
+            vM = hiltViewModel()
+        )
     }
 
 }
