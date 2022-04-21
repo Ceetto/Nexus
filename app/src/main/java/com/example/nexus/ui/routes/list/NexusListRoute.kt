@@ -24,9 +24,9 @@ fun NexusListRoute(
 //    vM.wipeDatabase()
 //    vM.storeBackendGamesInDb()
     Scaffold(topBar = {
-        TopNavigationBar(vM.selectedCategory.value, vM::onSelectedCategoryChanged)
+        TopNavigationBar(vM.getSelectedCategory(), vM::onSelectedCategoryChanged)
     }){
-        ListCategoryRoute(category = vM.selectedCategory.value, vM)
+        ListCategoryRoute(category = vM.getSelectedCategory(), vM)
     }
 }
 

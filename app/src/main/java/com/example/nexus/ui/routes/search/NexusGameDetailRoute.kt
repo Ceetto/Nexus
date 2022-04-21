@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
@@ -29,7 +30,7 @@ fun NexusGameDetailRoute(
     vM.onGetGameEvent()
     if(vM.gameList.value.isNotEmpty()) {
         val game = vM.gameList.value[0]
-        if(!vM.gameFormOpen.value){
+        if(!vM.getGameFormOpen()){
             Column {
                 Row {
                     Image(

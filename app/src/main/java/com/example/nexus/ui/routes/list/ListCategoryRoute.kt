@@ -97,8 +97,7 @@ fun ListColumn(
     games: List<ListEntity>
 ){
     LazyColumn(
-//        modifier = Modifier
-//            .padding(16.dp)
+        //modifier = Modifier.verticalScroll(rememberScrollState()).height(100.dp)
     ){
         items(games) {game ->
             ListItem(game = game)
@@ -141,9 +140,13 @@ fun ListItem(
                             )
                         }
                     }
+                    if (game.score != 0){
+                        Icon(imageVector = Icons.Default.Star, contentDescription = "starIcon")
+                        Text(text = game.score.toString())
+                    } else {
+                        Text(text = "No score")
+                    }
 
-                    Icon(imageVector = Icons.Default.Star, contentDescription = "starIcon")
-                    Text(text = game.score.toString())
                 }
             }
         }
