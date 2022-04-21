@@ -1,8 +1,10 @@
 package com.example.nexus.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -12,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -23,9 +26,11 @@ import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.web.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
-import com.example.nexus.viewmodels.games.NexusGameFormViewModel
 import proto.Game
 import kotlin.math.roundToInt
+
+//TODO data op voorhand invullen bij games die al in de lijst zitten
+//TODO updaten en verwijderen
 
 @Composable
 fun GameFormComponent(
@@ -47,15 +52,13 @@ fun GameFormComponent(
                 )
             }
         }
-//        var gameScore by remember { mutableStateOf(0)}
-//        var gameStatus by remember { mutableStateOf(ListCategory.PLAYING.value)}
 
         Row(modifier = Modifier.padding(5.dp)) {
             Text(text = "Your score: ")
             var expanded by remember { mutableStateOf(false) }
             var text by remember { mutableStateOf("Select score")}
             OutlinedButton(onClick = { expanded = !expanded }) {
-                Text(text = text)
+                Text(text = text, color=MaterialTheme.colors.onBackground)
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 DropdownMenuItem(onClick = { expanded = false
@@ -67,7 +70,7 @@ fun GameFormComponent(
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = score.toString()
                                                 vM.setGameScore(score)}) {
-                        Text(text = score.toString(), color = Color.White)
+                        Text(text = score.toString())
                     }
                 }
             }
@@ -78,7 +81,7 @@ fun GameFormComponent(
             var expanded by remember { mutableStateOf(false) }
             var text by remember { mutableStateOf(ListCategory.PLAYING.value)}
             OutlinedButton(onClick = { expanded = !expanded }) {
-                Text(text = text)
+                Text(text = text, color=MaterialTheme.colors.onBackground)
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 ListCategory.values().forEach { status ->
@@ -90,8 +93,6 @@ fun GameFormComponent(
                 }
             }
         }
-//        var hours by remember { mutableStateOf("0")}
-//        var minutes by remember { mutableStateOf("0")}
 
         Row(modifier = Modifier
             .padding(5.dp)
@@ -151,6 +152,7 @@ fun GameFormComponent(
                         })
                 vM.storeListEntry(listEntry)
                 vM.onGameFormOpenChanged(false)
+                focusManager.clearFocus()
             }
         }){
             Text(text = "save")
