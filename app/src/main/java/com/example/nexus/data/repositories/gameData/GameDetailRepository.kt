@@ -18,7 +18,8 @@ import javax.inject.Singleton
 
 @Singleton
 class GameDetailRepository @Inject constructor(private val repo: SearchRepository) {
-    var gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
+    private var _gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
+    val gameList = _gameList
     var coverList : MutableState<List<Cover>> = mutableStateOf(ArrayList())
     var platformList : MutableState<List<Platform>> = mutableStateOf(ArrayList())
     var gamePlatforms : MutableState<List<String>> = mutableStateOf(ArrayList())

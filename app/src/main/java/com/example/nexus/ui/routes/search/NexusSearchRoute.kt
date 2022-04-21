@@ -46,12 +46,6 @@ fun NexusSearchRoute(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(onDone = { onSearch() }),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = NexusLightGray,
-                cursorColor = NexusBlue,
-                disabledIndicatorColor = NexusGray,
-                focusedIndicatorColor = NexusBlue
-            ),
             trailingIcon = {
                 IconButton(onClick = { onSearch() }) {
                     Icon(

@@ -54,7 +54,6 @@ fun NexusGameDetailRoute(
                         }
                     }
                     Text(text = game.ratingCount.toString() + " votes", fontSize = 15.sp)
-
                 }
             }
             Text("platforms: " + vM.platformList.value)
