@@ -32,28 +32,12 @@ sealed class LeafScreen(
 ) {
     fun createRoute(root: Screen) = "${root.route}/$route"
 
-//    object GameDetail : LeafScreen("{gameOrList}/{gameId}"){
-//        fun createRoute(root : Screen, gameId: Long) : String {
-//            val route = if(root == Screen.Search){
-//                "game"
-//            } else { // root == Screen.List
-//                "list"
-//            }
-//            return "${root.route}/$route/$gameId"
-//        }
-//    }
-
     object GameDetail : LeafScreen("game/{gameId}"){
         fun createRoute(root : Screen, gameId: Long) : String {
             return "${root.route}/game/$gameId"
         }
     }
 
-//    object GameDetailFromList : LeafScreen("list/{gameId}"){
-//        fun createRoute(root : Screen, gameId: Long) : String {
-//            return "${root.route}/list/$gameId"
-//        }
-//    }
 
 //    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
 //        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
