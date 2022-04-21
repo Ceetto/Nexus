@@ -133,7 +133,6 @@ fun GameFormComponent(
                 })
             )
         }
-
         Button(onClick = {
             val intHours = vM.getHours().toIntOrNull()
             val intMinutes = vM.getHours().toIntOrNull()
