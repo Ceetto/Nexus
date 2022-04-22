@@ -7,6 +7,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -22,13 +23,15 @@ import kotlin.math.roundToInt
 fun SearchResultComponent(
     vM: NexusSearchViewModel,
     game: Game,
-    onClick: (gameId: Long) -> Unit
+    onClick: (gameId: Long) -> Unit,
+    focusManager: FocusManager
 ){
     Row(modifier = Modifier
         .padding(bottom = 5.dp)
         .fillMaxWidth()
         .pointerInput(Unit) {
-            detectTapGestures(onTap = { onClick(game.id) })
+            detectTapGestures(onTap = { onClick(game.id)
+                                        focusManager.clearFocus()})
         }
     ){
         Image(

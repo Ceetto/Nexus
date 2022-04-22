@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -38,6 +39,7 @@ fun NexusSearchRoute(
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = false) }
     ) {
+        val focusManager = LocalFocusManager.current
         Column {
             TextField(
                 value = vM.getSearchTerm(), onValueChange = { vM.setSearchTerm(it) },
@@ -53,7 +55,8 @@ fun NexusSearchRoute(
                 ),
                 keyboardActions = KeyboardActions(onDone = { onSearch() }),
                 trailingIcon = {
-                    IconButton(onClick = { onSearch() }) {
+                    IconButton(onClick = {
+                        onSearch()}) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = "search"
@@ -64,7 +67,7 @@ fun NexusSearchRoute(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
                 vM.getGameList().forEach { game ->
-                    SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails)
+                    SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails, focusManager)
                 }
             }
         }
