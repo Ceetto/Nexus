@@ -23,8 +23,6 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
     val selectedCategory: MutableState<ListCategory> = mutableStateOf(ListCategory.ALL)
     private val searchQuery = MutableStateFlow("")
 
-
-
     fun onSelectedCategoryChanged(category: ListCategory){
         selectedCategory.value = category
     }

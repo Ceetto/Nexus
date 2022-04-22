@@ -6,6 +6,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.nexus.ui.routes.NexusLoginRoute
 import com.example.nexus.viewmodels.UserState
 
@@ -21,6 +22,6 @@ fun ApplicationSwitcher() {
             Home()
         }
     } else {
-        NexusLoginRoute()
+        NexusLoginRoute(vM = hiltViewModel())
     }
 }
