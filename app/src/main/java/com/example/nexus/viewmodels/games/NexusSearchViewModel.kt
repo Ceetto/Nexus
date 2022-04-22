@@ -6,13 +6,13 @@ import com.api.igdb.request.IGDBWrapper
 import com.example.nexus.data.repositories.gameData.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import proto.Game
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusSearchViewModel  @Inject constructor(private val repo: SearchRepository) : ViewModel(){
-    var gameList = repo.gameList
-    var coverList = repo.coverList
-    val searchTerm = repo.searchTerm
+    private var gameList = repo.gameList
+    private val searchTerm = repo.searchTerm
     init {
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "f46j0jimr573o7re4efaqfnv5kbi7x")
     }
@@ -20,13 +20,19 @@ class NexusSearchViewModel  @Inject constructor(private val repo: SearchReposito
         viewModelScope.launch {
             try{
                 repo.getGames()
-                repo.getCovers()
             } catch(e: Exception){
 
             }
         }
     }
-//    fun getGameById(id: Long) = repo.getGameById(id)
-    fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
+
+    fun getSearchTerm(): String {
+        return searchTerm.value
+    }
+
     fun setSearchTerm(term: String) = repo.setSearchTerm(term)
+
+    fun getGameList(): List<Game> {
+        return gameList.value
+    }
 }

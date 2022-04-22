@@ -1,12 +1,21 @@
 package com.example.nexus.ui.routes
 
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusFriendsViewModel
 
 @Composable
 fun NexusFriendsRoute(
-    vM: NexusFriendsViewModel
+    vM: NexusFriendsViewModel,
+    navController: NavHostController
 ){
-    Text(text = "friends")
+    Scaffold(
+        topBar = { NexusTopBar(navController = navController, canPop = false) }
+    ) {
+        Text(text = "friends")
+    }
+
 }

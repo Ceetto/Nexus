@@ -1,19 +1,28 @@
  package com.example.nexus.ui.routes
 
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.navigation.NavHostController
+import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusHomeViewModel
 
 
  @ExperimentalComposeUiApi
 @Composable
 fun NexusHomeRoute(
-    vM: NexusHomeViewModel
+    vM: NexusHomeViewModel,
+    navController: NavHostController
 ) {
-    Text(text="home")
+     Scaffold(
+         topBar = { NexusTopBar(navController = navController, canPop = false) }
+     ) {
+         Text(text="home")
+     }
+
 
 }
 

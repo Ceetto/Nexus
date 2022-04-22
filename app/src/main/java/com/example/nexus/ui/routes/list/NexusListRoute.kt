@@ -13,21 +13,33 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
+import com.example.nexus.ui.components.NexusTopBar
+import com.example.nexus.ui.navigation.LeafScreen
+import com.example.nexus.ui.navigation.Screen
 import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
 
 @ExperimentalAnimationApi
 @Composable
 fun NexusListRoute(
-    vM: NexusListViewModel
+    vM: NexusListViewModel,
+    navController: NavHostController,
+    onOpenGameDetails : (gameId: Long) -> Unit,
 ){
 //    vM.wipeDatabase()
 //    vM.storeBackendGamesInDb()
-    Scaffold(topBar = {
-        TopNavigationBar(vM.selectedCategory.value, vM::onSelectedCategoryChanged)
-    }){
-        ListCategoryRoute(category = vM.selectedCategory.value, vM)
+    Scaffold(
+        topBar = { NexusTopBar(navController = navController, canPop = false) }
+    ) {
+        Scaffold(topBar = {
+            TopNavigationBar(vM.getSelectedCategory(), vM::onSelectedCategoryChanged)
+        }){
+            ListCategoryRoute(category = vM.getSelectedCategory(), vM,
+                onOpenGameDetails = onOpenGameDetails)
+        }
     }
+
 }
 
 @Composable
