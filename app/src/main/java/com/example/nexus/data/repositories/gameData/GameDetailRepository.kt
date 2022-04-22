@@ -88,4 +88,8 @@ class GameDetailRepository @Inject constructor(private val repo: SearchRepositor
         }
         gamePlatforms.value = platforms
     }
+
+    suspend fun storeListEntry(entry: ListEntry) = dao.storeListEntry(entry)
+
+    suspend fun deleteListEntry(entity: ListEntity) = dao.deleteListEntry(entity)
 }
