@@ -1,5 +1,6 @@
 package com.example.nexus.ui.routes.search
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -36,11 +38,13 @@ fun NexusSearchRoute(
     onSearch: () -> Unit? = {vM.onSearchEvent(); keyboardController?.hide()},
     onOpenGameDetails : (gameId: Long) -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = false) }
+        topBar = { NexusTopBar(navController = navController, canPop = false) },
+        modifier = Modifier.pointerInput(Unit) {
+            detectTapGestures(onTap = { focusManager.clearFocus()})}
     ) {
-        val focusManager = LocalFocusManager.current
-        Column {
+        Column (){
             TextField(
                 value = vM.getSearchTerm(), onValueChange = { vM.setSearchTerm(it) },
                 singleLine = true,

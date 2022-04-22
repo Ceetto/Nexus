@@ -71,29 +71,29 @@ fun NexusGameDetailRoute(
                             }
                             Text(text = game.ratingCount.toString() + " votes", fontSize = 10.sp)
 
+                            var platforms = ""
+                            for(platform in game.platformsList){
+                                platforms += platform.abbreviation + ", "
+                            }
+                            platforms.drop(2)
                             Row{
-                                Text("platforms: ")
-                                Row(Modifier.horizontalScroll(rememberScrollState())){
-                                    for(platform in game.platformsList){
-                                        Text(platform.abbreviation + ", ")
-                                    }
-                                }
+                                Text("platforms: $platforms")
                             }
 
+                            var genres = ""
+                            for(genre in game.genresList){
+                                genres += genre.name + ", "
+                            }
+                            genres.dropLast(2)
                             Row{
-                                Text("genres: ")
-                                Row(Modifier.horizontalScroll(rememberScrollState())){
-                                    for(genre in game.genresList){
-                                        Text(genre.name + ", ")
-                                    }
-                                }
+                                Text("genres: $genres")
                             }
 
                         }
                     }
 
-                    Text("Summary:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp))
-                    Text(game.summary, Modifier.padding(bottom = 10.dp))
+                    Text("Summary:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp, start = 5.dp))
+                    Text(game.summary, Modifier.padding(bottom = 10.dp, start = 5.dp, end = 5.dp))
                     Button(onClick = {vM.onGameFormOpenChanged(true)}){
                         Text(text = "Add game")
                     }
