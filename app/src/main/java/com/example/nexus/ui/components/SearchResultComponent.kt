@@ -32,7 +32,7 @@ fun SearchResultComponent(
         }
     ){
         Image(
-            painter = rememberAsyncImagePainter(vM.getCoverWithId(game.cover.id)
+            painter = rememberAsyncImagePainter(game.cover
                 ?.let { imageBuilder(it.imageId, ImageSize.COVER_BIG, ImageType.JPEG) }),
             contentDescription = "cover image",
             contentScale = ContentScale.Fit,

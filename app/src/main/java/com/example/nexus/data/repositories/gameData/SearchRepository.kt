@@ -17,14 +17,14 @@ import javax.inject.Singleton
 @Singleton
 class SearchRepository @Inject constructor() {
     var gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
-    var coverList : MutableState<List<Cover>> = mutableStateOf(ArrayList())
     val searchTerm = mutableStateOf("")
     init {
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
     }
 
     suspend fun getGames() = withContext(Dispatchers.IO){
-        val apicalypse = APICalypse().fields("*").search(searchTerm.value)
+        val apicalypse = APICalypse().fields("cover.*,*").search(searchTerm.value)
+        gameList.value = emptyList()
         try{
             val games: List<Game> = IGDBWrapper.games(apicalypse)
             gameList.value = games
@@ -32,43 +32,6 @@ class SearchRepository @Inject constructor() {
             print("NEXUS API FETCH ERROR:")
             println(e.result)
         }
-    }
-
-    suspend fun getCovers() = withContext(Dispatchers.IO){
-        var ids = "("
-        try {
-            for(game in gameList.value) {
-                ids += game.id.toString() + ","
-            }
-            ids = ids.dropLast(1)
-            ids += ")"
-            val apicalypse = APICalypse().fields("*").where("game =$ids;")
-            val covers : List<Cover> = IGDBWrapper.covers(apicalypse)
-            coverList.value = covers
-        } catch (e: RequestException) {
-            print("NEXUS API FETCH ERROR:")
-            println(e.result)
-        }
-    }
-
-//    suspend fun getGameById(gameId : Long) = withContext(Dispatchers.IO){
-//        val apicalypse = APICalypse().fields("*").where("id = $gameId")
-//        try{
-//            val gameRes: List<Game> = IGDBWrapper.games(apicalypse)
-//            gameList.value = gameRes
-//        } catch(e: RequestException) {
-//            print("NEXUS API FETCH ERROR:")
-//            println(e.result)
-//        }
-//    }
-
-    fun getCoverWithId(id : Long) : Cover? {
-        for (cover in coverList.value){
-            if(cover.id == id){
-                return cover
-            }
-        }
-        return null
     }
 
     fun setSearchTerm(term: String){

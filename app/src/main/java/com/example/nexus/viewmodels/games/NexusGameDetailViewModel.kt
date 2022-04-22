@@ -21,7 +21,7 @@ class NexusGameDetailViewModel @Inject constructor(
     private val repo: GameDetailRepository
 ) : ViewModel(){
     var gameList = repo.gameList
-    var platformList = repo.gamePlatforms
+//    var platformList = repo.gamePlatforms
     val gameId: Long = savedStateHandle["gameId"]!!
 
     private var gameFormOpen = mutableStateOf(false)
@@ -30,6 +30,19 @@ class NexusGameDetailViewModel @Inject constructor(
     private val gameStatus = mutableStateOf(ListCategory.PLAYING.value)
     private val hours = mutableStateOf("0")
     private val minutes = mutableStateOf("0")
+
+    fun onGetGameEvent(){
+        viewModelScope.launch {
+            try{
+                repo.getGameById(gameId)
+//                repo.getCovers()
+//                repo.getPlatforms()
+//                repo.getPlatforms(gameList.value[0].platformsList)
+            } catch(e: Exception){
+
+            }
+        }
+    }
 
     fun setGameScore(score: Int){
         gameScore.value = score
@@ -79,20 +92,9 @@ class NexusGameDetailViewModel @Inject constructor(
         showErrorPopup.value = boolean
     }
 
-    fun onGetGameEvent(){
-        viewModelScope.launch {
-            try{
-                repo.getGameById(gameId)
-                repo.getCovers()
-                repo.getPlatforms()
-                repo.getPlatforms(gameList.value[0].platformsList)
-            } catch(e: Exception){
 
-            }
-        }
-    }
-    fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
-    fun getPlatforms(ids: MutableList<Platform>) = repo.getPlatforms(ids)
+//    fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
+//    fun getPlatforms(ids: MutableList<Platform>) = repo.getPlatforms(ids)
 
     fun storeListEntry(entry: ListEntry) = viewModelScope.launch { repo.storeListEntry(entry) }
 

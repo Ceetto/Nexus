@@ -139,7 +139,7 @@ fun GameFormComponent(
             } else{
                 val listEntry = ListEntry(game.id, game.name, vM.getGameScore(),
                     vM.getHours().toInt()*60+vM.getMinutes().toInt(), vM.getGameStatus(),
-                    vM.getCoverWithId(game.cover.id)
+                    game.cover
                         ?.let {
                             imageBuilder(
                                 it.imageId,
