@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import com.example.nexus.Home
+import androidx.compose.runtime.CompositionLocalProvider
+import com.example.nexus.ApplicationSwitcher
 import com.example.nexus.ui.theme.MyApplicationTheme
+import com.example.nexus.viewmodels.UserState
+import com.example.nexus.viewmodels.UserStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -19,20 +18,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val TAG = MainActivity::class.java.name
+    private val userState by viewModels<UserStateViewModel>()
 
-    @ExperimentalComposeUiApi
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Home()
+                CompositionLocalProvider(UserState provides userState) {
+                    ApplicationSwitcher()
                 }
+                // A surface container using the 'background' color from the theme
             }
         }
     }
@@ -62,5 +58,4 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         Log.i(TAG, "onDestroy function")
     }
-
 }

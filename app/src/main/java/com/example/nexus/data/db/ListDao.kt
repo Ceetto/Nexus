@@ -5,8 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.nexus.data.web.ListEntry
-import com.example.nexus.ui.routes.list.ListCategory
-import dagger.Provides
 import kotlinx.coroutines.flow.Flow
 
 @Dao
