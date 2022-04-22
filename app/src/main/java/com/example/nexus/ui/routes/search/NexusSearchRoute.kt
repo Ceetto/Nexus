@@ -16,6 +16,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.navigation.NavHostController
+import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.SearchResultComponent
 import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
@@ -28,39 +30,45 @@ import proto.Game
 @Composable
 fun NexusSearchRoute(
     vM: NexusSearchViewModel,
+    navController: NavHostController,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     onSearch: () -> Unit? = {vM.onSearchEvent(); keyboardController?.hide()},
     onOpenGameDetails : (gameId: Long) -> Unit
 ) {
-    Column {
-        TextField(
-            value = vM.searchTerm.value, onValueChange = { vM.setSearchTerm(it) },
-            singleLine = true,
-            modifier = Modifier
-                .fillMaxWidth()
+    Scaffold(
+        topBar = { NexusTopBar(navController = navController, canPop = false) }
+    ) {
+        Column {
+            TextField(
+                value = vM.getSearchTerm(), onValueChange = { vM.setSearchTerm(it) },
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
 //                .padding(5.dp, 1.dp)
-            ,
-            placeholder = { Text("search games") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(onDone = { onSearch() }),
-            trailingIcon = {
-                IconButton(onClick = { onSearch() }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "search"
-                    )
+                ,
+                placeholder = { Text("search games") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = { onSearch() }),
+                trailingIcon = {
+                    IconButton(onClick = { onSearch() }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "search"
+                        )
+                    }
+                })
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState())
+            ) {
+                vM.getGameList().forEach { game ->
+                    SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails)
                 }
-            })
-        Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
-        ) {
-            vM.gameList.value.forEach { game ->
-                SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails)
             }
         }
     }
+
 
 }

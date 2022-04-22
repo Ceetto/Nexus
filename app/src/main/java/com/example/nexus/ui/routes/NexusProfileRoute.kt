@@ -19,18 +19,28 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.rememberAsyncImagePainter
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.nexus.R;
+import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusListViewModel
 
 import com.example.nexus.viewmodels.NexusProfileViewModel
 import kotlin.math.roundToLong
 
 @Composable
-fun NexusProfileRoute(vM: NexusProfileViewModel, vMList: NexusListViewModel){
-    print("test")
-    ProfileScreen(
-        vMList
-    )
+fun NexusProfileRoute(
+    vM: NexusProfileViewModel,
+    navController: NavHostController,
+    vMList: NexusListViewModel
+){
+    Scaffold(
+        topBar = { NexusTopBar(navController = navController, canPop = true) }
+    ) {
+        ProfileScreen(
+            vMList
+        )
+    }
+
 }
 
 

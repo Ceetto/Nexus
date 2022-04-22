@@ -20,9 +20,8 @@ class NexusGameDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val repo: GameDetailRepository
 ) : ViewModel(){
-    var gameList = repo.gameList
-//    var platformList = repo.gamePlatforms
-    val gameId: Long = savedStateHandle["gameId"]!!
+    private var gameList = repo.gameList
+    private val gameId: Long = savedStateHandle["gameId"]!!
 
     private var gameFormOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
@@ -32,16 +31,20 @@ class NexusGameDetailViewModel @Inject constructor(
     private val minutes = mutableStateOf("0")
 
     fun onGetGameEvent(){
+        if(gameList.value.isNotEmpty() && gameList.value[0].id != gameId){
+            gameList.value = emptyList()
+        }
         viewModelScope.launch {
             try{
                 repo.getGameById(gameId)
-//                repo.getCovers()
-//                repo.getPlatforms()
-//                repo.getPlatforms(gameList.value[0].platformsList)
             } catch(e: Exception){
 
             }
         }
+    }
+
+    fun getGameList(): List<Game> {
+        return gameList.value
     }
 
     fun setGameScore(score: Int){

@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
 import com.example.nexus.ui.theme.NexusBlack
@@ -54,27 +56,9 @@ fun Home(
         )
     },
 //        backgroundColor = NexusGray,
-        topBar = {NexusTopBar (
-            onSettingsClick = {navController.navigate(Screen.Settings.route)
-                {
-                    launchSingleTop = true
-                    restoreState = true
-
-                }
-            },
-
-            onProfileClick = { navController.navigate(Screen.Profile.route)
-                {
-                    launchSingleTop = true
-                    restoreState = true
-
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                }
-            }
-
-        )}
+//        topBar = {NexusTopBar (
+//            navController, true
+//        )}
     ){
         Row(Modifier.fillMaxSize()) {
             NexusNavGraph(navController, modifier = Modifier
@@ -115,29 +99,7 @@ fun BottomNavigationBar(
 }
 
 
-@Composable
-fun NexusTopBar(
-    onProfileClick: () -> Unit, onSettingsClick: () -> Unit
-){
-    TopAppBar(
-        title = {Text("nexus")},
-        backgroundColor = NexusBlack,
-        actions = {
-            IconButton(onClick = onProfileClick){
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "profile"
-                )
-            }
-            IconButton (onClick = onSettingsClick){
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "settings"
-                )
-            }
-        }
-    )
-}
+
 
 
 /**

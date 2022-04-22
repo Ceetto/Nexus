@@ -100,7 +100,7 @@ private fun NavGraphBuilder.addSettingsScreen(
         route = LeafScreen.Settings.createRoute(root)
     ){
         NexusSettingsRoute(
-            vM = hiltViewModel()
+            vM = hiltViewModel(), navController = navController
         )
     }
 
@@ -116,14 +116,6 @@ private fun NavGraphBuilder.addSearchScreenTopLevel(
         addSearchScreen(navController, Screen.Search)
         addGameDetails(navController, Screen.Search)
     }
-//    composable(
-//        route = Screen.Search.route
-//    ){
-//        NexusSearchRoute(vM = hiltViewModel(),
-//        onOpenGameDetails = {
-//            gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(Screen.Search, gameId))
-//        })
-//    }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -149,7 +141,7 @@ private fun NavGraphBuilder.addSearchScreen(
     composable(
         route = LeafScreen.Search.createRoute(root)
     ){
-    NexusSearchRoute(vM = hiltViewModel(),
+    NexusSearchRoute(vM = hiltViewModel(), navController,
         onOpenGameDetails = {
                 gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
         })
@@ -166,7 +158,7 @@ private fun NavGraphBuilder.addGameDetails(
             navArgument("gameId"){type = NavType.LongType}
         )
     ){
-        NexusGameDetailRoute(vM = hiltViewModel())
+        NexusGameDetailRoute(vM = hiltViewModel(), navController)
     }
 }
 
@@ -187,7 +179,7 @@ private fun NavGraphBuilder.addHomeScreen(
     composable(
         route = Screen.Home.route,
     ){
-        NexusHomeRoute(vM = hiltViewModel())
+        NexusHomeRoute(vM = hiltViewModel(), navController)
     }
 }
 
@@ -197,7 +189,7 @@ private fun NavGraphBuilder.addNotificationsScreen(
     composable(
         route = Screen.Notifications.route,
     ){
-        NexusNotificationsRoute(vM = hiltViewModel())
+        NexusNotificationsRoute(vM = hiltViewModel(), navController)
     }
 }
 
@@ -209,7 +201,7 @@ private fun NavGraphBuilder.addListScreen(
     composable(
         route = LeafScreen.List.createRoute(root)
     ){
-        NexusListRoute(vM = hiltViewModel(),
+        NexusListRoute(vM = hiltViewModel(), navController,
             onOpenGameDetails = {
                     gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
             })
@@ -222,7 +214,7 @@ private fun NavGraphBuilder.addFriendsScreen(
     composable(
         route = Screen.Friends.route,
     ){
-        NexusFriendsRoute(vM = hiltViewModel())
+        NexusFriendsRoute(vM = hiltViewModel(), navController)
     }
 }
 
@@ -232,7 +224,7 @@ private fun NavGraphBuilder.addProfileScreen(
     composable(
         route = Screen.Profile.route,
     ){
-        NexusProfileRoute(vM = hiltViewModel(), vMList = hiltViewModel())
+        NexusProfileRoute(vM = hiltViewModel(), navController, vMList = hiltViewModel())
     }
 }
 
