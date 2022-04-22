@@ -8,6 +8,9 @@ import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.covers
 import com.api.igdb.request.games
 import com.api.igdb.request.platforms
+import com.example.nexus.data.db.ListDao
+import com.example.nexus.data.db.ListEntity
+import com.example.nexus.data.web.ListEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import proto.Cover
@@ -17,9 +20,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GameDetailRepository @Inject constructor(private val repo: SearchRepository) {
-    private var _gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
-    val gameList = _gameList
+class GameDetailRepository @Inject constructor(private val repo: SearchRepository, private val dao: ListDao) {
+    var gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
     var coverList : MutableState<List<Cover>> = mutableStateOf(ArrayList())
     var platformList : MutableState<List<Platform>> = mutableStateOf(ArrayList())
     var gamePlatforms : MutableState<List<String>> = mutableStateOf(ArrayList())

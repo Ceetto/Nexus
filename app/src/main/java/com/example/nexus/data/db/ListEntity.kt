@@ -10,6 +10,7 @@ data class ListEntity (
     val gameId: Long,
     val title: String,
     val score: Int,
-    val hoursPlayed: Int,
-    val status: String
+    val minutesPlayed: Int,
+    val status: String,
+    val coverUrl: String?
 )

@@ -24,6 +24,7 @@ sealed class Screen(val route: String){
     object Friends : Screen("friends")
     object Profile : Screen("profile")
     object Search: Screen("search")
+    object Settings: Screen("settings")
 }
 
 sealed class LeafScreen(
@@ -37,13 +38,23 @@ sealed class LeafScreen(
         }
     }
 
-    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
-        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
-            return "${root.route}/game/$gameId/$gameName"
-        }
-    }
 
+//    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
+//        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
+//            return "${root.route}/game/$gameId/$gameName"
+//        }
+//    }
+
+    //TODO navigation van de verschillende settings pages
+//    object SettingsPages : LeafScreen("settings/{settingScreen}"){
+//        fun createRoute(root: Screen, settingsPage: String): String {
+//            return "${root.route}/$settingsPage"
+//        }
+//    }
+
+    object Settings: LeafScreen("settings")
     object Search : LeafScreen("search")
+    object List : LeafScreen("list")
 }
 
 @ExperimentalComposeUiApi
@@ -62,16 +73,41 @@ fun NexusNavGraph(
         addLoginScreen(navController)
         addHomeScreen(navController)
         addNotificationsScreen(navController)
-        addListScreen(navController)
+        addListScreenTopLevel(navController)
         addFriendsScreen(navController)
         addProfileScreen(navController)
         addSearchScreenTopLevel(navController)
+        addSettingsScreenTopLevel(navController)
+    }
+}
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addSettingsScreenTopLevel(
+    navController: NavHostController,
+){
+    navigation(
+        route = Screen.Settings.route,
+        startDestination = LeafScreen.Settings.createRoute(Screen.Settings)
+    ) {
+        addSettingsScreen(navController, Screen.Settings)
     }
 }
 
+private fun NavGraphBuilder.addSettingsScreen(
+    navController: NavHostController,
+    root: Screen
+){
+    composable(
+        route = LeafScreen.Settings.createRoute(root)
+    ){
+        NexusSettingsRoute(
+            vM = hiltViewModel()
+        )
+    }
+
+}
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addSearchScreenTopLevel(
-    navController: NavHostController,
+    navController: NavHostController
 ){
     navigation(
         route = Screen.Search.route,
@@ -89,6 +125,21 @@ private fun NavGraphBuilder.addSearchScreenTopLevel(
 //        })
 //    }
 }
+
+@OptIn(ExperimentalAnimationApi::class)
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addListScreenTopLevel(
+    navController: NavHostController
+){
+    navigation(
+        route = Screen.List.route,
+        startDestination = LeafScreen.List.createRoute(Screen.List)
+    ) {
+        addListScreen(navController, Screen.List)
+        addGameDetails(navController, Screen.List)
+    }
+}
+
 
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addSearchScreen(
@@ -109,7 +160,6 @@ private fun NavGraphBuilder.addGameDetails(
     navController: NavHostController,
     root: Screen
 ){
-    println(LeafScreen.GameDetail.createRoute(root))
     composable(
         route = LeafScreen.GameDetail.createRoute(root),
         arguments = listOf(
@@ -154,11 +204,15 @@ private fun NavGraphBuilder.addNotificationsScreen(
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addListScreen(
     navController: NavHostController,
+    root : Screen
 ){
     composable(
-        route = Screen.List.route,
+        route = LeafScreen.List.createRoute(root)
     ){
-        NexusListRoute(vM = hiltViewModel())
+        NexusListRoute(vM = hiltViewModel(),
+            onOpenGameDetails = {
+                    gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+            })
     }
 }
 
@@ -178,7 +232,7 @@ private fun NavGraphBuilder.addProfileScreen(
     composable(
         route = Screen.Profile.route,
     ){
-        NexusProfileRoute(vM = hiltViewModel())
+        NexusProfileRoute(vM = hiltViewModel(), vMList = hiltViewModel())
     }
 }
 
