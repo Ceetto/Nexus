@@ -13,3 +13,4 @@ import javax.inject.Inject
 @HiltViewModel
 class NexusLoginViewModel  @Inject constructor(private val repo: LoginRepository) : ViewModel() {
 }
+

@@ -11,6 +11,8 @@ import com.example.nexus.ApplicationSwitcher
 import com.example.nexus.ui.theme.MyApplicationTheme
 import com.example.nexus.viewmodels.UserState
 import com.example.nexus.viewmodels.UserStateViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -19,6 +21,9 @@ class MainActivity : ComponentActivity() {
 
     val TAG = MainActivity::class.java.name
     private val userState by viewModels<UserStateViewModel>()
+    companion object {
+        val TAG : String = MainActivity::class.java.simpleName
+    }
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {

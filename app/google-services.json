@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "899695439814",
+    "firebase_url": "https://nexus-f7d65-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "nexus-f7d65",
+    "storage_bucket": "nexus-f7d65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899695439814:android:63ce070d790cb30ef0ccc7",
+        "android_client_info": {
+          "package_name": "com.example.nexus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899695439814-497v78r1f9lovh9oe4t9uk5siefm1afr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTR2I4bDlnqKRKg1zIzVQ2t-OoRDJ3eKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899695439814-497v78r1f9lovh9oe4t9uk5siefm1afr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,6 @@
 package com.example.nexus
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,24 +10,17 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
-import com.example.nexus.ui.theme.NexusBlack
 import com.example.nexus.ui.theme.NexusBlackTransparent
 import com.example.nexus.ui.theme.NexusBlue
-import com.example.nexus.ui.theme.NexusGray
-import com.google.accompanist.navigation.animation.*
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
