@@ -9,6 +9,8 @@ import com.example.nexus.data.repositories.FriendsRepository
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.web.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -80,7 +82,8 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
     private val _backendGames = MutableStateFlow(repo.getBackendGames())
     val backendGames: StateFlow<List<ListEntry>> = _backendGames
 
-//    private fun setSelectedCategory(category: ListCategory){
-//        selectedCategory.value = category
+//    fun firestoreTest(): StateFlow<Iterable<QueryDocumentSnapshot>?> {
+//        val test = repo.firestoreTest.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+//        return test
 //    }
 }
