@@ -82,6 +82,23 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
     private val _backendGames = MutableStateFlow(repo.getBackendGames())
     val backendGames: StateFlow<List<ListEntry>> = _backendGames
 
+    var testList = MutableStateFlow(ArrayList<ListEntry>())
+
+    fun firestoreTest(){
+        viewModelScope.launch {
+            testList = repo.getTest() as MutableStateFlow<ArrayList<ListEntry>>
+        }
+    }
+
+    @JvmName("getTestList1")
+    fun getTestList(): StateFlow<ArrayList<ListEntry>> {
+        firestoreTest()
+        return testList
+    }
+
+//    val test: StateFlow<ArrayList<ListEntry>> by lazy {
+//        repo.getTest().stateIn(viewModelScope, SharingStarted.Lazily, ArrayList())
+//    }
 //    fun firestoreTest(): StateFlow<Iterable<QueryDocumentSnapshot>?> {
 //        val test = repo.firestoreTest.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 //        return test
