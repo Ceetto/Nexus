@@ -90,7 +90,6 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
         }
     }
 
-    @JvmName("getTestList1")
     fun getTestList(): StateFlow<ArrayList<ListEntry>> {
         firestoreTest()
         return testList

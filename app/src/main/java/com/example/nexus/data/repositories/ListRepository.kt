@@ -9,6 +9,8 @@ import com.example.nexus.data.web.ListBackend
 import com.example.nexus.data.web.ListEntry
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -22,8 +24,8 @@ class ListRepository @Inject constructor(
     private val firestoreDao: FirestoreListDao
 ) {
 
-    private val database = FirebaseFirestore.getInstance()
-//    private val database = Firebase.firestore
+
+    private val database = Firebase.firestore
 
     private val listEntryReference = database.collection("listentry")
 

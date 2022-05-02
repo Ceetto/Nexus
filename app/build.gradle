@@ -6,14 +6,18 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
-configurations {
-    all {
-        resolutionStrategy {
-            force 'com.google.protobuf:protobuf-java:3.19.2'
-        }
-    }
-    implementation.exclude module:'protobuf-javalite'
-    implementation.exclude module:'protolite-well-known-types'
+//configurations {
+//    all {
+//        resolutionStrategy {
+//            force 'com.google.protobuf:protobuf-java:3.19.2'
+//        }
+//    }
+//    implementation.exclude module:'protobuf-javalite'
+//    implementation.exclude module:'protolite-well-known-types'
+//}
+
+configurations.implementation{
+    exclude(group="com.google.firebase" ,module = "com.google.protobuf")
 }
 
 android {
@@ -69,7 +73,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.3.1'
 //    implementation 'com.google.firebase:firebase-firestore-ktx:24.1.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1'
-    implementation 'com.google.firebase:firebase-firestore:24.1.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.1.1'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
     // For Robolectric tests.
@@ -104,7 +108,7 @@ dependencies {
 
 
     //IGDB
-    implementation 'com.github.husnjak:IGDB-API-JVM:1.0.5'
+    implementation "com.github.husnjak:IGDB-API-JVM:1.0.5"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     //coil
