@@ -7,7 +7,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.nexus.data.db.ListEntity
 import com.example.nexus.viewmodels.NexusListViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
@@ -37,17 +36,8 @@ fun ListCategoryRoute(
     ListCategoryScreen(games, onOpenGameDetails)
 }
 
-
 @Composable
 fun ListCategoryScreen(
-    games: List<ListEntry>,
-    onOpenGameDetails : (gameId: Long) -> Unit
-){
-    ListColumn(games, onOpenGameDetails)
-}
-
-@Composable
-fun ListColumn(
     games: List<ListEntry>,
     onOpenGameDetails : (gameId: Long) -> Unit
 ){
@@ -103,11 +93,9 @@ fun ListItem(
                     } else {
                         Text(text = "No score")
                     }
-
                 }
             }
         }
-
     }
 }
 

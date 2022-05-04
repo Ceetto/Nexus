@@ -5,17 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
-import com.api.igdb.request.covers
 import com.api.igdb.request.games
-import com.api.igdb.request.platforms
-import com.example.nexus.data.db.ListDao
-import com.example.nexus.data.db.ListEntity
-import com.example.nexus.data.web.ListEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import proto.Cover
 import proto.Game
-import proto.Platform
 import javax.inject.Inject
 import javax.inject.Singleton
 

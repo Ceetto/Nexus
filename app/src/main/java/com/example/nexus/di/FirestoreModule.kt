@@ -18,9 +18,4 @@ class FirestoreModule {
     fun provideFirestoreDatabase(): FirebaseDatabase{
         return Database.getInstance()
     }
-
-//    @Provides
-//    fun provideFirestoreListDao(firestoreDatabase: FirestoreDatabase): FirestoreListDao {
-//        return firestoreDatabase.firestoreListDao()
-//    }
 }

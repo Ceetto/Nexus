@@ -39,12 +39,11 @@ class FirebaseListDao @Inject constructor(
                         )
                     )
                 }
-                playing.update {   newList.filter { entry: ListEntry -> entry.status == ListCategory.PLAYING.value } }
+                playing.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLAYING.value } }
                 completed.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.COMPLETED.value } }
                 planned.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }
                 dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
-                allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value)}
-
+                allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
             }
 
             override fun onCancelled(error: DatabaseError) {
