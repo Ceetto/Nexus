@@ -4,21 +4,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.db.ListEntity
+import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
-import com.example.nexus.data.web.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import proto.Game
-import proto.Platform
 import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusGameDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repo: GameDetailRepository
+    private val repo: GameDetailRepository,
+    private val listRepository: ListRepository
 ) : ViewModel(){
     private var gameList = repo.gameList
     private val gameId: Long = savedStateHandle["gameId"]!!
@@ -99,7 +100,7 @@ class NexusGameDetailViewModel @Inject constructor(
 //    fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
 //    fun getPlatforms(ids: MutableList<Platform>) = repo.getPlatforms(ids)
 
-    fun storeListEntry(entry: ListEntry) = viewModelScope.launch { repo.storeListEntry(entry) }
+    fun storeListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.storeListEntry(entry) }
 
-    fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { repo.deleteListEntry(entity) }
+    fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { listRepository.deleteListEntry(entity) }
 }

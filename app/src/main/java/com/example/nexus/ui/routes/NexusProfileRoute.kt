@@ -64,74 +64,74 @@ fun ProfileScreen(vMList: NexusListViewModel){
 
 @Composable
 fun ProfileStats(vMList: NexusListViewModel) {
-    val total by vMList.allGames.collectAsState()
-    val playing by vMList.playing.collectAsState()
-    val completed by vMList.completed.collectAsState()
-
-    var minutes = 0.0
-    total.forEach {minutes += it.minutesPlayed.toDouble()}
-
-    val hours : Double = ((minutes / 60) * 10.0).roundToLong() /10.0
-    val days : Double = ((hours / 24) * 10.0).roundToLong() /10.0
-
-
-    println("minutes played : $minutes")
-    println("hours played : $hours")
-    println("days played : $days")
-    Column(modifier = Modifier
-        .padding(40.dp)
-        .fillMaxWidth()) {
-
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)) {
-            Text(text = "Total Games: ${total.size}", modifier = Modifier
-                .weight(2f, true)
-                .padding(10.dp))
-            Divider(
-                color = Color.Red,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-            Text(text = "Days Played: $days", modifier = Modifier
-                .weight(2f, true)
-                .padding(10.dp))
-
-        }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)) {
-
-            Text(text = "Completed: ${completed.size}", modifier = Modifier
-                .weight(2f, true)
-                .padding(10.dp))
-            Divider(
-                color = Color.Red,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-            Text(text = "Hours Played: $hours", modifier = Modifier
-                .weight(2f, true)
-                .padding(10.dp))
-        }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min)) {
-            Text(text = "Playing: ${playing.size}", modifier = Modifier
-                .weight(2f, true)
-                .padding(10.dp))
-            Divider(
-                color = Color.Red,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp)
-            )
-            Text(text = "", modifier = Modifier.weight(2f, true))
-
-        }
-    }
+//    val total by vMList.allGames.collectAsState()
+//    val playing by vMList.playing.collectAsState()
+//    val completed by vMList.completed.collectAsState()
+//
+//    var minutes = 0.0
+//    total.forEach {minutes += it.minutesPlayed.toDouble()}
+//
+//    val hours : Double = ((minutes / 60) * 10.0).roundToLong() /10.0
+//    val days : Double = ((hours / 24) * 10.0).roundToLong() /10.0
+//
+//
+//    println("minutes played : $minutes")
+//    println("hours played : $hours")
+//    println("days played : $days")
+//    Column(modifier = Modifier
+//        .padding(40.dp)
+//        .fillMaxWidth()) {
+//
+//        Row(modifier = Modifier
+//            .fillMaxWidth()
+//            .height(IntrinsicSize.Min)) {
+//            Text(text = "Total Games: ${total.size}", modifier = Modifier
+//                .weight(2f, true)
+//                .padding(10.dp))
+//            Divider(
+//                color = Color.Red,
+//                modifier = Modifier
+//                    .fillMaxHeight()
+//                    .width(1.dp)
+//            )
+//            Text(text = "Days Played: $days", modifier = Modifier
+//                .weight(2f, true)
+//                .padding(10.dp))
+//
+//        }
+//        Row(modifier = Modifier
+//            .fillMaxWidth()
+//            .height(IntrinsicSize.Min)) {
+//
+//            Text(text = "Completed: ${completed.size}", modifier = Modifier
+//                .weight(2f, true)
+//                .padding(10.dp))
+//            Divider(
+//                color = Color.Red,
+//                modifier = Modifier
+//                    .fillMaxHeight()
+//                    .width(1.dp)
+//            )
+//            Text(text = "Hours Played: $hours", modifier = Modifier
+//                .weight(2f, true)
+//                .padding(10.dp))
+//        }
+//        Row(modifier = Modifier
+//            .fillMaxWidth()
+//            .height(IntrinsicSize.Min)) {
+//            Text(text = "Playing: ${playing.size}", modifier = Modifier
+//                .weight(2f, true)
+//                .padding(10.dp))
+//            Divider(
+//                color = Color.Red,
+//                modifier = Modifier
+//                    .fillMaxHeight()
+//                    .width(1.dp)
+//            )
+//            Text(text = "", modifier = Modifier.weight(2f, true))
+//
+//        }
+//    }
 }
 
 @Composable

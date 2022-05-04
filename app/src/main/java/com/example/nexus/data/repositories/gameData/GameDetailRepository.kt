@@ -20,7 +20,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GameDetailRepository @Inject constructor(private val repo: SearchRepository, private val dao: ListDao) {
+class GameDetailRepository @Inject constructor(private val repo: SearchRepository) {
     var gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
     init {
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
@@ -36,8 +36,4 @@ class GameDetailRepository @Inject constructor(private val repo: SearchRepositor
             println(e.result)
         }
     }
-
-    suspend fun storeListEntry(entry: ListEntry) = dao.storeListEntry(entry)
-
-    suspend fun deleteListEntry(entity: ListEntity) = dao.deleteListEntry(entity)
 }

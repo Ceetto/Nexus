@@ -3,25 +3,19 @@ package com.example.nexus.data.repositories
 import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.db.ListDao
 import com.example.nexus.data.db.ListEntity
-import com.example.nexus.data.web.ListBackend
-import com.example.nexus.data.web.ListEntry
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.example.nexus.data.dataClasses.ListEntry
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ListRepository @Inject constructor(
-    private val backend: ListBackend,
     private val dao: ListDao,
     private val firebaseListDao: FirebaseListDao
 ) {
 
-    private val TAG = "ListRepository"
 
-    fun getBackendGames() = backend.getGames()
 
-    suspend fun storeListEntry(entry: ListEntry) = dao.storeListEntry(entry)
+    suspend fun storeListEntry(entry: ListEntry) = firebaseListDao.storeListEntry(entry)
 
     suspend fun deleteListEntry(entity: ListEntity) = dao.deleteListEntry(entity)
 
@@ -29,15 +23,15 @@ class ListRepository @Inject constructor(
 
     suspend fun wipeDatabase() = dao.wipeDatabase()
 
-    val allGames = dao.getAll()
+    val allGames = firebaseListDao.getAll()
 
-    val playing = dao.getPlaying()
+    val playing = firebaseListDao.getPlaying()
 
-    val completed = dao.getCompleted()
+    val completed = firebaseListDao.getCompleted()
 
-    val planned = dao.getPlanned()
+    val planned = firebaseListDao.getPlanned()
 
-    val dropped = dao.getDropped()
+    val dropped = firebaseListDao.getDropped()
 
 //    suspend fun getTest(): Flow<ArrayList<ListEntry>> {
 //        val firestoreTest = listEntryReference
@@ -61,8 +55,5 @@ class ListRepository @Inject constructor(
 //        }
 //        return MutableStateFlow(entries)
 //    }
-
-    fun writeTest() = firebaseListDao.writeTest()
-
 
 }

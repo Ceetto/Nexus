@@ -8,10 +8,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -20,11 +18,10 @@ import androidx.compose.ui.unit.dp
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
-import com.example.nexus.data.web.ListEntry
+import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import proto.Game
-import kotlin.math.roundToInt
 
 //TODO data op voorhand invullen bij games die al in de lijst zitten
 //TODO updaten en verwijderen
@@ -146,7 +143,7 @@ fun GameFormComponent(
                                 ImageSize.COVER_BIG,
                                 ImageType.JPEG
                             )
-                        })
+                        }, false)
                 vM.storeListEntry(listEntry)
                 vM.onGameFormOpenChanged(false)
                 focusManager.clearFocus()
