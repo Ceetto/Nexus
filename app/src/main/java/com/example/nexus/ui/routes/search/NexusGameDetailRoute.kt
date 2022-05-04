@@ -5,13 +5,11 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -35,7 +33,6 @@ fun NexusGameDetailRoute(
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true) }
     ) {
-        vM.onGetGameEvent()
         if(vM.getGameList().isNotEmpty()) {
             val game = vM.getGameList()[0]
             if(!vM.getGameFormOpen()){
@@ -123,7 +120,12 @@ fun NexusGameDetailRoute(
                 GameFormComponent(game, vM)
             }
         } else {
-            Text("Loading game...")
+            Row(
+                Modifier.fillMaxWidth().padding(5.dp),
+                horizontalArrangement = Arrangement.Center
+            ){
+                CircularProgressIndicator()
+            }
         }
     }
 

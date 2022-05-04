@@ -31,7 +31,7 @@ class GameDetailRepository @Inject constructor(private val repo: SearchRepositor
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
     }
 
-    suspend fun getGameById(gameId : Long) = withContext(Dispatchers.IO){
+    suspend fun getGameById(gameId : Long) = withContext(Dispatchers.Default){
         val apicalypse = APICalypse().fields("platforms.*,cover.*,screenshots.*,genres.*,*").where("id = $gameId")
         try{
             val gameRes: List<Game> = IGDBWrapper.games(apicalypse)

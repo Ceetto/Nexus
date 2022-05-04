@@ -30,6 +30,10 @@ class NexusGameDetailViewModel @Inject constructor(
     private val hours = mutableStateOf("0")
     private val minutes = mutableStateOf("0")
 
+    init {
+        onGetGameEvent()
+    }
+
     fun onGetGameEvent(){
         println("testing")
         if(gameList.value.value.isNotEmpty() && gameList.value.value[0].id != gameId){

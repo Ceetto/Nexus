@@ -54,6 +54,7 @@ sealed class LeafScreen(
 
     object Settings: LeafScreen("settings")
     object Search : LeafScreen("search")
+    object Home : LeafScreen("home")
     object List : LeafScreen("list")
 }
 
@@ -71,15 +72,44 @@ fun NexusNavGraph(
         modifier = modifier,
     ){
         addLoginScreen(navController)
-        addHomeScreen(navController)
         addNotificationsScreen(navController)
         addListScreenTopLevel(navController)
         addFriendsScreen(navController)
         addProfileScreen(navController)
         addSearchScreenTopLevel(navController)
         addSettingsScreenTopLevel(navController)
+        addHomeScreenTopLevel(navController)
     }
 }
+
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addHomeScreenTopLevel(
+    navController: NavHostController
+){
+    navigation(
+        route = Screen.Home.route,
+        startDestination = LeafScreen.Home.createRoute(Screen.Home)
+    ){
+        addHomeScreen(navController, Screen.Home)
+        addGameDetails(navController, Screen.Home)
+    }
+}
+
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addHomeScreen(
+    navController: NavHostController,
+    root : Screen
+){
+    composable(
+        route = LeafScreen.Home.createRoute(root),
+    ){
+        NexusHomeRoute(vM = hiltViewModel(), navController,
+            onOpenGameDetails = {
+                    gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+            })
+    }
+}
+
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addSettingsScreenTopLevel(
     navController: NavHostController,
@@ -169,17 +199,6 @@ private fun NavGraphBuilder.addLoginScreen(
         route = Screen.Login.route,
     ){
         NexusLoginRoute(vM = hiltViewModel())
-    }
-}
-
-@ExperimentalComposeUiApi
-private fun NavGraphBuilder.addHomeScreen(
-    navController: NavHostController,
-){
-    composable(
-        route = Screen.Home.route,
-    ){
-        NexusHomeRoute(vM = hiltViewModel(), navController)
     }
 }
 
