@@ -35,59 +35,7 @@ fun ListCategoryRoute(
 ) {
     val games by vM.getCategory(category.value).collectAsState()
     ListCategoryScreen(games, onOpenGameDetails)
-//    when(category){
-//        ListCategory.ALL -> AllScreen(vM, onOpenGameDetails)
-//        ListCategory.PLAYING -> PlayingScreen(vM, onOpenGameDetails)
-//        ListCategory.COMPLETED -> CompletedScreen(vM, onOpenGameDetails)
-//        ListCategory.PLANNED -> PlannedScreen(vM, onOpenGameDetails)
-//        ListCategory.DROPPED -> DroppedScreen(vM, onOpenGameDetails)
-//    }
 }
-
-//@Composable
-//fun AllScreen(
-//    vM: NexusListViewModel,
-//    onOpenGameDetails : (gameId: Long) -> Unit
-//){
-//    val games by vM.allGames.collectAsState()
-//    ListColumn(games, onOpenGameDetails)
-//}
-//
-//@Composable
-//fun PlayingScreen(
-//    vM: NexusListViewModel,
-//    onOpenGameDetails : (gameId: Long) -> Unit
-//){
-//    val games by vM.playing.collectAsState()
-//    ListColumn(games, onOpenGameDetails)
-//}
-//
-//@Composable
-//fun CompletedScreen(
-//    vM: NexusListViewModel,
-//    onOpenGameDetails : (gameId: Long) -> Unit
-//){
-//    val games by vM.completed.collectAsState()
-//    ListColumn(games, onOpenGameDetails)
-//}
-//
-//@Composable
-//fun PlannedScreen(
-//    vM: NexusListViewModel,
-//    onOpenGameDetails : (gameId: Long) -> Unit
-//){
-//    val games by vM.planned.collectAsState()
-//    ListColumn(games, onOpenGameDetails)
-//}
-//
-//@Composable
-//fun DroppedScreen(
-//    vM: NexusListViewModel,
-//    onOpenGameDetails : (gameId: Long) -> Unit
-//){
-//    val games by vM.dropped.collectAsState()
-//    ListColumn(games, onOpenGameDetails)
-//}
 
 
 @Composable

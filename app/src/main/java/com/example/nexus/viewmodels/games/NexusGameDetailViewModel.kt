@@ -102,5 +102,5 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun storeListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.storeListEntry(entry) }
 
-    fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { listRepository.deleteListEntry(entity) }
+    //fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { listRepository.deleteListEntry(entity) }
 }

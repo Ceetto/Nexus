@@ -81,7 +81,6 @@ class FirebaseListDao @Inject constructor(
         return dropped
     }
 
-
     suspend fun storeListEntry(entry: ListEntry){
         listEntryRef.child(entry.gameId.toString()).setValue(entry)
     }
