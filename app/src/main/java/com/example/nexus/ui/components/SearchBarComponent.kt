@@ -24,11 +24,20 @@ import com.example.nexus.viewmodels.games.NexusSearchViewModel
 fun SearchBarComponent(
     vM: NexusSearchViewModel,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
-    onSearch: () -> Unit? = {vM.onSearchEvent();},
+    onSearch: () -> Unit? = {vM.setSearched(true); vM.onSearchEvent(); keyboardController?.hide()},
 ) {
     TextField(
-        value = vM.getSearchTerm(), onValueChange = { vM.setSearchTerm(it); onSearch() },
+        value = vM.getSearchTerm(),
+        onValueChange = {
+            if(!it.contains("\n")){
+                vM.setSearchTerm(it);
+                if(it.isEmpty()){
+                    vM.setSearched(false)
+                }
+            }
+                        },
         singleLine = true,
+        maxLines = 1,
         modifier = Modifier
             .fillMaxWidth()
 //                .padding(5.dp, 1.dp)
@@ -38,10 +47,10 @@ fun SearchBarComponent(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done
         ),
-        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+        keyboardActions = KeyboardActions(onDone = { onSearch() }),
         leadingIcon = {
             IconButton(onClick = {
-                keyboardController?.hide()
+                onSearch()
             }) {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -52,8 +61,10 @@ fun SearchBarComponent(
         trailingIcon = {
             if(vM.getSearchTerm().isNotEmpty()){
                 IconButton(onClick = {
+                    vM.setSearched(false)
                     vM.setSearchTerm("")
-                    vM.onSearchEvent()}) {
+                    vM.emptyList()
+                    }) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "remove"

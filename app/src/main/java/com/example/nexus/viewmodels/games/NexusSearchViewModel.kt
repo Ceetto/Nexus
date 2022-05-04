@@ -1,5 +1,7 @@
 package com.example.nexus.viewmodels.games
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.api.igdb.request.IGDBWrapper
@@ -25,6 +27,8 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
 
     private val gameList = repo.gameList.value
     private val searchTerm = repo.searchTerm
+    private val searching = repo.searching.value
+    private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
 
     fun onSearchEvent(){
         viewModelScope.launch {
@@ -49,6 +53,20 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
     fun getGameList(): List<Game> {
         return gameList.value
     }
+
+    fun isSearching(): Boolean{
+        return searching.value
+    }
+
+    fun setSearched(b: Boolean){
+        searched.value.value = b
+    }
+
+    fun hasSearched(): Boolean {
+        return searched.value.value
+    }
+
+    fun emptyList() = repo.emptyList()
 }
 
 

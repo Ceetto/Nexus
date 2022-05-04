@@ -1,9 +1,7 @@
 package com.example.nexus.ui.routes.search
 
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,6 +19,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.SearchBarComponent
@@ -53,9 +52,27 @@ fun NexusSearchRoute(
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
-                vM.getGameList().forEach { game ->
-                    SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails, focusManager)
+                if(vM.isSearching()){
+                    Row(
+                        Modifier.fillMaxWidth().padding(5.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        CircularProgressIndicator()
+                    }
+
+                } else {
+                    if(vM.getGameList().isEmpty()){
+                        if(vM.hasSearched()){
+                            Text("no results")
+                        }
+                    } else {
+                        vM.getGameList().forEach { game ->
+                            SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails, focusManager)
+                        }
+                    }
+
                 }
+
             }
         }
     }
