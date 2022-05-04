@@ -1,8 +1,7 @@
 package com.example.nexus.di
 
-import com.example.nexus.data.db.FirestoreDatabase
-import com.example.nexus.data.db.FirestoreListDao
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.nexus.data.db.Database
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +15,8 @@ class FirestoreModule {
 
     @Singleton
     @Provides
-    fun provideFirestoreDatabase(): FirebaseFirestore{
-        return FirestoreDatabase.getInstance()
+    fun provideFirestoreDatabase(): FirebaseDatabase{
+        return Database.getInstance()
     }
 
 //    @Provides

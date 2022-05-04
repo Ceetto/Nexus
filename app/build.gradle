@@ -16,10 +16,6 @@ plugins {
 //    implementation.exclude module:'protolite-well-known-types'
 //}
 
-configurations.implementation{
-    exclude(group="com.google.firebase" ,module = "com.google.protobuf")
-}
-
 android {
     compileSdk 32
 
@@ -73,7 +69,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.3.1'
 //    implementation 'com.google.firebase:firebase-firestore-ktx:24.1.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.1.1'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.4'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
     // For Robolectric tests.

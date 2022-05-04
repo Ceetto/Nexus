@@ -5,12 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.db.ListEntity
-import com.example.nexus.data.repositories.FriendsRepository
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.web.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
-import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -84,16 +81,16 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
 
     var testList = MutableStateFlow(ArrayList<ListEntry>())
 
-    fun firestoreTest(){
-        viewModelScope.launch {
-            testList = repo.getTest() as MutableStateFlow<ArrayList<ListEntry>>
-        }
-    }
+//    fun firestoreTest(){
+//        viewModelScope.launch {
+//            testList = repo.getTest() as MutableStateFlow<ArrayList<ListEntry>>
+//        }
+//    }
 
-    fun getTestList(): StateFlow<ArrayList<ListEntry>> {
-        firestoreTest()
-        return testList
-    }
+//    fun getTestList(): StateFlow<ArrayList<ListEntry>> {
+//        firestoreTest()
+//        return testList
+//    }
 
 //    val test: StateFlow<ArrayList<ListEntry>> by lazy {
 //        repo.getTest().stateIn(viewModelScope, SharingStarted.Lazily, ArrayList())
@@ -102,4 +99,6 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
 //        val test = repo.firestoreTest.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 //        return test
 //    }
+
+    fun writeTest() = repo.writeTest()
 }
