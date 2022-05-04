@@ -75,7 +75,7 @@ fun NexusGameDetailRoute(
                             for(platform in game.platformsList){
                                 platforms += platform.abbreviation + ", "
                             }
-                            platforms.drop(2)
+                            platforms = platforms.dropLast(2)
                             Row{
                                 Text("platforms: $platforms")
                             }
@@ -84,7 +84,7 @@ fun NexusGameDetailRoute(
                             for(genre in game.genresList){
                                 genres += genre.name + ", "
                             }
-                            genres.dropLast(2)
+                            genres = genres.dropLast(2)
                             Row{
                                 Text("genres: $genres")
                             }

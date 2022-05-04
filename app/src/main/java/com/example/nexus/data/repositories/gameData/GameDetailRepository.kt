@@ -11,6 +11,8 @@ import com.api.igdb.request.platforms
 import com.example.nexus.data.db.ListDao
 import com.example.nexus.data.db.ListEntity
 import com.example.nexus.data.web.ListEntry
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import proto.Cover
@@ -21,7 +23,10 @@ import javax.inject.Singleton
 
 @Singleton
 class GameDetailRepository @Inject constructor(private val repo: SearchRepository, private val dao: ListDao) {
-    var gameList : MutableState<List<Game>> = mutableStateOf(ArrayList())
+    var gameList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList())}
+
+    val db = Firebase.database
+
     init {
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
     }
@@ -30,7 +35,7 @@ class GameDetailRepository @Inject constructor(private val repo: SearchRepositor
         val apicalypse = APICalypse().fields("platforms.*,cover.*,screenshots.*,genres.*,*").where("id = $gameId")
         try{
             val gameRes: List<Game> = IGDBWrapper.games(apicalypse)
-            gameList.value = gameRes
+            gameList.value.value = gameRes
         } catch(e: RequestException) {
             print("NEXUS API FETCH ERROR:")
             println(e.result)
@@ -40,4 +45,5 @@ class GameDetailRepository @Inject constructor(private val repo: SearchRepositor
     suspend fun storeListEntry(entry: ListEntry) = dao.storeListEntry(entry)
 
     suspend fun deleteListEntry(entity: ListEntity) = dao.deleteListEntry(entity)
+
 }

@@ -31,8 +31,9 @@ class NexusGameDetailViewModel @Inject constructor(
     private val minutes = mutableStateOf("0")
 
     fun onGetGameEvent(){
-        if(gameList.value.isNotEmpty() && gameList.value[0].id != gameId){
-            gameList.value = emptyList()
+        println("testing")
+        if(gameList.value.value.isNotEmpty() && gameList.value.value[0].id != gameId){
+            gameList.value.value = emptyList()
         }
         viewModelScope.launch {
             try{
@@ -44,7 +45,7 @@ class NexusGameDetailViewModel @Inject constructor(
     }
 
     fun getGameList(): List<Game> {
-        return gameList.value
+        return gameList.value.value
     }
 
     fun setGameScore(score: Int){
