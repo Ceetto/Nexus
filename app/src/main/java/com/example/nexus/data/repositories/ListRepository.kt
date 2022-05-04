@@ -21,4 +21,6 @@ class ListRepository @Inject constructor(
 
     val dropped = firebaseListDao.getDropped()
 
+    val favorites = firebaseListDao.getFavorites()
+
 }

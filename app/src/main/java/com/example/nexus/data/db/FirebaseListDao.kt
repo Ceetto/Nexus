@@ -44,6 +44,7 @@ class FirebaseListDao @Inject constructor(
                 planned.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }
                 dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
                 allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
+                favorites.update{newList.filter { entry: ListEntry -> entry.favorited }}
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -59,6 +60,7 @@ class FirebaseListDao @Inject constructor(
     private var completed = MutableStateFlow(emptyList<ListEntry>())
     private var planned = MutableStateFlow(emptyList<ListEntry>())
     private var dropped = MutableStateFlow(emptyList<ListEntry>())
+    private var favorites = MutableStateFlow(emptyList<ListEntry>())
 
     fun getAll(): Flow<List<ListEntry>> {
         return allGames
@@ -78,6 +80,10 @@ class FirebaseListDao @Inject constructor(
 
     fun getDropped(): Flow<List<ListEntry>> {
         return dropped
+    }
+
+    fun getFavorites(): Flow<List<ListEntry>>{
+        return favorites
     }
 
     suspend fun storeListEntry(entry: ListEntry){
