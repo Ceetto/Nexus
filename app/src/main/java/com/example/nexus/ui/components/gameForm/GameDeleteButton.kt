@@ -9,8 +9,12 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.unit.dp
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
+//TODO
+//alert toevoegen bij delete
+//setEditOrAddGames werkt niet correct
+
 @Composable
-fun DeleteButton(
+fun GameDeleteButton(
     vM: NexusGameDetailViewModel,
     focusManager: FocusManager
 ){

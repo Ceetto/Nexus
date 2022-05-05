@@ -11,13 +11,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import com.example.nexus.ui.components.gameForm.DeleteButton
-import com.example.nexus.ui.components.gameForm.SaveButton
+import com.example.nexus.ui.components.gameForm.GameDeleteButton
+import com.example.nexus.ui.components.gameForm.GameSaveButton
 import com.example.nexus.ui.components.gameForm.TimeInput
 import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
-
-//TODO updaten en verwijderen
 
 @Composable
 fun GameFormComponent(
@@ -96,9 +94,9 @@ fun GameFormComponent(
 
 
         Row(modifier = Modifier.padding(5.dp)){
-            SaveButton(vM = vM, focusManager = focusManager)
+            GameSaveButton(vM = vM, focusManager = focusManager)
 
-            DeleteButton(vM = vM, focusManager = focusManager)
+            GameDeleteButton(vM = vM, focusManager = focusManager)
         }
 
         if(vM.getShowErrorPopup()){

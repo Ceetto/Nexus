@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable
-fun SaveButton(
+fun GameSaveButton(
     vM: NexusGameDetailViewModel,
     focusManager: FocusManager){
     Button(modifier = Modifier.padding(10.dp),

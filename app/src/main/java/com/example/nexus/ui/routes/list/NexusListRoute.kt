@@ -27,8 +27,6 @@ fun NexusListRoute(
     navController: NavHostController,
     onOpenGameDetails : (gameId: Long) -> Unit,
 ){
-//    vM.wipeDatabase()
-//    vM.storeBackendGamesInDb()
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = false) }
     ) {
@@ -42,6 +40,7 @@ fun NexusListRoute(
 
 }
 
+//scrollable TopNavigationbar
 @Composable
 fun TopNavigationBar(
     selectedCategory: ListCategory,
@@ -61,6 +60,7 @@ fun TopNavigationBar(
     }
 }
 
+//items in the TopNavigationBar
 @Composable
 fun TopNavigationBox(
     category: ListCategory,
