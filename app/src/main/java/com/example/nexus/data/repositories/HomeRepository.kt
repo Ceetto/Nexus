@@ -39,31 +39,31 @@ class HomeRepository @Inject constructor() {
     suspend fun getGames() = withContext(Dispatchers.Default){
         println("GETTING GAMES")
 //        searching.value.value = true
-        val apicalypsePopular = APICalypse().fields("cover.*,*").where("rating_count > 0")
+        val apicalypsePopular = APICalypse().fields("cover.image_id,name").where("rating_count > 0")
             .sort("rating_count", Sort.DESCENDING)
             .limit(10)
-        val apicalypseBest = APICalypse().fields("cover.*,*").where("rating_count > 50")
+        val apicalypseBest = APICalypse().fields("cover.image_id,name").where("rating_count > 50")
             .sort("rating", Sort.DESCENDING)
             .limit(10)
-        val apiCalypseTrending = APICalypse().fields("cover.*,release_dates.*,*").where("rating_count > 0 & " +
+        val apiCalypseTrending = APICalypse().fields("cover.image_id,name").where("rating_count > 0 & " +
                 "first_release_date > ${System.currentTimeMillis()/1000 - 7000000}")
             .sort("rating_count", Sort.DESCENDING)
             .limit(10)
-        val apiCalypseUpcoming = APICalypse().fields("cover.*,release_dates.*,*").where("follows > 0 & " +
+        val apiCalypseUpcoming = APICalypse().fields("cover.image_id,name").where("follows > 0 & " +
                 "first_release_date > ${System.currentTimeMillis()/1000}")
             .sort("follows", Sort.DESCENDING)
             .limit(10)
 
         try{
             println("STILL GETTING GAMES")
-            popularList.value.value = IGDBWrapper.games(apicalypsePopular)
-            searchingPopular.value.value = false
-            bestList.value.value = IGDBWrapper.games(apicalypseBest)
-            searchingBest.value.value = false
             trendingList.value.value = IGDBWrapper.games(apiCalypseTrending)
             searchingTrending.value.value = false
             upcomingList.value.value = IGDBWrapper.games(apiCalypseUpcoming)
             searchingUpcoming.value.value = false
+            bestList.value.value = IGDBWrapper.games(apicalypseBest)
+            searchingBest.value.value = false
+            popularList.value.value = IGDBWrapper.games(apicalypsePopular)
+            searchingPopular.value.value = false
             println("GOT GAMES")
 
         }catch(e: RequestException){

@@ -1,5 +1,6 @@
 package com.example.nexus.ui.routes.search
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -28,9 +29,12 @@ import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
 import com.example.nexus.ui.theme.NexusLightGray
 import com.example.nexus.viewmodels.games.NexusSearchViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import proto.Game
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalComposeUiApi
 @Composable
 fun NexusSearchRoute(
@@ -44,35 +48,42 @@ fun NexusSearchRoute(
         modifier = Modifier.pointerInput(Unit) {
             detectTapGestures(onTap = { focusManager.clearFocus()})}
     ) {
-        Column (){
+        Column (Modifier.fillMaxHeight()){
             Row{
                 SearchBarComponent(vM)
             }
 
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
-                if(vM.isSearching()){
-                    Row(
-                        Modifier.fillMaxWidth().padding(5.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ){
-                        CircularProgressIndicator()
-                    }
+            SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.onSearchEvent() }) {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()).fillMaxHeight()
+                ) {
+                    if (vM.isSearching()) {
+                        Row(
+                            Modifier.fillMaxWidth().padding(5.dp).height(50.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
 
-                } else {
-                    if(vM.getGameList().isEmpty()){
-                        if(vM.hasSearched()){
-                            Text("no results")
                         }
+
                     } else {
-                        vM.getGameList().forEach { game ->
-                            SearchResultComponent(vM = vM, game = game, onClick = onOpenGameDetails, focusManager)
+                        if (vM.getGameList().isEmpty()) {
+                            if (vM.hasSearched()) {
+                                Text("no results")
+                            }
+                        } else {
+                            vM.getGameList().forEach { game ->
+                                SearchResultComponent(
+                                    vM = vM,
+                                    game = game,
+                                    onClick = onOpenGameDetails,
+                                    focusManager
+                                )
+                            }
                         }
+
                     }
 
                 }
-
             }
         }
     }

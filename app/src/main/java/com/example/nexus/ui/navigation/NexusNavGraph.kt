@@ -13,7 +13,6 @@ import com.example.nexus.ui.routes.*
 import com.example.nexus.ui.routes.list.NexusListRoute
 import com.example.nexus.ui.routes.search.NexusGameDetailRoute
 import com.example.nexus.ui.routes.search.NexusSearchRoute
-import proto.Game
 
 
 sealed class Screen(val route: String){
@@ -188,7 +187,9 @@ private fun NavGraphBuilder.addGameDetails(
             navArgument("gameId"){type = NavType.LongType}
         )
     ){
-        NexusGameDetailRoute(vM = hiltViewModel(), navController)
+        NexusGameDetailRoute(vM = hiltViewModel(), navController, onOpenGameDetails = {
+                gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+        })
     }
 }
 

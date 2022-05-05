@@ -23,7 +23,7 @@ class SearchRepository @Inject constructor()
     fun getGames(){
         if(searchTerm.value.isNotEmpty()){
             searching.value.value = true
-            val apicalypse = APICalypse().fields("cover.*,franchise.name,alternative_names.name,parent_game.name,remakes.name,*")
+            val apicalypse = APICalypse().fields("cover.image_id,name, rating, rating_count")
                 .where("name ~ *\"${searchTerm.value}\"* | franchise.name ~ *\"${searchTerm.value}\"* "
                         + "| alternative_names.name ~ *\"${searchTerm.value}\"* | parent_game.name ~ *\"${searchTerm.value}\"* | remakes.name ~ *\"${searchTerm.value}\"*"
                 )

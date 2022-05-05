@@ -22,6 +22,7 @@ class NexusGameDetailViewModel @Inject constructor(
 ) : ViewModel(){
     private var gameList = repo.gameList
     private val gameId: Long = savedStateHandle["gameId"]!!
+    private val isRefreshing = mutableStateOf(false)
 
     private var gameFormOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
@@ -30,22 +31,24 @@ class NexusGameDetailViewModel @Inject constructor(
     private val hours = mutableStateOf("0")
     private val minutes = mutableStateOf("0")
 
-    init {
-        onGetGameEvent()
-    }
-
     fun onGetGameEvent(){
-        println("testing")
+
         if(gameList.value.value.isNotEmpty() && gameList.value.value[0].id != gameId){
             gameList.value.value = emptyList()
         }
         viewModelScope.launch {
             try{
+                isRefreshing.value = true
                 repo.getGameById(gameId)
+                isRefreshing.value = false
             } catch(e: Exception){
 
             }
         }
+    }
+
+    fun isRefreshing(): Boolean{
+        return isRefreshing.value
     }
 
     fun getGameList(): List<Game> {

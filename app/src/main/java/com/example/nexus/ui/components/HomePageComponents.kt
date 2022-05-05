@@ -24,7 +24,6 @@ import proto.Game
 
 @Composable
 fun HomePageGameComponent(
-    vM: NexusHomeViewModel,
     game: Game,
     onClick: (gameId: Long) -> Unit,
     focusManager: FocusManager
@@ -51,7 +50,6 @@ fun HomePageGameComponent(
 
 @Composable
 fun HomePageCategoryComponent(
-    vM: NexusHomeViewModel,
     list: List<Game>,
     onOpenGameDetails : (gameId: Long) -> Unit,
     focusManager: FocusManager,
@@ -65,7 +63,7 @@ fun HomePageCategoryComponent(
         if(!isFetching){
             Row(Modifier.horizontalScroll(rememberScrollState())){
                 list.forEach { game -> Row{
-                    HomePageGameComponent(vM, game, onOpenGameDetails, focusManager)
+                    HomePageGameComponent(game, onOpenGameDetails, focusManager)
                 } }
             }
 
@@ -81,4 +79,3 @@ fun HomePageCategoryComponent(
         }
     }
 }
-

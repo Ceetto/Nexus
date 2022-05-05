@@ -1,5 +1,6 @@
 package com.example.nexus.viewmodels.games
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -29,11 +30,14 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
     private val searchTerm = repo.searchTerm
     private val searching = repo.searching.value
     private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
+    private val isRefreshing = mutableStateOf(false)
 
     fun onSearchEvent(){
         viewModelScope.launch {
             try{
+                isRefreshing.value = true
                 fetchGames()
+                isRefreshing.value = false
             } catch(e: Exception){
 
             }
@@ -67,6 +71,10 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
     }
 
     fun emptyList() = repo.emptyList()
+
+    fun isRefreshing(): Boolean{
+        return isRefreshing.value
+    }
 }
 
 

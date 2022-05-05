@@ -1,5 +1,7 @@
 package com.example.nexus.viewmodels
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,6 +23,7 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
     private val searchingTrending = repo.searchingTrending.value
     private val upcomingList = repo.upcomingList.value
     private val searchingUpcoming = repo.searchingUpcoming.value
+    private val isRefreshing = mutableStateOf(false)
     
     
     init{
@@ -31,7 +34,13 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
 
         viewModelScope.launch {
             try{
+                isRefreshing.value = true
+                searchingBest.value = true
+                searchingPopular.value = true
+                searchingTrending.value = true
+                searchingUpcoming.value = true
                 repo.getGames()
+                isRefreshing.value = false
             }catch(e: Exception){
 
             }
@@ -64,5 +73,9 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
     }
     fun isSearchingUpcoming(): Boolean{
         return searchingUpcoming.value
+    }
+
+    fun isRefreshing(): Boolean{
+        return isRefreshing.value
     }
 }
