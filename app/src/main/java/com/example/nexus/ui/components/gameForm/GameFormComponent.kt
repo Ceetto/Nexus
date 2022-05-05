@@ -6,15 +6,20 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.nexus.ui.components.gameForm.GameDeleteButton
 import com.example.nexus.ui.components.gameForm.GameSaveButton
 import com.example.nexus.ui.components.gameForm.TimeInput
 import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.list.ListCategoryColors
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable
@@ -39,6 +44,10 @@ fun GameFormComponent(
                     contentDescription = "close game form",
                 )
             }
+        }
+        Row(horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(10.dp).fillMaxWidth()) {
+            Text(text = vM.getListEntry().title, fontSize = 20.sp)
         }
 
         //score input
@@ -71,14 +80,17 @@ fun GameFormComponent(
             var expanded by remember { mutableStateOf(false) }
             var text by remember { mutableStateOf(vM.getGameStatus())}
             OutlinedButton(onClick = { expanded = !expanded }) {
-                Text(text = text, color=MaterialTheme.colors.onBackground)
+                ListCategoryColors[text]?.let { Text(text = text, color= it) }
             }
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                ListCategory.values().forEach { status ->
+
+                listOf(ListCategory.PLAYING, ListCategory.PLANNED, ListCategory.COMPLETED,
+                ListCategory.DROPPED).forEach { status ->
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = status.value
                                                 vM.setGameStatus(status.value)}) {
-                        Text(text = status.value, color = Color.White)
+                        ListCategoryColors[status.value]
+                            ?.let { Text(text = status.value, color = it) }
                     }
                 }
             }

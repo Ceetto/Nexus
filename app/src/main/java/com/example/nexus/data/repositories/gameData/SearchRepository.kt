@@ -27,7 +27,7 @@ class SearchRepository @Inject constructor()
             val apicalypse = APICalypse().fields("cover.image_id,name, rating, rating_count")
                 .where("name ~ *\"${searchTerm.value}\"* | franchise.name ~ *\"${searchTerm.value}\"* "
                         + "| alternative_names.name ~ *\"${searchTerm.value}\"* | parent_game.name ~ *\"${searchTerm.value}\"* | remakes.name ~ *\"${searchTerm.value}\"*"
-                )
+                ).limit(20)
             gameList.value.value = kotlin.collections.emptyList()
             try{
                 gameList.value.value = IGDBWrapper.games(apicalypse)

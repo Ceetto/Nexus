@@ -1,11 +1,15 @@
 package com.example.nexus
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.People
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -30,6 +34,7 @@ import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
 import com.google.accompanist.navigation.animation.*
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
@@ -158,5 +163,5 @@ private val HomeNavigationItems = listOf(
     HomeNavigationItem(Screen.Search, Icons.Default.Search, "Search"),
     HomeNavigationItem(Screen.List, Icons.Default.List, "My List"),
     HomeNavigationItem(Screen.Notifications, Icons.Default.Notifications, "Notification"),
-    HomeNavigationItem(Screen.Friends, Icons.Default.AccountCircle, "Friends")
+    HomeNavigationItem(Screen.Friends, Icons.Default.Group, "Friends")
 )

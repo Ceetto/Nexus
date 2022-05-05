@@ -21,12 +21,15 @@ class GameDetailRepository @Inject constructor() {
     }
 
     suspend fun getGameById(gameId : Long) = withContext(Dispatchers.Default){
-        val apicalypse = APICalypse().fields("platforms.*,cover.image_id,screenshots.*,artworks.*,websites.*," +
+        val apicalypse = APICalypse().fields("platforms.abbreviation,cover.image_id," +
+                "screenshots.image_id,screenshots.width,screenshots.height," +
+                "websites.url,websites.category," +
                 "dlcs.name,expanded_games.name,expansions.name,similar_games.name,remakes.name,remasters.name,parent_game.name," +
                 "dlcs.cover.image_id,expanded_games.cover.image_id,expansions.cover.image_id,remakes.cover.image_id," +
                 "similar_games.cover.image_id,parent_game.cover.image_id," +
                 "franchises.games.name, franchises.games.cover.image_id," +
-                "genres.*,release_dates.*,release_dates.platform.abbreviation,*").where("id = $gameId")
+                "genres.name,release_dates.human,release_dates.region,release_dates.platform.abbreviation," +
+                "name,rating,rating_count,summary,storyline").where("id = $gameId")
         try{
             val gameRes: List<Game> = IGDBWrapper.games(apicalypse)
             gameList.value.value = gameRes

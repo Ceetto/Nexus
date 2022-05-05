@@ -105,6 +105,7 @@ fun NexusGameDetailRoute(
                                 )
                             }
 
+
                             Column {
                                 Text(game.name, fontSize = 20.sp)
                                 Row {
@@ -144,6 +145,9 @@ fun NexusGameDetailRoute(
                                     Text("genres: $genres")
                                 }
 
+                                Button(onClick = { vM.onGameFormOpenChanged(true) }) {
+                                    Text(text = vM.getEditOrAddGames())
+                                }
                             }
                         }
 
@@ -157,9 +161,6 @@ fun NexusGameDetailRoute(
                             if (game.summary.isEmpty()) {
                                 Text("No summary available")
                             }
-                        }
-                        Button(onClick = { vM.onGameFormOpenChanged(true) }) {
-                            Text(text = vM.getEditOrAddGames())
                         }
 
                         Text(
