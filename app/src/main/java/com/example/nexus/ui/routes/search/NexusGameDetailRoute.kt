@@ -75,7 +75,6 @@ fun NexusGameDetailRoute(
                                 )
                             }
 
-
                             Column {
                                 Text(game.name, fontSize = 20.sp)
                                 Row {
