@@ -4,11 +4,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.data.db.ListEntity
+import com.api.igdb.utils.ImageSize
+import com.api.igdb.utils.ImageType
+import com.api.igdb.utils.imageBuilder
+import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
-import com.example.nexus.data.web.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import proto.Game
 import proto.Platform
@@ -18,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NexusGameDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repo: GameDetailRepository
+    private val repo: GameDetailRepository,
+    private val listRepository: ListRepository
 ) : ViewModel(){
     private var gameList = repo.gameList
     private val gameId: Long = savedStateHandle["gameId"]!!
@@ -26,10 +33,12 @@ class NexusGameDetailViewModel @Inject constructor(
 
     private var gameFormOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
-    private val gameScore = mutableStateOf(0)
-    private val gameStatus = mutableStateOf(ListCategory.PLAYING.value)
-    private val hours = mutableStateOf("0")
+    private val currentListEntry = mutableStateOf(ListEntry(0, "", 0,
+    0, "", "", false))
     private val minutes = mutableStateOf("0")
+    private val hours = mutableStateOf("0")
+    private val editOrAddGames = mutableStateOf(GameFormButton.ADD.value)
+
 
     fun onGetGameEvent(){
 
@@ -51,24 +60,40 @@ class NexusGameDetailViewModel @Inject constructor(
         return isRefreshing.value
     }
 
+    fun getEditOrAddGames(): String {
+        return editOrAddGames.value
+    }
+
+    fun setEditOrAddGames(text: String){
+        editOrAddGames.value = text
+    }
+
     fun getGameList(): List<Game> {
         return gameList.value.value
     }
 
+    fun setListEntry(entry: ListEntry){
+        currentListEntry.value = entry
+    }
+
+    fun getListEntry(): ListEntry {
+        return currentListEntry.value
+    }
+
     fun setGameScore(score: Int){
-        gameScore.value = score
+        currentListEntry.value.score = score
     }
 
     fun getGameScore(): Int {
-        return gameScore.value
+        return currentListEntry.value.score
     }
 
     fun setGameStatus(status: String){
-        gameStatus.value = status
+        currentListEntry.value.status = status
     }
 
     fun getGameStatus(): String {
-        return gameStatus.value
+        return currentListEntry.value.status
     }
 
     fun setHours(hours: String){
@@ -85,6 +110,10 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun getMinutes(): String {
         return minutes.value
+    }
+
+    fun setCurrentListEntryMinutes(minutes: Int){
+        currentListEntry.value.minutesPlayed = minutes
     }
 
     fun getGameFormOpen(): Boolean {
@@ -107,7 +136,16 @@ class NexusGameDetailViewModel @Inject constructor(
 //    fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
 //    fun getPlatforms(ids: MutableList<Platform>) = repo.getPlatforms(ids)
 
-    fun storeListEntry(entry: ListEntry) = viewModelScope.launch { repo.storeListEntry(entry) }
+    fun storeListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.storeListEntry(entry) }
 
-    fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { repo.deleteListEntry(entity) }
+    fun deleteListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.deleteListEntry(entry) }
+
+    val allGames: StateFlow<List<ListEntry>> by lazy {
+        listRepository.allGames.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
+
+    enum class GameFormButton(val value: String){
+        ADD("Add game"),
+        EDIT("Edit game")
+    }
 }

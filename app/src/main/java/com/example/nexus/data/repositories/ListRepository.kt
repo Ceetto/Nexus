@@ -1,34 +1,28 @@
 package com.example.nexus.data.repositories
 
-import com.example.nexus.data.db.ListDao
-import com.example.nexus.data.db.ListEntity
-import com.example.nexus.data.web.ListBackend
-import com.example.nexus.data.web.ListEntry
+import com.example.nexus.data.db.FirebaseListDao
+import com.example.nexus.data.dataClasses.ListEntry
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ListRepository @Inject constructor(
-    private val backend: ListBackend,
-    private val dao: ListDao
+    private val firebaseListDao: FirebaseListDao
 ) {
-    fun getBackendGames() = backend.getGames()
+    suspend fun storeListEntry(entry: ListEntry) = firebaseListDao.storeListEntry(entry)
 
-    suspend fun storeListEntry(entry: ListEntry) = dao.storeListEntry(entry)
+    suspend fun deleteListEntry(entry: ListEntry) = firebaseListDao.deleteListEntry(entry)
 
-    suspend fun deleteListEntry(entity: ListEntity) = dao.deleteListEntry(entity)
+    val allGames = firebaseListDao.getAll()
 
-    fun getCategory(category: String) = dao.getCategory(category)
+    val playing = firebaseListDao.getPlaying()
 
-    suspend fun wipeDatabase() = dao.wipeDatabase()
+    val completed = firebaseListDao.getCompleted()
 
-    val allGames = dao.getAll()
+    val planned = firebaseListDao.getPlanned()
 
-    val playing = dao.getPlaying()
+    val dropped = firebaseListDao.getDropped()
 
-    val completed = dao.getCompleted()
+    val favorites = firebaseListDao.getFavorites()
 
-    val planned = dao.getPlanned()
-
-    val dropped = dao.getDropped()
 }

@@ -10,6 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -23,10 +25,12 @@ import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
+import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.components.GameFormComponent
 import com.example.nexus.ui.components.HomePageCategoryComponent
 import com.example.nexus.ui.components.LinkComponent
 import com.example.nexus.ui.components.NexusTopBar
+import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -50,6 +54,32 @@ fun NexusGameDetailRoute(
 
         if(vM.getGameList().isNotEmpty()) {
             val game = vM.getGameList()[0]
+            //checks if the game is already in your list
+            val games by vM.allGames.collectAsState()
+            var i = 0
+            var found = false
+            while (i < games.size && !found){
+                if(games[i].gameId == game.id){
+                    vM.setListEntry(games[i])
+                    vM.setMinutes(vM.getListEntry().minutesPlayed.mod(60).toString())
+                    vM.setHours(((vM.getListEntry().minutesPlayed - vM.getMinutes().toInt())/60).toString())
+                    vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.EDIT.value)
+                    found = true
+                }
+                i++
+            }
+
+            //fills in the current ListEntry in case the game was not found in your list
+            if (!found){
+                vM.setListEntry(ListEntry(game.id, game.name, 0, 0, ListCategory.PLAYING.value,
+                game.cover?.let {
+                    imageBuilder(
+                        it.imageId,
+                        ImageSize.COVER_BIG,
+                        ImageType.JPEG
+                    )}, false))
+            }
+
             if(!vM.getGameFormOpen()){
                 SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.onGetGameEvent() }) {
                     Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -129,7 +159,7 @@ fun NexusGameDetailRoute(
                             }
                         }
                         Button(onClick = { vM.onGameFormOpenChanged(true) }) {
-                            Text(text = "Add game")
+                            Text(text = vM.getEditOrAddGames())
                         }
 
 
@@ -242,7 +272,7 @@ fun NexusGameDetailRoute(
                     }
                 }
             } else {
-                GameFormComponent(game, vM)
+                GameFormComponent(vM)
             }
         } else {
             Row(
