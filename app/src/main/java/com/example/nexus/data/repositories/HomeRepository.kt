@@ -1,13 +1,16 @@
 package com.example.nexus.data.repositories
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.games
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import proto.Game
 import java.time.Instant
@@ -18,7 +21,9 @@ import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
 @Singleton
-class HomeRepository @Inject constructor() {
+class HomeRepository @Inject constructor(
+    val listRepo: ListRepository
+) {
 
     var popularList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList()) }
     var searchingPopular: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(true)}
@@ -31,6 +36,9 @@ class HomeRepository @Inject constructor() {
 
     var upcomingList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList()) }
     var searchingUpcoming: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(true)}
+
+    var recommendedList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList()) }
+    var searchingRecommended: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(true)}
 
     init {
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")

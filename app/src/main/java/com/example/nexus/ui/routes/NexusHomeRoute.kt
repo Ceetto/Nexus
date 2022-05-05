@@ -10,7 +10,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
-import com.example.nexus.ui.components.HomePageCategoryComponent
+import com.example.nexus.ui.components.HorizontalGamesListingComponent
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusHomeViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -34,19 +34,19 @@ fun NexusHomeRoute(
                  Modifier.verticalScroll(rememberScrollState())
              ){
                  //Trending
-                 HomePageCategoryComponent(vM.getTrendingGames(), onOpenGameDetails, focusManager,
+                 HorizontalGamesListingComponent(vM.getTrendingGames(), onOpenGameDetails, focusManager,
                      "Trending:", vM.isSearchingTrending())
 
                  //Upcomming
-                 HomePageCategoryComponent(vM.getUpcomingGames(), onOpenGameDetails, focusManager,
+                 HorizontalGamesListingComponent(vM.getUpcomingGames(), onOpenGameDetails, focusManager,
                      "Upcoming Releases:", vM.isSearchingUpcoming())
 
                  //Top Rated
-                 HomePageCategoryComponent(vM.getBestGames(), onOpenGameDetails, focusManager,
+                 HorizontalGamesListingComponent(vM.getBestGames(), onOpenGameDetails, focusManager,
                      "Top Rated:", vM.isSearchingBest())
 
                  //Most Popular
-                 HomePageCategoryComponent(vM.getPopularGames(), onOpenGameDetails, focusManager,
+                 HorizontalGamesListingComponent(vM.getPopularGames(), onOpenGameDetails, focusManager,
                      "Most Popular:", vM.isSearchingPopular())
 
                  //Recommended

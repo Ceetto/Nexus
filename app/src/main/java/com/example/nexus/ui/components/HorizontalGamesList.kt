@@ -49,7 +49,7 @@ fun HomePageGameComponent(
 }
 
 @Composable
-fun HomePageCategoryComponent(
+fun HorizontalGamesListingComponent(
     list: List<Game>,
     onOpenGameDetails : (gameId: Long) -> Unit,
     focusManager: FocusManager,

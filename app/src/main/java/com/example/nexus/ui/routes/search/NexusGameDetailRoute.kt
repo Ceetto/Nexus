@@ -8,12 +8,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,7 +29,7 @@ import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.components.GameFormComponent
-import com.example.nexus.ui.components.HomePageCategoryComponent
+import com.example.nexus.ui.components.HorizontalGamesListingComponent
 import com.example.nexus.ui.components.LinkComponent
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.routes.list.ListCategory
@@ -41,6 +37,7 @@ import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import proto.Game
+import java.util.*
 import kotlin.math.roundToInt
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -93,7 +90,7 @@ fun NexusGameDetailRoute(
             if(!vM.getGameFormOpen()){
                 SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.onGetGameEvent() }) {
                     Column(Modifier.verticalScroll(rememberScrollState())) {
-                        Row(Modifier.height(200.dp)) {
+                        Row() {
                             Column{
                                 if(game.cover.imageId.isEmpty()){
                                     Text("no image")
@@ -228,9 +225,18 @@ fun NexusGameDetailRoute(
                                 modifier = Modifier.padding(top = 10.dp)
                             )
                             for (date in game.releaseDatesList) {
+                                var region = date.region.toString().lowercase()
+                                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                                    .replace("_", " ")
+                                val e = region.indexOf(" ")+1
+                                if(e > 0){
+                                    region = region.replaceRange(e, e+1,
+                                        region[e].toString().replaceFirstChar {
+                                            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                                        })
+                                }
                                 Text(
-                                    date.platform.abbreviation + ": " + date.human + ", " + date.region.toString()
-                                        .lowercase()
+                                    date.platform.abbreviation + ": " + date.human + ", " + region
                                 )
                             }
                         }
@@ -269,7 +275,7 @@ fun NexusGameDetailRoute(
                         relatedGames += game.franchise.gamesList + game.remakesList + game.remastersList +
                                 game.dlcsList + game.expandedGamesList + game.expansionsList
                         if (relatedGames.isNotEmpty()) {
-                            HomePageCategoryComponent(
+                            HorizontalGamesListingComponent(
                                 list = relatedGames,
                                 onOpenGameDetails = onOpenGameDetails,
                                 focusManager = focusManager,
@@ -279,7 +285,7 @@ fun NexusGameDetailRoute(
                         }
 
                         if (game.similarGamesCount > 0) {
-                            HomePageCategoryComponent(
+                            HorizontalGamesListingComponent(
                                 list = game.similarGamesList,
                                 onOpenGameDetails = onOpenGameDetails,
                                 focusManager = focusManager,
