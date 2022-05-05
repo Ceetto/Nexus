@@ -145,6 +145,9 @@ fun NexusGameDetailRoute(
                                     Text("genres: $genres")
                                 }
 
+                                Button(onClick = { vM.onGameFormOpenChanged(true) }) {
+                                    Text(text = vM.getEditOrAddGames())
+                                }
                             }
                         }
 
@@ -159,11 +162,6 @@ fun NexusGameDetailRoute(
                                 Text("No summary available")
                             }
                         }
-                        Button(onClick = { vM.onGameFormOpenChanged(true) }) {
-                            Text(text = vM.getEditOrAddGames())
-                        }
-
-
 
                         Text(
                             "Media:",
