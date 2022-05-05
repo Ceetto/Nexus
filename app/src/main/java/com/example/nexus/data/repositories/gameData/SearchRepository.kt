@@ -3,6 +3,7 @@ package com.example.nexus.data.repositories.gameData
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.api.igdb.apicalypse.APICalypse
+import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.games

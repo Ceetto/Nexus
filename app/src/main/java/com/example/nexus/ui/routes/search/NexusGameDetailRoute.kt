@@ -162,12 +162,10 @@ fun NexusGameDetailRoute(
                             Text(text = vM.getEditOrAddGames())
                         }
 
-
-
                         Text(
                             "Media:",
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(vertical = 10.dp)
+                            modifier = Modifier.padding(vertical = 10.dp, horizontal = 10.dp)
                         )
                         if (game.screenshotsCount == 0) {
                             Text("no media available", Modifier.padding(bottom = 10.dp, start = 5.dp))
@@ -230,7 +228,7 @@ fun NexusGameDetailRoute(
 
                         Column(Modifier.padding(5.dp)) {
                             Text(
-                                "Websites:",
+                                "Links:",
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(top = 10.dp)
                             )
@@ -267,8 +265,6 @@ fun NexusGameDetailRoute(
                                 isFetching = false
                             )
                         }
-
-
                     }
                 }
             } else {
