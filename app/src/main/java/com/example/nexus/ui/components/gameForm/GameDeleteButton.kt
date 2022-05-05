@@ -9,22 +9,14 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.unit.dp
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
-//TODO
-//alert toevoegen bij delete
-//setEditOrAddGames werkt niet correct
-
 @Composable
 fun GameDeleteButton(
     vM: NexusGameDetailViewModel,
-    focusManager: FocusManager
 ){
     if(vM.getEditOrAddGames() == NexusGameDetailViewModel.GameFormButton.EDIT.value){
         Button(modifier = Modifier.padding(10.dp),
             onClick = {
-                vM.deleteListEntry(vM.getListEntry())
-                vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
-                vM.onGameFormOpenChanged(false)
-                focusManager.clearFocus()}) {
+                vM.onShowDeleteWarningChanged(true)}) {
             Text(text = "delete")
         }
     }

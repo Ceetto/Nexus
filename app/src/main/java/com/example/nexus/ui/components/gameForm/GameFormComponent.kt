@@ -46,7 +46,9 @@ fun GameFormComponent(
             }
         }
         Row(horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(10.dp).fillMaxWidth()) {
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()) {
             Text(text = vM.getListEntry().title, fontSize = 20.sp)
         }
 
@@ -54,7 +56,12 @@ fun GameFormComponent(
         Row(modifier = Modifier.padding(5.dp)) {
             Text(text = "Your score: ")
             var expanded by remember { mutableStateOf(false) }
-            var text by remember { mutableStateOf(vM.getGameScore().toString())}
+            val scoreText = if (vM.getGameScore() == 0){
+                "No score"
+            } else {
+                vM.getGameScore().toString()
+            }
+            var text by remember { mutableStateOf(scoreText)}
             OutlinedButton(onClick = { expanded = !expanded }) {
                 Text(text = text, color=MaterialTheme.colors.onBackground)
             }
@@ -108,7 +115,7 @@ fun GameFormComponent(
         Row(modifier = Modifier.padding(5.dp)){
             GameSaveButton(vM = vM, focusManager = focusManager)
 
-            GameDeleteButton(vM = vM, focusManager = focusManager)
+            GameDeleteButton(vM = vM)
         }
 
         if(vM.getShowErrorPopup()){
@@ -116,10 +123,31 @@ fun GameFormComponent(
                 onDismissRequest = { },
                 confirmButton = {
                     TextButton(onClick = {vM.onShowErrorPopupChanged(false)})
-                    { Text(text = "OK") }
+                    { Text(text = "OK", color=MaterialTheme.colors.onBackground) }
                 },
                 title = { Text(text = "wrong time") },
                 text = { Text(text = "Please provide a valid time (integers only)") }
+            )
+        }
+
+        if(vM.getShowDeleteWarning()){
+            AlertDialog(onDismissRequest = { },
+            confirmButton = {
+                TextButton(onClick = {
+                    vM.deleteListEntry(vM.getListEntry())
+                    vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
+                    vM.onGameFormOpenChanged(false)
+                    focusManager.clearFocus()
+                    vM.onShowDeleteWarningChanged(false)}) {
+                    Text(text = "Confirm", color=MaterialTheme.colors.onBackground)
+                }
+            },
+                dismissButton = {
+                    TextButton(onClick = {
+                    vM.onShowDeleteWarningChanged(false) }) {
+                    Text(text = "Cancel", color=MaterialTheme.colors.onBackground)
+                }},
+            text = { Text(text = "Are you sure you want to delete this game from your list?")}
             )
         }
     }
