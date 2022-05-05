@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -28,15 +29,18 @@ import proto.Game
 
 @Composable
 fun GameFormComponent(
-    game: Game,
     vM: NexusGameDetailViewModel
 ){
     val focusManager = LocalFocusManager.current
+
     Column(verticalArrangement = Arrangement.Top,
-            modifier = Modifier.pointerInput(Unit) {
-                detectTapGestures(onTap = {
-                    focusManager.clearFocus()
-                })}.fillMaxSize()) {
+            modifier = Modifier
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = {
+                        focusManager.clearFocus()
+                    })
+                }
+                .fillMaxSize()) {
         Row(){
             IconButton(onClick = { vM.onGameFormOpenChanged(false)
                                     focusManager.clearFocus()}) {
@@ -47,10 +51,11 @@ fun GameFormComponent(
             }
         }
 
+        //score input
         Row(modifier = Modifier.padding(5.dp)) {
             Text(text = "Your score: ")
             var expanded by remember { mutableStateOf(false) }
-            var text by remember { mutableStateOf("Select score")}
+            var text by remember { mutableStateOf(vM.getGameScore().toString())}
             OutlinedButton(onClick = { expanded = !expanded }) {
                 Text(text = text, color=MaterialTheme.colors.onBackground)
             }
@@ -70,10 +75,11 @@ fun GameFormComponent(
             }
         }
 
+        //status input
         Row(modifier = Modifier.padding(5.dp)){
             Text(text = "Status: ")
             var expanded by remember { mutableStateOf(false) }
-            var text by remember { mutableStateOf(ListCategory.PLAYING.value)}
+            var text by remember { mutableStateOf(vM.getGameStatus())}
             OutlinedButton(onClick = { expanded = !expanded }) {
                 Text(text = text, color=MaterialTheme.colors.onBackground)
             }
@@ -88,29 +94,34 @@ fun GameFormComponent(
             }
         }
 
-        Row(modifier = Modifier
-            .padding(5.dp)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = {
-                    focusManager.clearFocus()
-                })
-            }){
-            Text(text = "Hours played: ")
-            TextField(
-                value = vM.getHours(),
-                onValueChange = { value ->
-                        vM.setHours(value)
-                    },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(onDone = {
-                    focusManager.clearFocus()
-                })
-            )
-            }
+//        //hours input
+//        Row(modifier = Modifier
+//            .padding(5.dp)
+//            .pointerInput(Unit) {
+//                detectTapGestures(onTap = {
+//                    focusManager.clearFocus()
+//                })
+//            }){
+//            Text(text = "Hours played: ")
+//            TextField(
+//                value = vM.getHours(),
+//                onValueChange = { value ->
+//                        vM.setHours(value)
+//                    },
+//                keyboardOptions = KeyboardOptions.Default.copy(
+//                    keyboardType = KeyboardType.Number,
+//                    imeAction = ImeAction.Done
+//                ),
+//                keyboardActions = KeyboardActions(onDone = {
+//                    focusManager.clearFocus()
+//                })
+//            )
+//        }
 
+        TimeInput(focusManager = focusManager, text = "Hours played: ", getTime = { vM.getHours() },
+            setTime = {hours -> vM.setHours(hours)})
+
+        //minutes input
         Row(modifier = Modifier
             .padding(5.dp)){
             Text(text = "Minutes played: ")
@@ -134,17 +145,8 @@ fun GameFormComponent(
             if(intHours == null || intMinutes == null || intHours < 0 || intMinutes < 0){
                 vM.onShowErrorPopupChanged(true)
             } else{
-                val listEntry = ListEntry(game.id, game.name, vM.getGameScore(),
-                    vM.getHours().toInt()*60+vM.getMinutes().toInt(), vM.getGameStatus(),
-                    game.cover
-                        ?.let {
-                            imageBuilder(
-                                it.imageId,
-                                ImageSize.COVER_BIG,
-                                ImageType.JPEG
-                            )
-                        }, false)
-                vM.storeListEntry(listEntry)
+                vM.setCurrentListEntryMinutes(vM.getHours().toInt()*60+vM.getMinutes().toInt())
+                vM.storeListEntry(vM.getListEntry())
                 vM.onGameFormOpenChanged(false)
                 focusManager.clearFocus()
             }
@@ -162,5 +164,35 @@ fun GameFormComponent(
                 text = { Text(text = "Please provide a valid time (integers only)") }
             )
         }
+    }
+}
+
+@Composable
+fun TimeInput(
+    focusManager: FocusManager,
+    text: String,
+    getTime: () -> String,
+    setTime: (time: String) -> Unit){
+    Row(modifier = Modifier
+        .padding(5.dp)
+        .pointerInput(Unit) {
+            detectTapGestures(onTap = {
+                focusManager.clearFocus()
+            })
+        }){
+        Text(text = text)
+        TextField(
+            value = getTime(),
+            onValueChange = { value ->
+                setTime(value)
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onDone = {
+                focusManager.clearFocus()
+            })
+        )
     }
 }

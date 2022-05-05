@@ -4,11 +4,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.api.igdb.utils.ImageSize
+import com.api.igdb.utils.ImageType
+import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.ui.routes.list.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import proto.Game
 import java.lang.Exception
@@ -25,10 +31,11 @@ class NexusGameDetailViewModel @Inject constructor(
 
     private var gameFormOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
-    private val gameScore = mutableStateOf(0)
-    private val gameStatus = mutableStateOf(ListCategory.PLAYING.value)
-    private val hours = mutableStateOf("0")
+    private val currentListEntry = mutableStateOf(ListEntry(0, "", 0,
+    0, "", "", false))
     private val minutes = mutableStateOf("0")
+    private val hours = mutableStateOf("0")
+
 
     fun onGetGameEvent(){
         if(gameList.value.isNotEmpty() && gameList.value[0].id != gameId){
@@ -47,20 +54,28 @@ class NexusGameDetailViewModel @Inject constructor(
         return gameList.value
     }
 
+    fun setListEntry(entry: ListEntry){
+        currentListEntry.value = entry
+    }
+
+    fun getListEntry(): ListEntry {
+        return currentListEntry.value
+    }
+
     fun setGameScore(score: Int){
-        gameScore.value = score
+        currentListEntry.value.score = score
     }
 
     fun getGameScore(): Int {
-        return gameScore.value
+        return currentListEntry.value.score
     }
 
     fun setGameStatus(status: String){
-        gameStatus.value = status
+        currentListEntry.value.status = status
     }
 
     fun getGameStatus(): String {
-        return gameStatus.value
+        return currentListEntry.value.status
     }
 
     fun setHours(hours: String){
@@ -77,6 +92,10 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun getMinutes(): String {
         return minutes.value
+    }
+
+    fun setCurrentListEntryMinutes(minutes: Int){
+        currentListEntry.value.minutesPlayed = minutes
     }
 
     fun getGameFormOpen(): Boolean {
@@ -100,6 +119,10 @@ class NexusGameDetailViewModel @Inject constructor(
 //    fun getPlatforms(ids: MutableList<Platform>) = repo.getPlatforms(ids)
 
     fun storeListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.storeListEntry(entry) }
+
+    val allGames: StateFlow<List<ListEntry>> by lazy {
+        listRepository.allGames.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }
 
     //fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { listRepository.deleteListEntry(entity) }
 }
