@@ -38,6 +38,7 @@ class NexusGameDetailViewModel @Inject constructor(
     private val minutes = mutableStateOf("0")
     private val hours = mutableStateOf("0")
     private val editOrAddGames = mutableStateOf(GameFormButton.ADD.value)
+    private val showDeleteWarning = mutableStateOf(false)
 
 
     fun onGetGameEvent(){
@@ -130,6 +131,14 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun onShowErrorPopupChanged(boolean: Boolean){
         showErrorPopup.value = boolean
+    }
+
+    fun onShowDeleteWarningChanged(boolean: Boolean){
+        showDeleteWarning.value = boolean
+    }
+
+    fun getShowDeleteWarning(): Boolean {
+        return showDeleteWarning.value
     }
 
 

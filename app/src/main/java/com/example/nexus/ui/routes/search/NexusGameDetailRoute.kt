@@ -78,6 +78,7 @@ fun NexusGameDetailRoute(
                         ImageSize.COVER_BIG,
                         ImageType.JPEG
                     )}, false))
+                vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
             }
 
             if(!vM.getGameFormOpen()){
