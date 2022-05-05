@@ -11,6 +11,8 @@ class ListRepository @Inject constructor(
 ) {
     suspend fun storeListEntry(entry: ListEntry) = firebaseListDao.storeListEntry(entry)
 
+    suspend fun deleteListEntry(entry: ListEntry) = firebaseListDao.deleteListEntry(entry)
+
     val allGames = firebaseListDao.getAll()
 
     val playing = firebaseListDao.getPlaying()

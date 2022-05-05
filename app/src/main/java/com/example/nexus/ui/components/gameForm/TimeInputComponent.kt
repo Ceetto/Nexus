@@ -1,4 +1,4 @@
-package com.example.nexus.ui.components.GameForm
+package com.example.nexus.ui.components.gameForm
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row

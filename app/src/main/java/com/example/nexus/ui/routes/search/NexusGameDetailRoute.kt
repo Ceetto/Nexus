@@ -52,7 +52,7 @@ fun NexusGameDetailRoute(
                     vM.setListEntry(games[i])
                     vM.setMinutes(vM.getListEntry().minutesPlayed.mod(60).toString())
                     vM.setHours(((vM.getListEntry().minutesPlayed - vM.getMinutes().toInt())/60).toString())
-                    vM.setEditOrAddGames("Edit game")
+                    vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.EDIT.value)
                     found = true
                 }
                 i++
@@ -157,5 +157,4 @@ fun NexusGameDetailRoute(
             Text("Loading game...")
         }
     }
-
 }

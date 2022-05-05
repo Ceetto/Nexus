@@ -2,28 +2,20 @@ package com.example.nexus.ui.components
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.api.igdb.utils.ImageSize
-import com.api.igdb.utils.ImageType
-import com.api.igdb.utils.imageBuilder
-import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.ui.components.GameForm.TimeInput
+import com.example.nexus.ui.components.gameForm.DeleteButton
+import com.example.nexus.ui.components.gameForm.SaveButton
+import com.example.nexus.ui.components.gameForm.TimeInput
 import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
-import proto.Game
 
 //TODO updaten en verwijderen
 
@@ -102,20 +94,13 @@ fun GameFormComponent(
         TimeInput(focusManager = focusManager, text = "Minutes played: ", getTime = { vM.getMinutes() },
             setTime = {minutes -> vM.setMinutes(minutes)})
 
-        Button(onClick = {
-            val intHours = vM.getHours().toIntOrNull()
-            val intMinutes = vM.getHours().toIntOrNull()
-            if(intHours == null || intMinutes == null || intHours < 0 || intMinutes < 0){
-                vM.onShowErrorPopupChanged(true)
-            } else{
-                vM.setCurrentListEntryMinutes(vM.getHours().toInt()*60+vM.getMinutes().toInt())
-                vM.storeListEntry(vM.getListEntry())
-                vM.onGameFormOpenChanged(false)
-                focusManager.clearFocus()
-            }
-        }){
-            Text(text = "save")
+
+        Row(modifier = Modifier.padding(5.dp)){
+            SaveButton(vM = vM, focusManager = focusManager)
+
+            DeleteButton(vM = vM, focusManager = focusManager)
         }
+
         if(vM.getShowErrorPopup()){
             AlertDialog(
                 onDismissRequest = { },

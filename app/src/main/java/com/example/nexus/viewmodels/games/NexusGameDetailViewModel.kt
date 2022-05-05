@@ -35,7 +35,7 @@ class NexusGameDetailViewModel @Inject constructor(
     0, "", "", false))
     private val minutes = mutableStateOf("0")
     private val hours = mutableStateOf("0")
-    private val editOrAddGames = mutableStateOf("Add game")
+    private val editOrAddGames = mutableStateOf(GameFormButton.ADD.value)
 
 
     fun onGetGameEvent(){
@@ -129,9 +129,14 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun storeListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.storeListEntry(entry) }
 
+    fun deleteListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.deleteListEntry(entry) }
+
     val allGames: StateFlow<List<ListEntry>> by lazy {
         listRepository.allGames.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
-    //fun deleteListEntry(entity: ListEntity) = viewModelScope.launch { listRepository.deleteListEntry(entity) }
+    enum class GameFormButton(val value: String){
+        ADD("Add game"),
+        EDIT("Edit game")
+    }
 }
