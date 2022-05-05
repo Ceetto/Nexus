@@ -52,6 +52,7 @@ fun NexusGameDetailRoute(
                     vM.setListEntry(games[i])
                     vM.setMinutes(vM.getListEntry().minutesPlayed.mod(60).toString())
                     vM.setHours(((vM.getListEntry().minutesPlayed - vM.getMinutes().toInt())/60).toString())
+                    vM.setEditOrAddGames("Edit game")
                     found = true
                 }
                 i++
@@ -125,7 +126,7 @@ fun NexusGameDetailRoute(
                     Text("Summary:", fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 10.dp, start = 5.dp))
                     Text(game.summary, Modifier.padding(bottom = 10.dp, start = 5.dp, end = 5.dp))
                     Button(onClick = {vM.onGameFormOpenChanged(true)}){
-                        Text(text = "Add game")
+                        Text(text = vM.getEditOrAddGames())
                     }
 
                     Text("Screenshots", fontWeight = FontWeight.Bold, modifier = Modifier.padding(vertical = 10.dp))

@@ -35,6 +35,7 @@ class NexusGameDetailViewModel @Inject constructor(
     0, "", "", false))
     private val minutes = mutableStateOf("0")
     private val hours = mutableStateOf("0")
+    private val editOrAddGames = mutableStateOf("Add game")
 
 
     fun onGetGameEvent(){
@@ -48,6 +49,14 @@ class NexusGameDetailViewModel @Inject constructor(
 
             }
         }
+    }
+
+    fun getEditOrAddGames(): String {
+        return editOrAddGames.value
+    }
+
+    fun setEditOrAddGames(text: String){
+        editOrAddGames.value = text
     }
 
     fun getGameList(): List<Game> {

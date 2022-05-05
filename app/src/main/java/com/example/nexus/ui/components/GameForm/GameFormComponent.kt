@@ -20,11 +20,11 @@ import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.ui.components.GameForm.TimeInput
 import com.example.nexus.ui.routes.list.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import proto.Game
 
-//TODO data op voorhand invullen bij games die al in de lijst zitten
 //TODO updaten en verwijderen
 
 @Composable
@@ -94,51 +94,14 @@ fun GameFormComponent(
             }
         }
 
-//        //hours input
-//        Row(modifier = Modifier
-//            .padding(5.dp)
-//            .pointerInput(Unit) {
-//                detectTapGestures(onTap = {
-//                    focusManager.clearFocus()
-//                })
-//            }){
-//            Text(text = "Hours played: ")
-//            TextField(
-//                value = vM.getHours(),
-//                onValueChange = { value ->
-//                        vM.setHours(value)
-//                    },
-//                keyboardOptions = KeyboardOptions.Default.copy(
-//                    keyboardType = KeyboardType.Number,
-//                    imeAction = ImeAction.Done
-//                ),
-//                keyboardActions = KeyboardActions(onDone = {
-//                    focusManager.clearFocus()
-//                })
-//            )
-//        }
-
+        //hours input
         TimeInput(focusManager = focusManager, text = "Hours played: ", getTime = { vM.getHours() },
             setTime = {hours -> vM.setHours(hours)})
 
         //minutes input
-        Row(modifier = Modifier
-            .padding(5.dp)){
-            Text(text = "Minutes played: ")
-            TextField(
-                value = vM.getMinutes(),
-                onValueChange = { value ->
-                    vM.setMinutes(value)
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(onDone = {
-                    focusManager.clearFocus()
-                })
-            )
-        }
+        TimeInput(focusManager = focusManager, text = "Minutes played: ", getTime = { vM.getMinutes() },
+            setTime = {minutes -> vM.setMinutes(minutes)})
+
         Button(onClick = {
             val intHours = vM.getHours().toIntOrNull()
             val intMinutes = vM.getHours().toIntOrNull()
@@ -164,35 +127,5 @@ fun GameFormComponent(
                 text = { Text(text = "Please provide a valid time (integers only)") }
             )
         }
-    }
-}
-
-@Composable
-fun TimeInput(
-    focusManager: FocusManager,
-    text: String,
-    getTime: () -> String,
-    setTime: (time: String) -> Unit){
-    Row(modifier = Modifier
-        .padding(5.dp)
-        .pointerInput(Unit) {
-            detectTapGestures(onTap = {
-                focusManager.clearFocus()
-            })
-        }){
-        Text(text = text)
-        TextField(
-            value = getTime(),
-            onValueChange = { value ->
-                setTime(value)
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus()
-            })
-        )
     }
 }
