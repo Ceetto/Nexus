@@ -8,13 +8,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
@@ -64,6 +70,9 @@ fun NexusGameDetailRoute(
                     vM.setMinutes(vM.getListEntry().minutesPlayed.mod(60).toString())
                     vM.setHours(((vM.getListEntry().minutesPlayed - vM.getMinutes().toInt())/60).toString())
                     vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.EDIT.value)
+                    if(games[i].favorited){
+                        vM.setIcon(Icons.Outlined.Star)
+                    }
                     found = true
                 }
                 i++
@@ -146,8 +155,19 @@ fun NexusGameDetailRoute(
                                     Text("genres: $genres")
                                 }
 
-                                Button(onClick = { vM.onGameFormOpenChanged(true) }) {
-                                    Text(text = vM.getEditOrAddGames())
+                                Row(modifier = Modifier.padding(5.dp)){
+                                    Button(onClick = { vM.onGameFormOpenChanged(true) }) {
+                                        Text(text = vM.getEditOrAddGames())
+                                    }
+                                    if (found){
+                                        IconButton(onClick = {
+                                            vM.toggleIcon()
+                                            vM.setFavorite(vM.getFavoriteToggled())
+                                            vM.storeListEntry(vM.getListEntry())
+                                            }) {
+                                            Icon(vM.getIcon() , contentDescription = "favorite", tint = Color.Yellow)
+                                        }
+                                    }
                                 }
                             }
                         }

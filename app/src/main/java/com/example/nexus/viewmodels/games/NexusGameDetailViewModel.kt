@@ -1,6 +1,10 @@
 package com.example.nexus.viewmodels.games
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -39,6 +43,8 @@ class NexusGameDetailViewModel @Inject constructor(
     private val hours = mutableStateOf("0")
     private val editOrAddGames = mutableStateOf(GameFormButton.ADD.value)
     private val showDeleteWarning = mutableStateOf(false)
+    private val icon = mutableStateOf(Icons.Outlined.StarBorder)
+    private val favoriteToggled = mutableStateOf(false)
 
 
     fun onGetGameEvent(){
@@ -59,6 +65,28 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun isRefreshing(): Boolean{
         return isRefreshing.value
+    }
+
+    fun getIcon(): ImageVector {
+        return icon.value
+    }
+
+    fun setIcon(iv: ImageVector){
+        icon.value = iv
+    }
+
+    fun toggleIcon(){
+        if (icon.value == Icons.Outlined.StarBorder){
+            icon.value = Icons.Outlined.Star
+            favoriteToggled.value = true
+        } else {
+            icon.value = Icons.Outlined.StarBorder
+            favoriteToggled.value = false
+        }
+    }
+
+    fun getFavoriteToggled(): Boolean {
+        return favoriteToggled.value
     }
 
     fun getEditOrAddGames(): String {
@@ -111,6 +139,10 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun getMinutes(): String {
         return minutes.value
+    }
+
+    fun setFavorite(boolean: Boolean){
+        currentListEntry.value.favorited = boolean
     }
 
     fun setCurrentListEntryMinutes(minutes: Int){

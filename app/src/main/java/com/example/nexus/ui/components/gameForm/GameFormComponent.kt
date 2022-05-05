@@ -56,7 +56,7 @@ fun GameFormComponent(
         Row(modifier = Modifier.padding(5.dp)) {
             Text(text = "Your score: ")
             var expanded by remember { mutableStateOf(false) }
-            var scoreText = if (vM.getGameScore() == 0){
+            val scoreText = if (vM.getGameScore() == 0){
                 "No score"
             } else {
                 vM.getGameScore().toString()
