@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import proto.Game
+import proto.Platform
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -28,6 +29,7 @@ class NexusGameDetailViewModel @Inject constructor(
 ) : ViewModel(){
     private var gameList = repo.gameList
     private val gameId: Long = savedStateHandle["gameId"]!!
+    private val isRefreshing = mutableStateOf(false)
 
     private var gameFormOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
@@ -39,16 +41,23 @@ class NexusGameDetailViewModel @Inject constructor(
 
 
     fun onGetGameEvent(){
-        if(gameList.value.isNotEmpty() && gameList.value[0].id != gameId){
-            gameList.value = emptyList()
+
+        if(gameList.value.value.isNotEmpty() && gameList.value.value[0].id != gameId){
+            gameList.value.value = emptyList()
         }
         viewModelScope.launch {
             try{
+                isRefreshing.value = true
                 repo.getGameById(gameId)
+                isRefreshing.value = false
             } catch(e: Exception){
 
             }
         }
+    }
+
+    fun isRefreshing(): Boolean{
+        return isRefreshing.value
     }
 
     fun getEditOrAddGames(): String {
@@ -60,7 +69,7 @@ class NexusGameDetailViewModel @Inject constructor(
     }
 
     fun getGameList(): List<Game> {
-        return gameList.value
+        return gameList.value.value
     }
 
     fun setListEntry(entry: ListEntry){
