@@ -69,6 +69,8 @@ fun NexusGameDetailRoute(
                     vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.EDIT.value)
                     if(games[i].favorited){
                         vM.setIcon(Icons.Outlined.Star)
+                    } else {
+                        vM.setIcon(Icons.Outlined.StarBorder)
                     }
                     found = true
                 }
@@ -152,7 +154,9 @@ fun NexusGameDetailRoute(
                                     Text("genres: $genres")
                                 }
 
-                                Row(modifier = Modifier.padding(5.dp)){
+                                //edit/add game button + favorite toggle
+                                Row(modifier = Modifier.padding(10.dp),
+                                    horizontalArrangement = Arrangement.Center){
                                     Button(onClick = { vM.onGameFormOpenChanged(true) }) {
                                         Text(text = vM.getEditOrAddGames())
                                     }
@@ -161,8 +165,9 @@ fun NexusGameDetailRoute(
                                             vM.toggleIcon()
                                             vM.setFavorite(vM.getFavoriteToggled())
                                             vM.storeListEntry(vM.getListEntry())
-                                            }) {
-                                            Icon(vM.getIcon() , contentDescription = "favorite", tint = Color.Yellow)
+                                            }, modifier = Modifier.padding(start = 5.dp)) {
+                                            Icon(vM.getIcon() , contentDescription = "favorite",
+                                                tint = Color.Yellow, modifier = Modifier.size(40.dp))
                                         }
                                     }
                                 }
@@ -213,7 +218,6 @@ fun NexusGameDetailRoute(
                                             .padding(horizontal = 5.dp)
                                     )
                                 }
-
                             }
                         }
 
@@ -309,5 +313,4 @@ fun NexusGameDetailRoute(
             }
         }
     }
-
 }

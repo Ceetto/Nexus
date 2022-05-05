@@ -1,6 +1,7 @@
 package com.example.nexus.data.db
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.routes.list.ListCategory
 import com.google.firebase.database.DataSnapshot
@@ -45,6 +46,7 @@ class FirebaseListDao @Inject constructor(
                 dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
                 allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
                 favorites.update{newList.filter { entry: ListEntry -> entry.favorited }}
+                top10Favorites.value = newList.filter { entry: ListEntry -> entry.favorited }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -92,5 +94,14 @@ class FirebaseListDao @Inject constructor(
 
     suspend fun deleteListEntry(entry: ListEntry){
         listEntryRef.child(entry.gameId.toString()).removeValue()
+    }
+
+    private var top10Favorites = mutableStateOf(emptyList<ListEntry>())
+
+    fun getTop10Favorites(): List<ListEntry>{
+        if (top10Favorites.value.size > 10){
+            return top10Favorites.value.subList(0, 9)
+        }
+        return top10Favorites.value
     }
 }
