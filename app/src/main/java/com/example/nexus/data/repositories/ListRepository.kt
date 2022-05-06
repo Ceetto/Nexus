@@ -2,6 +2,7 @@ package com.example.nexus.data.repositories
 
 import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,5 +25,12 @@ class ListRepository @Inject constructor(
     val dropped = firebaseListDao.getDropped()
 
     val favorites = firebaseListDao.getFavorites()
+
+    val doneFetching = firebaseListDao.doneFetching
+
+    suspend fun getTop10Favorites() = firebaseListDao.getTop10Favorites()
+
+    suspend fun getAllGamesAsState() = firebaseListDao.getAllGamesAsState()
+
 
 }

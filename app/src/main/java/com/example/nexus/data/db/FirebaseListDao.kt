@@ -8,9 +8,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,6 +21,8 @@ class FirebaseListDao @Inject constructor(
     private val database: FirebaseDatabase
 ){
     private val listEntryRef = database.getReference("listEntry")
+
+    var doneFetching = mutableStateOf(false)
 
     private val realtimeEntries = listEntryRef.addValueEventListener(
         object: ValueEventListener {
@@ -46,7 +50,9 @@ class FirebaseListDao @Inject constructor(
                 dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
                 allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
                 favorites.update{newList.filter { entry: ListEntry -> entry.favorited }}
-                top10Favorites.value = newList.filter { entry: ListEntry -> entry.favorited }
+                top10Favorites.value = newList.filter { entry: ListEntry -> entry.favorited }.sortedBy {it.score}.reversed()
+                allGamesState.value = playing.value.plus(completed.value).plus(planned.value).plus(dropped.value)
+                doneFetching.value = true
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -97,11 +103,17 @@ class FirebaseListDao @Inject constructor(
     }
 
     private var top10Favorites = mutableStateOf(emptyList<ListEntry>())
+    private var allGamesState = mutableStateOf(emptyList<ListEntry>())
 
-    fun getTop10Favorites(): List<ListEntry>{
+
+    suspend fun getTop10Favorites(): List<ListEntry> = withContext(Dispatchers.Default){
         if (top10Favorites.value.size > 10){
-            return top10Favorites.value.subList(0, 9)
+            return@withContext top10Favorites.value.subList(0, 10)
         }
-        return top10Favorites.value
+        return@withContext top10Favorites.value
+    }
+
+    suspend fun getAllGamesAsState(): List<ListEntry> = withContext(Dispatchers.Default){
+        return@withContext allGamesState.value
     }
 }

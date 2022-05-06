@@ -7,7 +7,9 @@ import com.google.firebase.ktx.Firebase
 abstract class Database {
     companion object{
         fun getInstance(): FirebaseDatabase {
-            return Firebase.database("https://nexus-f7d65-default-rtdb.europe-west1.firebasedatabase.app")
+            val db =  Firebase.database("https://nexus-f7d65-default-rtdb.europe-west1.firebasedatabase.app")
+//            db.setPersistenceEnabled(true)
+            return db
         }
     }
 }

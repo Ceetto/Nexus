@@ -1,15 +1,11 @@
 package com.example.nexus.viewmodels
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.nexus.data.repositories.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import proto.Game
 import javax.inject.Inject
 
@@ -23,8 +19,13 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
     private val searchingTrending = repo.searchingTrending.value
     private val upcomingList = repo.upcomingList.value
     private val searchingUpcoming = repo.searchingUpcoming.value
+    private val favouriteList = repo.favouriteList.value
+    private val searchingFavourite = repo.searchingFavourite.value
     private val isRefreshing = mutableStateOf(false)
-    
+
+    private var recommendedGames = mutableListOf<Game>()
+
+    private val gotIds = repo.gotIds.value
     
     init{
         fetchGames()
@@ -39,12 +40,42 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
                 searchingPopular.value = true
                 searchingTrending.value = true
                 searchingUpcoming.value = true
+                searchingFavourite.value = true
                 repo.getGames()
+                setRecommendedGames()
+                searchingFavourite.value = false
                 isRefreshing.value = false
             }catch(e: Exception){
-
+                isRefreshing.value = false
+                fetchGames()
             }
         }
+    }
+
+    fun setRecommendedGames(){
+        for(game in favouriteList.value){
+            for(franchise in game.franchisesList){
+                for(recGame in franchise.gamesList){
+                    if(!gotIds.value.contains(recGame.id))
+                        recommendedGames += recGame
+                }
+            }
+        }
+        for(game in favouriteList.value){
+            for(recGame in game.similarGamesList){
+                if(!gotIds.value.contains(recGame.id))
+                    recommendedGames += recGame
+            }
+        }
+
+        if(recommendedGames.size > 20){
+            recommendedGames.shuffle()
+            recommendedGames = recommendedGames.take(20).toMutableList()
+        }
+    }
+
+    fun getRecommendedGames(): List<Game>{
+        return recommendedGames
     }
 
     fun getBestGames(): List<Game> {
@@ -75,7 +106,18 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
         return searchingUpcoming.value
     }
 
+    fun getFavouriteGames(): List<Game> {
+        return favouriteList.value
+    }
+    fun isSearchingFavourite(): Boolean{
+        return searchingFavourite.value
+    }
+
     fun isRefreshing(): Boolean{
         return isRefreshing.value
+    }
+
+    fun getGotIds(): List<Long> {
+        return gotIds.value
     }
 }
