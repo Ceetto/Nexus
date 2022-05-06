@@ -53,7 +53,7 @@ fun NexusHomeRoute(
                      HorizontalGamesListingComponent(vM.getRecommendedGames(), onOpenGameDetails, focusManager,
                          "Recommended:", vM.isSearchingFavourite() || isShuffling.value)
                  } else {
-                     Text("Recommended", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                     Text("Recommended", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 5.dp))
                      Text("Favourite games to get recommendations", Modifier.padding(start = 5.dp))
                  }
 

@@ -53,6 +53,7 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
     }
 
     fun setRecommendedGames(){
+        val newGameList = mutableListOf<Game>()
         for(game in favouriteList.value){
             val additions = mutableListOf<Game>()
             for(franchise in game.franchisesList){
@@ -62,7 +63,7 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
                 }
             }
             additions.shuffle()
-            recommendedGames += additions.take(3)
+            newGameList += additions.take(3)
         }
         for(game in favouriteList.value){
             val additions = mutableListOf<Game>()
@@ -71,8 +72,9 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
                     additions += recGame
             }
             additions.shuffle()
-            recommendedGames += additions.take(3)
+            newGameList += additions.take(3)
         }
+        recommendedGames = newGameList
 
         if(recommendedGames.size > 20){
             recommendedGames.shuffle()
