@@ -30,6 +30,7 @@ class GameDetailRepository @Inject constructor() {
                 "franchises.games.name, franchises.games.cover.image_id," +
                 "genres.name,release_dates.human,release_dates.region,release_dates.platform.abbreviation," +
                 "name,rating,rating_count,summary,storyline").where("id = $gameId")
+
         try{
             val gameRes: List<Game> = IGDBWrapper.games(apicalypse)
             gameList.value.value = gameRes
