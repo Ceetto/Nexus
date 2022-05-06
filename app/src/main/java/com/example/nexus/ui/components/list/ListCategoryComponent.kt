@@ -1,50 +1,54 @@
-package com.example.nexus.ui.routes.list
+package com.example.nexus.ui.components.list
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.nexus.viewmodels.NexusListViewModel
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Surface
-import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Dropped
 import com.example.nexus.ui.theme.Planned
 import com.example.nexus.ui.theme.Playing
+import com.example.nexus.viewmodels.NexusListViewModel
 
 @Composable
-fun ListCategoryRoute(
+fun ListCategoryComponent(
     category: ListCategory,
     vM: NexusListViewModel,
     onOpenGameDetails : (gameId: Long) -> Unit
 ) {
-    val games by vM.getCategory(category.value).collectAsState()
-    ListCategoryScreen(games, onOpenGameDetails)
+    val games by vM.getCategoryByName(category.value).collectAsState()
+    ListCategoryScreen(games, onOpenGameDetails, vM)
 }
 
 @Composable
 fun ListCategoryScreen(
     games: List<ListEntry>,
-    onOpenGameDetails : (gameId: Long) -> Unit
+    onOpenGameDetails : (gameId: Long) -> Unit,
+    vM: NexusListViewModel
 ){
-    LazyColumn(
-    ){
-        items(games) {game ->
-            ListItem(game = game, onOpenGameDetails)
+    Column(){
+        SortListComponent(games = games, vM = vM)
+        LazyColumn(
+        ){
+            items(games) {game ->
+                ListItem(game = game, onOpenGameDetails)
+            }
         }
     }
 }
@@ -55,25 +59,23 @@ fun ListItem(
     onOpenGameDetails : (gameId: Long) -> Unit
 ) {
     Surface(
-        modifier = Modifier.padding(vertical = 4.dp).pointerInput(Unit){
-            detectTapGestures(onTap = { onOpenGameDetails(game.gameId) })
-        }
-    ) {
-        Row(){
+        modifier = Modifier
+            .padding(vertical = 4.dp)
+            .clickable { onOpenGameDetails(game.gameId) }
+    ) { Row(){
             Image(painter = rememberAsyncImagePainter(game.coverUrl), contentDescription = "cover",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.size(120.dp))
 
             Column() {
                 Text(text = game.title,
-                    fontSize = 25.sp)
+                    fontSize = 20.sp)
 
                 Row() {
                     Surface(
                         modifier = Modifier.fillMaxWidth(0.7f)
                     ){
-                        var timePlayed = ""
-                        timePlayed = if (game.status == ListCategory.PLANNED.value){
+                        val timePlayed = if (game.status == ListCategory.PLANNED.value){
                             ListCategory.PLANNED.value
                         } else {
                             val minutes = game.minutesPlayed.mod(60)

@@ -3,7 +3,7 @@ package com.example.nexus.data.db
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.ListCategory
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -40,10 +40,12 @@ class FirebaseListDao @Inject constructor(
                             (child.child("minutesPlayed").value as Long).toInt(),
                             child.child("status").value as String,
                             child.child("coverUrl").value as String?,
-                            child.child("favorited").value as Boolean
+                            child.child("favorited").value as Boolean,
+                            child.child("releaseDate").value as Long
                         )
                     )
                 }
+                newList.sortBy { entry: ListEntry -> entry.title }
                 playing.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLAYING.value } }
                 completed.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.COMPLETED.value } }
                 planned.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }

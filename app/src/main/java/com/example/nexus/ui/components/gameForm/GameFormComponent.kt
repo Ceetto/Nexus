@@ -1,4 +1,4 @@
-package com.example.nexus.ui.components
+package com.example.nexus.ui.components.gameForm
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -6,20 +6,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.nexus.ui.components.gameForm.GameDeleteButton
-import com.example.nexus.ui.components.gameForm.GameSaveButton
-import com.example.nexus.ui.components.gameForm.TimeInput
-import com.example.nexus.ui.routes.list.ListCategory
-import com.example.nexus.ui.routes.list.ListCategoryColors
+import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.components.list.ListCategoryColors
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable

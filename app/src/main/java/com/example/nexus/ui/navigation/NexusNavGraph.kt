@@ -10,7 +10,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.nexus.ui.routes.*
-import com.example.nexus.ui.routes.list.NexusListRoute
+import com.example.nexus.ui.routes.NexusListRoute
 import com.example.nexus.ui.routes.search.NexusGameDetailRoute
 import com.example.nexus.ui.routes.search.NexusSearchRoute
 

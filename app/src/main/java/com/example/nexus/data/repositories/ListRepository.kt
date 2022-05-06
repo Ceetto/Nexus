@@ -1,8 +1,11 @@
 package com.example.nexus.data.repositories
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.dataClasses.SortOptions
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,15 +17,71 @@ class ListRepository @Inject constructor(
 
     suspend fun deleteListEntry(entry: ListEntry) = firebaseListDao.deleteListEntry(entry)
 
-    val allGames = firebaseListDao.getAll()
+    private val descending = mutableStateOf(false)
 
-    val playing = firebaseListDao.getPlaying()
+    private val sortOption = mutableStateOf(SortOptions.STATUS.value)
 
-    val completed = firebaseListDao.getCompleted()
+    fun getAllGames(): Flow<List<ListEntry>> {
+        return sortGames(firebaseListDao.getAll())
+    }
 
-    val planned = firebaseListDao.getPlanned()
+    fun getPlaying(): Flow<List<ListEntry>> {
+        return removeStatusSortOption(firebaseListDao.getPlaying())
+    }
 
-    val dropped = firebaseListDao.getDropped()
+    fun getCompleted(): Flow<List<ListEntry>> {
+        return removeStatusSortOption(firebaseListDao.getCompleted())
+    }
+
+    fun getPlanned(): Flow<List<ListEntry>> {
+        return removeStatusSortOption(firebaseListDao.getPlanned())
+    }
+
+    fun getDropped(): Flow<List<ListEntry>> {
+        return removeStatusSortOption(firebaseListDao.getDropped())
+    }
+
+    fun setDescending(boolean: Boolean){
+        descending.value = boolean
+    }
+
+    fun setSortOption(option : String){
+        sortOption.value = option
+    }
+
+    fun getSortOption(): String {
+        return sortOption.value
+    }
+
+    fun isDescending(): Boolean {
+        return descending.value
+    }
+
+    private fun setDescAsc(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+        return if(descending.value){
+            entries.map { it.reversed() }
+        } else {
+            entries
+        }
+    }
+
+    private fun sortGames(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+        val sortedGames = when(sortOption.value){
+            SortOptions.ALPHABETICALLY.value -> setDescAsc(entries.map { it.sortedBy { game -> game.title } })
+            SortOptions.SCORE.value -> setDescAsc(entries.map { it.sortedBy { game -> game.score } })
+            SortOptions.TIME_PLAYED.value -> setDescAsc(entries.map { it.sortedBy { game -> game.minutesPlayed } })
+            SortOptions.RELEASE_DATE.value -> setDescAsc(entries.map { it.sortedBy { game -> game.releaseDate } })
+            else -> setDescAsc(firebaseListDao.getAll()) // STATUS
+        }
+        return sortedGames
+    }
+
+    private fun removeStatusSortOption(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+        if(sortOption.value == SortOptions.STATUS.value){
+            sortOption.value = SortOptions.ALPHABETICALLY.value
+        }
+        return sortGames(entries)
+    }
 
     val favorites = firebaseListDao.getFavorites()
 
@@ -31,6 +90,4 @@ class ListRepository @Inject constructor(
     suspend fun getTop10Favorites() = firebaseListDao.getTop10Favorites()
 
     suspend fun getAllGamesAsState() = firebaseListDao.getAllGamesAsState()
-
-
 }

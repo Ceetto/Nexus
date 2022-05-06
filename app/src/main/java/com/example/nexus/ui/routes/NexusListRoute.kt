@@ -1,5 +1,6 @@
-package com.example.nexus.ui.routes.list
+package com.example.nexus.ui.routes
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -12,14 +13,13 @@ import com.example.nexus.viewmodels.NexusListViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.ui.navigation.LeafScreen
-import com.example.nexus.ui.navigation.Screen
+import com.example.nexus.ui.components.list.ListCategoryComponent
 import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalAnimationApi
 @Composable
 fun NexusListRoute(
@@ -33,7 +33,7 @@ fun NexusListRoute(
         Scaffold(topBar = {
             TopNavigationBar(vM.getSelectedCategory(), vM::onSelectedCategoryChanged)
         }){
-            ListCategoryRoute(category = vM.getSelectedCategory(), vM,
+            ListCategoryComponent(category = vM.getSelectedCategory(), vM,
                 onOpenGameDetails = onOpenGameDetails)
         }
     }

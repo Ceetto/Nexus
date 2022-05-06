@@ -14,7 +14,7 @@ import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
-import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +38,7 @@ class NexusGameDetailViewModel @Inject constructor(
     private var gameFormOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
     private val currentListEntry = mutableStateOf(ListEntry(0, "", 0,
-    0, "", "", false))
+    0, "", "", false, 0))
     private val minutes = mutableStateOf("0")
     private val hours = mutableStateOf("0")
     private val editOrAddGames = mutableStateOf(GameFormButton.ADD.value)
@@ -182,7 +182,7 @@ class NexusGameDetailViewModel @Inject constructor(
     fun deleteListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.deleteListEntry(entry) }
 
     val allGames: StateFlow<List<ListEntry>> by lazy {
-        listRepository.allGames.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        listRepository.getAllGames().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     enum class GameFormButton(val value: String){

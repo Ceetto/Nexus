@@ -29,11 +29,11 @@ import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.ui.components.GameFormComponent
+import com.example.nexus.ui.components.gameForm.GameFormComponent
 import com.example.nexus.ui.components.HorizontalGamesListingComponent
 import com.example.nexus.ui.components.LinkComponent
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -86,7 +86,7 @@ fun NexusGameDetailRoute(
                         it.imageId,
                         ImageSize.COVER_BIG,
                         ImageType.JPEG
-                    )}, false))
+                    )}, false, game.firstReleaseDate.seconds))
                 vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
             }
 
