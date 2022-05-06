@@ -19,15 +19,15 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
 
     private val selectedCategory = mutableStateOf(ListCategory.ALL)
 
-    private val descendingOrAscendingIcon = mutableStateOf(Icons.Default.ArrowDropDown)
+    private val descendingOrAscendingIcon = mutableStateOf(Icons.Default.ArrowDropUp)
 
     fun toggleDescendingOrAscendingIcon(){
         if(repo.isDescending()){
             repo.setDescending(false)
-            descendingOrAscendingIcon.value = Icons.Default.ArrowDropDown
+            descendingOrAscendingIcon.value = Icons.Default.ArrowDropUp
         } else {
             repo.setDescending(true)
-            descendingOrAscendingIcon.value = Icons.Default.ArrowDropUp
+            descendingOrAscendingIcon.value = Icons.Default.ArrowDropDown
         }
     }
 
