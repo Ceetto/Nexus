@@ -1,5 +1,6 @@
 package com.example.nexus.ui.routes.list
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -20,6 +21,7 @@ import com.example.nexus.ui.navigation.Screen
 import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalAnimationApi
 @Composable
 fun NexusListRoute(

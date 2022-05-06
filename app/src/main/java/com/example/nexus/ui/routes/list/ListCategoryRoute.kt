@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
@@ -55,11 +56,10 @@ fun ListItem(
     onOpenGameDetails : (gameId: Long) -> Unit
 ) {
     Surface(
-        modifier = Modifier.padding(vertical = 4.dp).pointerInput(Unit){
-            detectTapGestures(onTap = { onOpenGameDetails(game.gameId) })
-        }
-    ) {
-        Row(){
+        modifier = Modifier
+            .padding(vertical = 4.dp)
+            .clickable {onOpenGameDetails(game.gameId)}
+    ) { Row(){
             Image(painter = rememberAsyncImagePainter(game.coverUrl), contentDescription = "cover",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.size(120.dp))
