@@ -1,7 +1,7 @@
 package com.example.nexus.viewmodels.games
 
 import androidx.compose.runtime.mutableStateOf
-import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.ListCategory
 
 class NexusGameFormViewModel {
     private val gameScore = mutableStateOf(0)

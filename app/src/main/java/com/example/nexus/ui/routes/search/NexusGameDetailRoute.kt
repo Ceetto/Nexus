@@ -33,7 +33,7 @@ import com.example.nexus.ui.components.GameFormComponent
 import com.example.nexus.ui.components.HorizontalGamesListingComponent
 import com.example.nexus.ui.components.LinkComponent
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

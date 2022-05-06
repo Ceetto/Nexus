@@ -8,9 +8,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.repositories.ListRepository
-import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.data.dataClasses.SortOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -37,6 +36,8 @@ class NexusListViewModel  @Inject constructor(private val repo: ListRepository) 
     }
 
     fun setSortOption(option : String) = repo.setSortOption(option)
+
+    fun getSortOption() = repo.getSortOption()
 
     fun onSelectedCategoryChanged(category: ListCategory){
         selectedCategory.value = category

@@ -3,7 +3,7 @@ package com.example.nexus.data.db
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.ui.routes.list.ListCategory
+import com.example.nexus.ui.routes.ListCategory
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

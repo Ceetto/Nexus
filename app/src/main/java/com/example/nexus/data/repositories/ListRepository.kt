@@ -19,26 +19,26 @@ class ListRepository @Inject constructor(
 
     private val descending = mutableStateOf(false)
 
-    private val sortOption = mutableStateOf(SortOptions.ALPHABETICALLY.value)
+    private val sortOption = mutableStateOf(SortOptions.STATUS.value)
 
     fun getAllGames(): Flow<List<ListEntry>> {
         return sortGames(firebaseListDao.getAll())
     }
 
     fun getPlaying(): Flow<List<ListEntry>> {
-        return sortGames(firebaseListDao.getPlaying())
+        return removeStatusSortOption(firebaseListDao.getPlaying())
     }
 
     fun getCompleted(): Flow<List<ListEntry>> {
-        return sortGames(firebaseListDao.getCompleted())
+        return removeStatusSortOption(firebaseListDao.getCompleted())
     }
 
     fun getPlanned(): Flow<List<ListEntry>> {
-        return sortGames(firebaseListDao.getPlanned())
+        return removeStatusSortOption(firebaseListDao.getPlanned())
     }
 
     fun getDropped(): Flow<List<ListEntry>> {
-        return sortGames(firebaseListDao.getDropped())
+        return removeStatusSortOption(firebaseListDao.getDropped())
     }
 
     fun setDescending(boolean: Boolean){
@@ -47,6 +47,10 @@ class ListRepository @Inject constructor(
 
     fun setSortOption(option : String){
         sortOption.value = option
+    }
+
+    fun getSortOption(): String {
+        return sortOption.value
     }
 
     fun isDescending(): Boolean {
@@ -70,6 +74,13 @@ class ListRepository @Inject constructor(
             else -> setDescAsc(firebaseListDao.getAll()) // STATUS
         }
         return sortedGames
+    }
+
+    private fun removeStatusSortOption(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+        if(sortOption.value == SortOptions.STATUS.value){
+            sortOption.value = SortOptions.ALPHABETICALLY.value
+        }
+        return sortGames(entries)
     }
 
     val favorites = firebaseListDao.getFavorites()
