@@ -25,22 +25,29 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
                                                @Dispatcher private val dispatcher: CoroutineDispatcher,
                                                ) : ViewModel()
 {
-
     private val gameList = repo.gameList.value
     private val searchTerm = repo.searchTerm
     private val searching = repo.searching.value
     private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
     private val isRefreshing = mutableStateOf(false)
+    private val toLoad = repo.toLoad.value
 
     fun onSearchEvent(){
         viewModelScope.launch {
             try{
+                setToLoad(10)
                 isRefreshing.value = true
                 fetchGames()
                 isRefreshing.value = false
             } catch(e: Exception){
 
             }
+        }
+    }
+
+    fun onLoadMoreEvent(){
+        viewModelScope.launch {
+            fetchGames()
         }
     }
 
@@ -74,6 +81,13 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
 
     fun isRefreshing(): Boolean{
         return isRefreshing.value
+    }
+
+    fun setToLoad(v : Int) = repo.setToLoad(v)
+
+    fun loadMore() {
+        repo.loadMore()
+        onLoadMoreEvent()
     }
 }
 

@@ -17,6 +17,7 @@ class SearchRepository @Inject constructor()
     var gameList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList())}
     val searchTerm = mutableStateOf("")
     var searching: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false)}
+    var toLoad = lazy{mutableStateOf(10)}
     init {
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
     }
@@ -25,10 +26,10 @@ class SearchRepository @Inject constructor()
         if(searchTerm.value.isNotEmpty()){
             searching.value.value = true
             val apicalypse = APICalypse().fields("cover.image_id,name, rating, rating_count")
-                .where("name ~ *\"${searchTerm.value}\"* | franchise.name ~ *\"${searchTerm.value}\"* "
-                        + "| alternative_names.name ~ *\"${searchTerm.value}\"* | parent_game.name ~ *\"${searchTerm.value}\"* | remakes.name ~ *\"${searchTerm.value}\"*"
-                ).limit(20)
-            gameList.value.value = kotlin.collections.emptyList()
+                .where("(name ~ *\"${searchTerm.value}\"* | franchise.name ~ *\"${searchTerm.value}\"* "
+                        + "| alternative_names.name ~ *\"${searchTerm.value}\"* | parent_game.name ~ *\"${searchTerm.value}\"* | remakes.name ~ *\"${searchTerm.value}\"*)"
+                ).limit(toLoad.value.value)
+//            gameList.value.value = kotlin.collections.emptyList()
             try{
                 gameList.value.value = IGDBWrapper.games(apicalypse)
                 searching.value.value = false
@@ -48,5 +49,13 @@ class SearchRepository @Inject constructor()
 
     fun setSearchTerm(term: String){
         this.searchTerm.value = term
+    }
+
+    fun setToLoad(v : Int){
+        toLoad.value.value = v
+    }
+
+    fun loadMore(){
+        toLoad.value.value += 10
     }
 }

@@ -55,11 +55,16 @@ fun NexusSearchRoute(
 
             SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.onSearchEvent() }) {
                 Column(
-                    modifier = Modifier.verticalScroll(rememberScrollState()).fillMaxHeight()
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .fillMaxHeight()
                 ) {
-                    if (vM.isSearching()) {
+                    if (vM.isRefreshing()) {
                         Row(
-                            Modifier.fillMaxWidth().padding(5.dp).height(50.dp),
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(5.dp)
+                                .height(50.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
 
@@ -79,6 +84,18 @@ fun NexusSearchRoute(
                                     focusManager
                                 )
                             }
+                            Row(Modifier.fillMaxWidth(), Arrangement.Center){
+                                if(!vM.isSearching()){
+                                    Button(onClick = { vM.loadMore() }) {
+                                        Text("load more" )
+                                    }
+                                } else {
+
+                                    CircularProgressIndicator()
+                                }
+                            }
+
+
                         }
 
                     }
