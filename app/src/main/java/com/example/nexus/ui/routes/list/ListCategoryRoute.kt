@@ -1,27 +1,24 @@
 package com.example.nexus.ui.routes.list
 
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composable
-import androidx.compose.material.Text
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.nexus.viewmodels.NexusListViewModel
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Surface
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.runtime.*
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.dataClasses.SortOptions
+import com.example.nexus.data.dataClasses.SortOptionsList
 import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Dropped
 import com.example.nexus.ui.theme.Planned
@@ -33,21 +30,62 @@ fun ListCategoryRoute(
     vM: NexusListViewModel,
     onOpenGameDetails : (gameId: Long) -> Unit
 ) {
-    val games by vM.getCategory(category.value).collectAsState()
-    ListCategoryScreen(games, onOpenGameDetails)
+    val games by vM.getCategoryByName(category.value).collectAsState()
+    ListCategoryScreen(games, onOpenGameDetails, vM)
 }
 
 @Composable
 fun ListCategoryScreen(
     games: List<ListEntry>,
-    onOpenGameDetails : (gameId: Long) -> Unit
+    onOpenGameDetails : (gameId: Long) -> Unit,
+    vM: NexusListViewModel
 ){
-    LazyColumn(
-    ){
-        items(games) {game ->
-            ListItem(game = game, onOpenGameDetails)
+    Column(){
+        Row(modifier = Modifier.fillMaxWidth()) {
+            
+            var expanded by remember { mutableStateOf(false)}
+            
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(Icons.Default.Sort, contentDescription = "sort")
+            }
+            var entry = ""
+            entry = if (games.size == 1){
+                "entry"
+            } else {
+                "entries"
+            }
+            
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                val sortOptions = ArrayList<String>(SortOptionsList)
+                if (vM.getSelectedCategory() == ListCategory.ALL){
+                    sortOptions.add(0, SortOptions.STATUS.value)
+                }
+                sortOptions.forEach { sortOption -> 
+                    DropdownMenuItem(onClick = { expanded = false
+                                                 vM.setSortOption(sortOption) }) {
+                        Text(text = sortOption)
+                    }
+                }
+            }
+            
+            Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth(0.9f)){
+                Text("${games.size} $entry", modifier = Modifier.padding(top = 10.dp))
+            }
+            Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()){
+                IconButton(onClick = { vM.toggleDescendingOrAscendingIcon()
+                                       }) {
+                    Icon(vM.getDescendingOrAscendingIcon(), contentDescription = "asc-desc")
+                }
+            }
+        }
+        LazyColumn(
+        ){
+            items(games) {game ->
+                ListItem(game = game, onOpenGameDetails)
+            }
         }
     }
+
 }
 
 @Composable
@@ -58,7 +96,7 @@ fun ListItem(
     Surface(
         modifier = Modifier
             .padding(vertical = 4.dp)
-            .clickable {onOpenGameDetails(game.gameId)}
+            .clickable { onOpenGameDetails(game.gameId) }
     ) { Row(){
             Image(painter = rememberAsyncImagePainter(game.coverUrl), contentDescription = "cover",
                 contentScale = ContentScale.Fit,

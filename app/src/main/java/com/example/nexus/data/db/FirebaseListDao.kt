@@ -45,6 +45,7 @@ class FirebaseListDao @Inject constructor(
                         )
                     )
                 }
+                newList.sortBy { entry: ListEntry -> entry.title }
                 playing.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLAYING.value } }
                 completed.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.COMPLETED.value } }
                 planned.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }

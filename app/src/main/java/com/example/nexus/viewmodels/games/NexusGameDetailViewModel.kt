@@ -182,7 +182,7 @@ class NexusGameDetailViewModel @Inject constructor(
     fun deleteListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.deleteListEntry(entry) }
 
     val allGames: StateFlow<List<ListEntry>> by lazy {
-        listRepository.allGames.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        listRepository.getAllGames().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     enum class GameFormButton(val value: String){
