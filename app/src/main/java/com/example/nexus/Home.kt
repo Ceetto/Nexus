@@ -26,6 +26,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.nexus.ui.components.NexusTopBar
+import com.example.nexus.ui.navigation.LeafScreen
 import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
 import com.example.nexus.ui.theme.NexusBlack
@@ -45,7 +46,9 @@ fun Home(
         val currentSelectedItem by navController.currentScreenAsState()
         BottomNavigationBar(selectedNavigation = currentSelectedItem,
             onNavigationSelected = { selected ->
-                println(selected.route)
+                while(navController.navigateUp()){
+                    navController.navigateUp()
+                }
                 navController.navigate(selected.route) {
                     launchSingleTop = true
                     restoreState = true
@@ -53,18 +56,14 @@ fun Home(
                     popUpTo(navController.graph.findStartDestination().id) {
                         saveState = true
                     }
+
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(65.dp)
         )
-    },
-//        backgroundColor = NexusGray,
-//        topBar = {NexusTopBar (
-//            navController, true
-//        )}
-    ){
+    },){
         Row(Modifier.fillMaxSize()) {
             NexusNavGraph(navController, modifier = Modifier
                 .fillMaxSize()

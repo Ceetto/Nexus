@@ -15,7 +15,7 @@ import com.example.nexus.ui.routes.search.NexusGameDetailRoute
 import com.example.nexus.ui.routes.search.NexusSearchRoute
 
 
-sealed class Screen(val route: String){
+sealed class Screen(open val route: String){
     object Login : Screen("login")
     object Home : Screen("home")
     object Notifications : Screen("notifications")
@@ -27,8 +27,8 @@ sealed class Screen(val route: String){
 }
 
 sealed class LeafScreen(
-    private val route: String
-) {
+    override val route: String
+) : Screen(route) {
     fun createRoute(root: Screen) = "${root.route}/$route"
 
     object GameDetail : LeafScreen("game/{gameId}"){
