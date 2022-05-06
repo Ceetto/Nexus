@@ -27,12 +27,14 @@ fun SearchResultComponent(
     focusManager: FocusManager
 ){
     Row(modifier = Modifier
-        .padding(bottom = 5.dp)
-        .fillMaxWidth()
-        .pointerInput(Unit) {
-            detectTapGestures(onTap = { onClick(game.id)
-                                        focusManager.clearFocus()})
-        }
+            .padding(bottom = 5.dp)
+            .fillMaxWidth()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    onClick(game.id)
+                    focusManager.clearFocus()
+                })
+            }
     ){
         Image(
             painter = rememberAsyncImagePainter(game.cover
