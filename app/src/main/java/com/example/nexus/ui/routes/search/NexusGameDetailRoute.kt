@@ -86,7 +86,7 @@ fun NexusGameDetailRoute(
                         it.imageId,
                         ImageSize.COVER_BIG,
                         ImageType.JPEG
-                    )}, false))
+                    )}, false, game.firstReleaseDate.seconds))
                 vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
             }
 

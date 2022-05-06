@@ -29,6 +29,7 @@ class GameDetailRepository @Inject constructor() {
                 "similar_games.cover.image_id,parent_game.cover.image_id," +
                 "franchises.games.name, franchises.games.cover.image_id," +
                 "genres.name,release_dates.human,release_dates.region,release_dates.platform.abbreviation," +
+                "first_release_date," +
                 "name,rating,rating_count,summary,storyline").where("id = $gameId")
         try{
             val gameRes: List<Game> = IGDBWrapper.games(apicalypse)

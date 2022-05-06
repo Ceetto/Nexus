@@ -6,4 +6,5 @@ data class ListEntry(val gameId: Long,
                      var minutesPlayed: Int,
                      var status: String,
                      val coverUrl: String?,
-                     var favorited: Boolean)
+                     var favorited: Boolean,
+                     val releaseDate: Long)

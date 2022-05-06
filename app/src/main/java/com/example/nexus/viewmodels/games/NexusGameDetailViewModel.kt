@@ -38,7 +38,7 @@ class NexusGameDetailViewModel @Inject constructor(
     private var gameFormOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
     private val currentListEntry = mutableStateOf(ListEntry(0, "", 0,
-    0, "", "", false))
+    0, "", "", false, 0))
     private val minutes = mutableStateOf("0")
     private val hours = mutableStateOf("0")
     private val editOrAddGames = mutableStateOf(GameFormButton.ADD.value)
