@@ -64,7 +64,7 @@ fun ListItem(
 
             Column() {
                 Text(text = game.title,
-                    fontSize = 25.sp)
+                    fontSize = 20.sp)
 
                 Row() {
                     Surface(
