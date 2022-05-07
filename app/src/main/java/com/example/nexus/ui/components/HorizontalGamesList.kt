@@ -19,11 +19,10 @@ import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
-import com.example.nexus.viewmodels.NexusHomeViewModel
 import proto.Game
 
 @Composable
-fun HomePageGameComponent(
+fun HorizontalGameDisplayComponent(
     game: Game,
     onClick: (gameId: Long) -> Unit,
     focusManager: FocusManager
@@ -63,7 +62,7 @@ fun HorizontalGamesListingComponent(
         if(!isFetching){
             Row(Modifier.horizontalScroll(rememberScrollState())){
                 list.forEach { game -> Row{
-                    HomePageGameComponent(game, onOpenGameDetails, focusManager)
+                    HorizontalGameDisplayComponent(game, onOpenGameDetails, focusManager)
                 } }
             }
 

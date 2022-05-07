@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import proto.AgeRatingCategoryEnum
+import proto.AgeRatingRatingEnum
 import proto.Game
 import proto.Platform
 import java.lang.Exception
@@ -36,6 +38,7 @@ class NexusGameDetailViewModel @Inject constructor(
     private val isRefreshing = mutableStateOf(false)
 
     private var gameFormOpen = mutableStateOf(false)
+    private var ageVerifOpen = mutableStateOf(false)
     private var showErrorPopup = mutableStateOf(false)
     private val currentListEntry = mutableStateOf(ListEntry(0, "", 0,
     0, "", "", false, 0))
@@ -49,7 +52,7 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun onGetGameEvent(){
 
-        if(gameList.value.value.isNotEmpty() && gameList.value.value[0].id != gameId){
+        if(gameList.value.value.isNotEmpty() && (gameList.value.value[0].id != gameId || isAdult())){
             gameList.value.value = emptyList()
         }
         viewModelScope.launch {
@@ -57,6 +60,9 @@ class NexusGameDetailViewModel @Inject constructor(
                 isRefreshing.value = true
                 repo.getGameById(gameId)
                 isRefreshing.value = false
+                if(isAdult()){
+                    onAgeVerifOpenChange(true)
+                }
             } catch(e: Exception){
 
             }
@@ -65,6 +71,26 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun isRefreshing(): Boolean{
         return isRefreshing.value
+    }
+
+    fun isAdult(): Boolean{
+        if(gameList.value.value.isNotEmpty()){
+            val game = gameList.value.value[0]
+            for(rating in game.ageRatingsList){
+                if(rating.category == AgeRatingCategoryEnum.PEGI && rating.rating == AgeRatingRatingEnum.EIGHTEEN){
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    fun ageVerifOpen(): Boolean{
+        return ageVerifOpen.value
+    }
+
+    fun onAgeVerifOpenChange(v : Boolean){
+        ageVerifOpen.value = v
     }
 
     fun getIcon(): ImageVector {
