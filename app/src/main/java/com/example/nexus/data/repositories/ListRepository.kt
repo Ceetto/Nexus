@@ -1,11 +1,12 @@
 package com.example.nexus.data.repositories
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import com.example.nexus.ui.routes.ListCategory
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -82,6 +83,19 @@ class ListRepository @Inject constructor(
         }
         return sortGames(entries)
     }
+
+    fun getCategoryByName(category: String): Flow<List<ListEntry>> {
+        val games: Flow<List<ListEntry>> =
+            when(category){
+                ListCategory.PLAYING.value -> firebaseListDao.getPlaying()
+                ListCategory.COMPLETED.value -> firebaseListDao.getCompleted()
+                ListCategory.PLANNED.value -> firebaseListDao.getPlanned()
+                ListCategory.DROPPED.value -> firebaseListDao.getDropped()
+                else -> {firebaseListDao.getAll()}
+            }
+        return games
+    }
+
 
     val favorites = firebaseListDao.getFavorites()
 
