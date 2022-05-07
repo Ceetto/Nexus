@@ -10,17 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
-import com.example.nexus.data.repositories.ListRepository
-import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 @Composable
 fun AgeConfirmComponent(
