@@ -29,6 +29,7 @@ import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.ui.components.AgeConfirmComponent
 import com.example.nexus.ui.components.gameForm.GameFormComponent
 import com.example.nexus.ui.components.HorizontalGamesListingComponent
 import com.example.nexus.ui.components.LinkComponent
@@ -55,7 +56,6 @@ fun NexusGameDetailRoute(
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true) }
     ) {
-
         if(vM.getGameList().isNotEmpty()) {
             val game = vM.getGameList()[0]
             //checks if the game is already in your list
@@ -90,7 +90,7 @@ fun NexusGameDetailRoute(
                 vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
             }
 
-            if(!vM.getGameFormOpen()){
+            if(!vM.getGameFormOpen() && !vM.ageVerifOpen()){
                 SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.onGetGameEvent() }) {
                     Column(Modifier.verticalScroll(rememberScrollState())) {
                         Row() {
@@ -259,6 +259,27 @@ fun NexusGameDetailRoute(
                             }
                         }
 
+                        Column(Modifier.padding(5.dp)){
+                            var devs = ""
+                            var pubs = ""
+                            for (comp in game.involvedCompaniesList){
+                                if(comp.developer)
+                                    devs += comp.company.name + ", "
+                                if(comp.publisher)
+                                    pubs += comp.company.name + ", "
+                            }
+                            devs = devs.dropLast(2)
+                            pubs = pubs.dropLast(2)
+                            Row{
+                                Text("Developer(s): ", fontWeight = FontWeight.Bold)
+                                Text(devs)
+                            }
+                            Row{
+                                Text("Publisher(s): ", fontWeight = FontWeight.Bold)
+                                Text(pubs)
+                            }
+                        }
+
                         Column(Modifier.padding(5.dp)) {
                             Text(
                                 "Links:",
@@ -301,7 +322,12 @@ fun NexusGameDetailRoute(
                     }
                 }
             } else {
-                GameFormComponent(vM)
+                if(vM.getGameFormOpen()){
+                    GameFormComponent(vM)
+                } else{
+                    AgeConfirmComponent(vM, navController)
+                }
+
             }
         } else {
             Row(
