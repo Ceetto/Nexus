@@ -46,9 +46,12 @@ fun Home(
         val currentSelectedItem by navController.currentScreenAsState()
         BottomNavigationBar(selectedNavigation = currentSelectedItem,
             onNavigationSelected = { selected ->
-                while(navController.navigateUp()){
-                    navController.navigateUp()
+                if(selected == currentSelectedItem){
+                    while(navController.navigateUp()){
+                        navController.navigateUp()
+                    }
                 }
+
                 navController.navigate(selected.route) {
                     launchSingleTop = true
                     restoreState = true
