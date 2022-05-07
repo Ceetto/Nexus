@@ -1,11 +1,43 @@
 package com.example.nexus.ui.routes.settings
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraph
+import androidx.navigation.NavHostController
+import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusProfileViewModel
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun NexusSettingsUsername(vM: NexusProfileViewModel){
-    Text("username")
+fun NexusSettingsUsername(vM: NexusProfileViewModel, navController: NavHostController){
+    Scaffold(
+        topBar = { NexusTopBar(navController = navController, canPop = true) }
+    ) {
+        Column(){
+            Row(){
+                Text(text = "New Username: ")
+                //TextField(value = {  }, onValueChange = "set variabele")
+            }
+
+            Row(){
+                Text(text = "Confirm Username: ")
+                //TextField(value = {  }, onValueChange = "set variabele")
+
+            }
+
+            Row(horizontalArrangement = Arrangement.Center){
+                Button(onClick = {}){
+                    Text(text = "Save")
+                }
+            }
+        }
+    }
 
 }

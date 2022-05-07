@@ -96,7 +96,7 @@ enum class ListCategory(val value: String){
     PLAYING("Playing"),
     COMPLETED("Completed"),
     PLANNED("Planned"),
-    DROPPED("Dropped")
+    DROPPED("Dropped"),
 }
 
 fun getAllListCategories(): List<ListCategory> =

@@ -13,6 +13,10 @@ import com.example.nexus.ui.routes.*
 import com.example.nexus.ui.routes.NexusListRoute
 import com.example.nexus.ui.routes.search.NexusGameDetailRoute
 import com.example.nexus.ui.routes.search.NexusSearchRoute
+import com.example.nexus.ui.routes.settings.NexusSettingsBackground
+import com.example.nexus.ui.routes.settings.NexusSettingsPicture
+import com.example.nexus.ui.routes.settings.NexusSettingsRoute
+import com.example.nexus.ui.routes.settings.NexusSettingsUsername
 
 
 sealed class Screen(open val route: String){
@@ -44,14 +48,14 @@ sealed class LeafScreen(
 //        }
 //    }
 
-    //TODO navigation van de verschillende settings pages
-//    object SettingsPages : LeafScreen("settings/{settingScreen}"){
-//        fun createRoute(root: Screen, settingsPage: String): String {
-//            return "${root.route}/$settingsPage"
-//        }
-//    }
+    object SettingsPages : LeafScreen("setting/{settingsPage}"){
+        fun createRoute(root : Screen, settingsPage: String) : String {
+            return "${root.route}/setting/$settingsPage"
+        }
+    }
 
-    object Settings: LeafScreen("settings")
+    object Settings : LeafScreen("settings")
+    object Profile : LeafScreen("profile")
     object Search : LeafScreen("search")
     object Home : LeafScreen("home")
     object List : LeafScreen("list")
@@ -74,7 +78,7 @@ fun NexusNavGraph(
         addNotificationsScreen(navController)
         addListScreenTopLevel(navController)
         addFriendsScreen(navController)
-        addProfileScreen(navController)
+        addProfileScreenTopLevel(navController)
         addSearchScreenTopLevel(navController)
         addSettingsScreenTopLevel(navController)
         addHomeScreenTopLevel(navController)
@@ -118,18 +122,65 @@ private fun NavGraphBuilder.addSettingsScreenTopLevel(
         startDestination = LeafScreen.Settings.createRoute(Screen.Settings)
     ) {
         addSettingsScreen(navController, Screen.Settings)
+        addChangeUsernameScreen(navController, Screen.Settings)
+        addChangeProfilePictureScreen(navController, Screen.Settings)
+        addChangeProfileBackgroundScreen(navController, Screen.Settings)
     }
 }
+
+private fun NavGraphBuilder.addChangeUsernameScreen(
+    navController: NavHostController,
+    root: Screen
+){
+
+    composable(
+        route = LeafScreen.SettingsPages.createRoute(root,"username")
+    ){
+        NexusSettingsUsername(vM = hiltViewModel(), navController)
+    }
+}
+
+private fun NavGraphBuilder.addChangeProfilePictureScreen(
+    navController: NavHostController,
+    root: Screen
+){
+
+    composable(
+        route = LeafScreen.SettingsPages.createRoute(root,"picture")
+    ){
+        NexusSettingsPicture(vM = hiltViewModel(), navController)
+    }
+}
+
+
+private fun NavGraphBuilder.addChangeProfileBackgroundScreen(
+    navController: NavHostController,
+    root: Screen
+){
+
+    composable(
+        route = LeafScreen.SettingsPages.createRoute(root,"background")
+    ){
+        NexusSettingsBackground(vM = hiltViewModel(), navController)
+    }
+}
+
 
 private fun NavGraphBuilder.addSettingsScreen(
     navController: NavHostController,
     root: Screen
 ){
+    println(LeafScreen.Settings.createRoute(root))
     composable(
         route = LeafScreen.Settings.createRoute(root)
+
     ){
         NexusSettingsRoute(
-            vM = hiltViewModel(), navController = navController
+            vM = hiltViewModel(),
+            navController = navController,
+            onUsernameClick = {navController.navigate(LeafScreen.SettingsPages.createRoute(root, "username"))},
+            onPictureClick = {navController.navigate(LeafScreen.SettingsPages.createRoute(root, "picture"))},
+            onBackgroundClick = {navController.navigate(LeafScreen.SettingsPages.createRoute(root, "background"))}
         )
     }
 
@@ -238,13 +289,29 @@ private fun NavGraphBuilder.addFriendsScreen(
     }
 }
 
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addProfileScreenTopLevel(
+    navController: NavHostController
+){
+    navigation(
+        route = Screen.Profile.route,
+        startDestination = LeafScreen.Profile.createRoute(Screen.Profile)
+    ){
+        addProfileScreen(navController, Screen.Profile)
+        addGameDetails(navController, Screen.Profile)
+    }
+}
+
 private fun NavGraphBuilder.addProfileScreen(
     navController: NavHostController,
+    root: Screen
 ){
     composable(
-        route = Screen.Profile.route,
+        route = LeafScreen.Profile.createRoute(root),
     ){
-        NexusProfileRoute(vM = hiltViewModel(), navController, vMList = hiltViewModel())
+        NexusProfileRoute(vM = hiltViewModel(), navController, onOpenGameDetails = {
+                gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+        })
     }
 }
 
