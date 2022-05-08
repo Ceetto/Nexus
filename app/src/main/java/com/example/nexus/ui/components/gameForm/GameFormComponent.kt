@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.routes.ListCategory
-import com.example.nexus.ui.components.list.ListCategoryColors
+import com.example.nexus.ui.routes.ListCategoryColors
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable

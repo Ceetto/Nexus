@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
@@ -22,7 +23,11 @@ import com.example.nexus.viewmodels.NexusListViewModel
 @Composable
 fun SortListComponent(
     games: List<ListEntry>,
-    vM: NexusListViewModel
+    toggleDescendingOrAscendingIcon: () -> Unit,
+    getDescendingOrAscendingIcon:  () -> ImageVector,
+    getSelectedCategory: () -> ListCategory,
+    setSortOption: (String) -> Unit,
+    getSortOption: () -> String
 ){
     Row(modifier = Modifier.fillMaxWidth()) {
 
@@ -40,15 +45,15 @@ fun SortListComponent(
 
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             val sortOptions = ArrayList<String>(SortOptionsList)
-            if (vM.getSelectedCategory() == ListCategory.ALL){
+            if (getSelectedCategory() == ListCategory.ALL){
                 sortOptions.add(0, SortOptions.STATUS.value)
             }
             sortOptions.forEach { sortOption ->
                 DropdownMenuItem(onClick = { expanded = false
-                    vM.setSortOption(sortOption) }) {
+                    setSortOption(sortOption) }) {
                     Row(){
                         var icon = Icons.Default.RadioButtonUnchecked
-                        if (vM.getSortOption() == sortOption){
+                        if (getSortOption() == sortOption){
                             icon = Icons.Default.RadioButtonChecked
                         }
                         Icon(icon, contentDescription = "sort option checked",
@@ -64,9 +69,9 @@ fun SortListComponent(
             Text("${games.size} $entry", modifier = Modifier.padding(top = 10.dp))
         }
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()){
-            IconButton(onClick = { vM.toggleDescendingOrAscendingIcon()
+            IconButton(onClick = { toggleDescendingOrAscendingIcon()
             }) {
-                Icon(vM.getDescendingOrAscendingIcon(), contentDescription = "asc-desc")
+                Icon(getDescendingOrAscendingIcon(), contentDescription = "asc-desc")
             }
         }
     }
