@@ -5,7 +5,6 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.example.nexus.data.repositories.LoginRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -25,20 +24,6 @@ class NexusLoginViewModel  @Inject constructor(private val repo: LoginRepository
     }
     private var isPasswordVisible = mutableStateOf(false)
 
-    suspend fun signIn(username: String, password: String) {
-        isBusy.value = true
-        delay(1250)
-        isLoggedIn.value = true
-        isBusy.value = false
-    }
-
-    suspend fun signOut() {
-        isBusy.value = true
-        delay(1250)
-        isLoggedIn.value = false
-        isBusy.value = false
-    }
-
     fun onOpenDialogClicked() {
         _showDialog.value = true
     }
@@ -50,10 +35,6 @@ class NexusLoginViewModel  @Inject constructor(private val repo: LoginRepository
     fun onDialogDismiss() {
         _showDialog.value = false
     }
-
-    fun getUserId() = repo.getUserId()
-
-    fun setUserId(id: String) = repo.setUserId(id)
 
     fun getEmail(): String {
         return email.value
@@ -94,6 +75,12 @@ class NexusLoginViewModel  @Inject constructor(private val repo: LoginRepository
     fun getIsLoggedIn(): Boolean {
         return isLoggedIn.value
     }
+
+    fun createAccount() = repo.createAccount(email.value, password.value)
+
+    fun signIn() = repo.signIn(email.value, password.value)
+
+    fun signedIn() = repo.signedIn()
 }
 
 val UserState = compositionLocalOf<NexusLoginViewModel> { error("User State Context Not Found!") }

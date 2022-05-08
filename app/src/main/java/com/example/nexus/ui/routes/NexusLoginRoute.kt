@@ -1,7 +1,6 @@
 package com.example.nexus.ui.routes
 
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -27,20 +26,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.R
-import com.example.nexus.activities.MainActivity.Companion.TAG
 import com.example.nexus.viewmodels.NexusLoginViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
 @Composable
 fun NexusLoginRoute(vM: NexusLoginViewModel) {
-    val coroutineScope = rememberCoroutineScope()
-    val focusManager =  LocalFocusManager.current
     val showDialogState : Boolean by vM.showDialog.collectAsState()
-    val auth by lazy {
-        Firebase.auth
-    }
 
     Surface {
         Column(
@@ -54,103 +44,27 @@ fun NexusLoginRoute(vM: NexusLoginViewModel) {
                 CircularProgressIndicator()
             } else {
                 Logo()
-                OutlinedTextField(
-                    value = vM.getEmail(),
-                    label = { Text("Email Address") },
-                    placeholder = { Text("abc@domain.com") },
-                    onValueChange = { newText ->
-                        vM.setEmail(newText) },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions (
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),
-                    isError = !vM.getIsEmailValid(),
-                    trailingIcon = {
-                        if (vM.getEmail().isNotBlank()) {
-                            IconButton(onClick = { vM.setEmail("") }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = "Clear email"
-                                )
-                            }
-                        }
-                    }
+                EmailTextField(
+                    { vM.getEmail() },
+                    { e -> vM.setEmail(e) },
+                    { vM.getIsEmailValid() }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = vM.getPassword(),
-                    label = { Text("Password") },
-                    onValueChange = { newText ->
-                        vM.setPassword(newText) },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Next
-                    ),
-                    keyboardActions = KeyboardActions (
-                        onNext = { focusManager.clearFocus() }
-                    ),
-                    isError = !vM.getIsPasswordValid(),
-                    trailingIcon = {
-                        IconButton(onClick = { vM.setIsPasswordVisible(!vM.getIsPasswordVisible()) }) {
-                            Icon(imageVector = if(vM.getIsPasswordVisible()) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                contentDescription = "Toggle password visibility")
-                        }
-                    },
-                    visualTransformation = if(vM.getIsPasswordVisible()) VisualTransformation.None else PasswordVisualTransformation()
+                PasswordTextField(
+                    { vM.getPassword() },
+                    { e -> vM.setPassword(e) },
+                    { vM.getIsPasswordValid() },
+                    { e -> vM.setIsPasswordVisible(e) },
+                    { vM.getIsPasswordVisible() }
                 )
                 Spacer(modifier = Modifier.height(70.dp))
-                OutlinedButton(onClick = {
-                    auth.signInWithEmailAndPassword(vM.getEmail(), vM.getPassword())
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                coroutineScope.launch {
-                                    vM.signIn(vM.getEmail(), vM.getPassword())
-                                }
-                                Log.d(TAG, "The user has successfully logged in")
-                                val user = auth.currentUser
-                                if (user != null) {
-                                    vM.setUserId(user.uid)
-                                }
-                            } else {
-                                Log.w(TAG, "The user has FAILED to log in", it.exception)
-                                vM.onOpenDialogClicked()
-                            }
-                        }
-                    }, content = {
-                        Text("Login")
-                    }, enabled = vM.getIsPasswordValid() && vM.getIsEmailValid()
-                    , modifier = Modifier
-                        .height(40.dp)
-                        .width(225.dp)
-                    , shape = RoundedCornerShape(50)
-                    , colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xffa5dee5))
-                    , border = BorderStroke(1.dp, Color(0xffa5dee5))
+                LoginButton(
+                    { vM.getIsEmailValid() },
+                    { vM.getIsPasswordValid() },
+                    { vM.signIn() }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                OutlinedButton(onClick = {
-                    auth.createUserWithEmailAndPassword(vM.getEmail(), vM.getPassword())
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                coroutineScope.launch {
-                                    vM.signIn(vM.getEmail(), vM.getPassword())
-                                }
-                                Log.d(TAG, "The user registered a new account and logged in")
-                            } else {
-                                Log.w(TAG, "The user has FAILED to make a new account and log in", it.exception)
-                            }
-                        }
-                    }, content = {
-                    Text("Register")
-                    }, modifier = Modifier
-                    .height(40.dp)
-                    .width(225.dp)
-                    , shape = RoundedCornerShape(50)
-                    , colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xff84b2b7))
-                    , border = BorderStroke(1.dp, Color(0xff84b2b7))
-                )
+                RegisterButton { vM.createAccount() }
                 SimpleAlertDialog(
                     show = showDialogState,
                     onDismiss = vM::onDialogDismiss,
@@ -170,6 +84,111 @@ fun Logo() {
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .size(185.dp)
+    )
+}
+
+@Composable
+fun EmailTextField(
+    getEmail: () -> String,
+    setEmail: (String) -> Unit,
+    getIsEmailValid: () -> Boolean
+) {
+    val focusManager =  LocalFocusManager.current
+
+    OutlinedTextField(
+        value = getEmail(),
+        label = { Text("Email Address") },
+        placeholder = { Text("abc@domain.com") },
+        onValueChange = { newText ->
+            setEmail(newText) },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions (
+            onNext = { focusManager.moveFocus(FocusDirection.Down) }
+        ),
+        isError = !getIsEmailValid(),
+        trailingIcon = {
+            if (getEmail().isNotBlank()) {
+                IconButton(onClick = { setEmail("") }) {
+                    Icon(
+                        imageVector = Icons.Filled.Clear,
+                        contentDescription = "Clear email"
+                    )
+                }
+            }
+        }
+    )
+}
+
+@Composable
+fun PasswordTextField(
+    getPassword: () -> String,
+    setPassword: (String) -> Unit,
+    getIsPasswordValid: () -> Boolean,
+    setIsPasswordVisible: (Boolean) -> Unit,
+    getIsPasswordVisible: () -> Boolean
+) {
+    val focusManager =  LocalFocusManager.current
+
+    OutlinedTextField(
+        value = getPassword(),
+        label = { Text("Password") },
+        onValueChange = { newText ->
+            setPassword(newText) },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions (
+            onNext = { focusManager.clearFocus() }
+        ),
+        isError = getIsPasswordValid(),
+        trailingIcon = {
+            IconButton(onClick = { setIsPasswordVisible(!getIsPasswordVisible()) }) {
+                Icon(imageVector = if(getIsPasswordVisible()) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                    contentDescription = "Toggle password visibility")
+            }
+        },
+        visualTransformation = if(getIsPasswordVisible()) VisualTransformation.None else PasswordVisualTransformation()
+    )
+}
+
+@Composable
+fun LoginButton(
+    getIsEmailValid: () -> Boolean,
+    getIsPasswordValid: () -> Boolean,
+    signIn: () -> Unit
+) {
+    OutlinedButton(onClick = {
+        signIn()
+    }, content = {
+        Text("Login")
+    }, enabled = getIsPasswordValid() && getIsEmailValid()
+        , modifier = Modifier
+            .height(40.dp)
+            .width(225.dp)
+        , shape = RoundedCornerShape(50)
+        , colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xffa5dee5))
+        , border = BorderStroke(1.dp, Color(0xffa5dee5))
+    )
+}
+
+@Composable
+fun RegisterButton(
+    createAccount: () -> Unit
+) {
+    OutlinedButton(onClick = {
+        createAccount()
+    }, content = {
+        Text("Register")
+    }, modifier = Modifier
+        .height(40.dp)
+        .width(225.dp)
+        , shape = RoundedCornerShape(50)
+        , colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xff84b2b7))
+        , border = BorderStroke(1.dp, Color(0xff84b2b7))
     )
 }
 

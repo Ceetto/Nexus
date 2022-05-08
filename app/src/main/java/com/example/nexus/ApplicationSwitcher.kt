@@ -14,7 +14,7 @@ import com.example.nexus.viewmodels.UserState
 @Composable
 fun ApplicationSwitcher() {
     val vM = UserState.current
-    if (vM.getIsLoggedIn()) {
+    if (vM.signedIn()) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
