@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.navigation.NavDirections
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.navigation.Screen
@@ -24,14 +25,22 @@ fun NexusTopBar(
 ){
     val onSettingsClick = {
         navController.navigate(Screen.Settings.route) {
-        launchSingleTop = true
-        restoreState = true
-    }}
+            launchSingleTop = true
+            restoreState = true
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+        }
+    }
     val onProfileClick = {
         navController.navigate(Screen.Profile.route) {
-        launchSingleTop = true
-        restoreState = true
-    }}
+            launchSingleTop = true
+            restoreState = true
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+        }
+    }
     if(canPop){
         TopAppBar(
             title = { Text("nexus") },
