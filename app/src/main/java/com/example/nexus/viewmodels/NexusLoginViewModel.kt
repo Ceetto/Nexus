@@ -7,19 +7,16 @@ import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusLoginViewModel  @Inject constructor(
     private val repo: LoginRepository,
     private val profileRepo : ProfileRepository) : ViewModel() {
-    private val _showDialog = MutableStateFlow(false)
-    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
-    private var isLoggedIn = mutableStateOf(false)
     private var isBusy = mutableStateOf(false)
     private var email = mutableStateOf("")
     private var password = mutableStateOf("")
+    private var isEmailValidTest = mutableStateOf(true)
     private val isEmailValid by derivedStateOf {
         Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
@@ -27,6 +24,14 @@ class NexusLoginViewModel  @Inject constructor(
         password.value.length > 7
     }
     private var isPasswordVisible = mutableStateOf(false)
+
+    fun checkEmail() {
+        isEmailValidTest.value = Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
+    }
+
+    fun getIsEmailValidTest(): Boolean {
+        return isEmailValidTest.value
+    }
 
     fun getEmail(): String {
         return email.value

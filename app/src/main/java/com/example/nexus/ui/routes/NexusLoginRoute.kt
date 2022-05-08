@@ -27,7 +27,8 @@ fun NexusLoginRoute(vM: NexusLoginViewModel) {
                 EmailTextField(
                     { vM.getEmail() },
                     { e -> vM.setEmail(e) },
-                    { vM.getIsEmailValid() }
+                    { vM.getIsEmailValid() },
+                    { vM.getIsEmailValidTest() }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 PasswordTextField(
@@ -41,7 +42,8 @@ fun NexusLoginRoute(vM: NexusLoginViewModel) {
                 LoginButton(
                     { vM.getIsEmailValid() },
                     { vM.getIsPasswordValid() },
-                    { vM.signIn() }
+                    { vM.signIn() },
+                    { vM.checkEmail() }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 RegisterButton { vM.createAccount() }
