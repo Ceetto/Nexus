@@ -85,7 +85,19 @@ fun ProfileStats(vM: NexusProfileViewModel) {
     val dropped by vM.getCategoryByName(ListCategory.DROPPED.value).collectAsState()
     val planned by vM.getCategoryByName(ListCategory.PLANNED.value).collectAsState()
     var minutes = 0.0
+    var tempScore = 0;
+    println(total.size)
     total.forEach {minutes += it.minutesPlayed.toDouble()}
+
+    val totalWithScore : List<ListEntry> = total.filter { it.score != 0 }
+    totalWithScore.forEach {tempScore += it.score}
+
+    println(tempScore)
+    println(totalWithScore.size)
+    var meanScore : Double = 0.0;
+    if (totalWithScore.isNotEmpty()) {
+        meanScore = ((tempScore / totalWithScore.size) * 10.0).roundToLong() / 10.0
+    }
 
     val hours : Double = ((minutes / 60) * 10.0).roundToLong() /10.0
     val days : Double = ((hours / 24) * 10.0).roundToLong() /10.0
@@ -105,6 +117,19 @@ fun ProfileStats(vM: NexusProfileViewModel) {
                 .weight(1f, true)
                 .padding(10.dp))
         }
+
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+        ){
+            Text(text = "Mean Score: ", modifier = Modifier
+                .weight(3f, true)
+                .padding(10.dp))
+            Text(text = "$meanScore", modifier = Modifier
+                .weight(1f, true)
+                .padding(10.dp))
+        }
+
 
         Divider(
             color = Color.White,
