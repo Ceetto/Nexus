@@ -17,7 +17,7 @@ class LoginRepository @Inject constructor() {
     private var isLoggedIn = mutableStateOf(auth.currentUser != null)
 
     fun getUserId(): String {
-        return auth.currentUser!!.uid
+        return auth.currentUser?.uid ?: ""
     }
 
     fun getIsLoggedIn(): Boolean {
