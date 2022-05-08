@@ -1,4 +1,4 @@
-package com.example.nexus.ui.routes;
+package com.example.nexus.ui.routes.settings;
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusProfileViewModel
@@ -23,7 +22,11 @@ import com.example.nexus.viewmodels.NexusProfileViewModel
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NexusSettingsRoute(
-    vM: NexusProfileViewModel, navController: NavHostController
+    vM: NexusProfileViewModel,
+    navController: NavHostController,
+    onUsernameClick: () -> Unit,
+    onPictureClick: () -> Unit,
+    onBackgroundClick: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     Scaffold(
@@ -36,7 +39,7 @@ fun NexusSettingsRoute(
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 6.dp, bottom = 3.dp)) {
-                Button(onClick = {  },modifier = Modifier
+                Button(onClick = {onUsernameClick()} ,modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
                     Text("Change Username", textAlign = TextAlign.Start)
@@ -48,19 +51,7 @@ fun NexusSettingsRoute(
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 3.dp, bottom = 3.dp)) {
-                Button(onClick = {},modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp), shape = RoundedCornerShape(0)) {
-                    Text("Change Password", textAlign = TextAlign.Start)
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(">")
-                }
-            }
-
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp, bottom = 3.dp)) {
-                Button(onClick = {},modifier = Modifier
+                Button(onClick = onBackgroundClick, modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
                     Text("Change Profile Background", textAlign = TextAlign.Start)
@@ -72,7 +63,7 @@ fun NexusSettingsRoute(
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 3.dp, bottom = 3.dp)) {
-                Button(onClick = {},modifier = Modifier
+                Button(onClick = onPictureClick,modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
                     Text("Change Profile Picture", textAlign = TextAlign.Start)
