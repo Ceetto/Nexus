@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -34,13 +35,18 @@ import kotlin.math.roundToInt
 
 @Composable
 fun GameDetailComponent(
-    vM: NexusGameDetailViewModel,
     game: Game,
     found: Boolean,
     onOpenGameDetails: (gameId: Long) -> Unit,
-    focusManager: FocusManager
+    focusManager: FocusManager,
+    isRefreshing: Boolean,
+    onGetGameEvent: () -> Unit,
+    onGameFormOpenChanged: (Boolean) -> Unit,
+    getEditOrAddGames: String,
+    onFavourite: () -> Unit,
+    getIcon : ImageVector
 ){
-    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.onGetGameEvent() }) {
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = isRefreshing), onRefresh = onGetGameEvent ) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
             Row() {
                 Column{
@@ -106,16 +112,14 @@ fun GameDetailComponent(
                     //edit/add game button + favorite toggle
                     Row(modifier = Modifier.padding(10.dp),
                         horizontalArrangement = Arrangement.Center){
-                        Button(onClick = { vM.onGameFormOpenChanged(true) }) {
-                            Text(text = vM.getEditOrAddGames())
+                        Button(onClick = { onGameFormOpenChanged(true) }) {
+                            Text(text = getEditOrAddGames)
                         }
                         if (found){
                             IconButton(onClick = {
-                                vM.toggleIcon()
-                                vM.setFavorite(vM.getFavoriteToggled())
-                                vM.storeListEntry(vM.getListEntry())
+                                onFavourite()
                             }, modifier = Modifier.padding(start = 5.dp)) {
-                                Icon(vM.getIcon() , contentDescription = "favorite",
+                                Icon(getIcon , contentDescription = "favorite",
                                     tint = Color.Yellow, modifier = Modifier.size(40.dp))
                             }
                         }
@@ -238,7 +242,6 @@ fun GameDetailComponent(
                     LinkComponent(website)
                 }
             }
-//                    arrayListOf(game.parentGame) +
             val relatedGames = emptyList<Game>().toMutableList()
             if (game.parentGame.name.isNotEmpty()) {
                 relatedGames += game.parentGame
