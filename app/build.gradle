@@ -60,6 +60,7 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.4'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
     // For Robolectric tests.
@@ -104,13 +105,4 @@ dependencies {
 
     //system ui
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
-
-    //coroutines (for tests)
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
-
-    //swipe refresh
-    implementation "com.google.accompanist:accompanist-swiperefresh:0.24.7-alpha"
-
-    //icons
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 }

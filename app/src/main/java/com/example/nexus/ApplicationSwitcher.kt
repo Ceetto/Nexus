@@ -9,12 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.nexus.ui.routes.NexusLoginRoute
 import com.example.nexus.viewmodels.UserState
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationSwitcher() {
     val vm = UserState.current
-    if (vm.isLoggedIn) {
+    if (vm.getIsLoggedIn()) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
@@ -22,6 +23,6 @@ fun ApplicationSwitcher() {
             Home()
         }
     } else {
-        NexusLoginRoute(vM = hiltViewModel())
+        NexusLoginRoute(vm)
     }
 }
