@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
@@ -40,9 +41,9 @@ fun NexusSettingsBackground(vM: NexusProfileViewModel, navController: NavHostCon
     val bitmap =  remember {
         mutableStateOf<Bitmap?>(null)
     }
-
+    val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = true) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
         Column()
          {

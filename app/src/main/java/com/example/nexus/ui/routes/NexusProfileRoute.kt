@@ -51,7 +51,7 @@ fun NexusProfileRoute(
 fun InitProfile(vM: NexusProfileViewModel,
                     navController: NavHostController,
                     onOpenGameDetails: (gameId: Long) -> Unit){
-
+    val focusManager = LocalFocusManager.current
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
