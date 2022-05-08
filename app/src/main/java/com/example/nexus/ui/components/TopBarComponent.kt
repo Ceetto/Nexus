@@ -23,28 +23,14 @@ fun NexusTopBar(
     focusManager: FocusManager
 ){
     val onSettingsClick = {
-        while(navController.navigateUp()){
-            navController.navigateUp()
-        }
         navController.navigate(Screen.Settings.route) {
         launchSingleTop = true
         restoreState = true
-
-//        popUpTo(navController.graph.findStartDestination().id) {
-//            saveState = true
-//        }
     }}
     val onProfileClick = {
-        while(navController.navigateUp()){
-            navController.navigateUp()
-        }
         navController.navigate(Screen.Profile.route) {
         launchSingleTop = true
         restoreState = true
-
-        popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
-        }
     }}
     if(canPop){
         TopAppBar(

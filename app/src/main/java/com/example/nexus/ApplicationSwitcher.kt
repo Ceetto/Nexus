@@ -13,8 +13,8 @@ import com.example.nexus.viewmodels.UserState
 @OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 fun ApplicationSwitcher() {
-    val vm = UserState.current
-    if (vm.getIsLoggedIn()) {
+    val vM = UserState.current
+    if (vM.getIsLoggedIn()) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
