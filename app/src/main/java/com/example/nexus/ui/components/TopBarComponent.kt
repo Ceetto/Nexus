@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.navigation.Screen
@@ -17,9 +19,11 @@ import com.example.nexus.ui.theme.NexusBlack
 @Composable
 fun NexusTopBar(
     navController: NavHostController,
-    canPop: Boolean
+    canPop: Boolean,
+    focusManager: FocusManager
 ){
     val onSettingsClick = {
+        focusManager.clearFocus()
         while(navController.navigateUp()){
             navController.navigateUp()
         }
@@ -27,9 +31,9 @@ fun NexusTopBar(
         launchSingleTop = true
         restoreState = true
 
-        popUpTo(navController.graph.findStartDestination().id) {
-            saveState = true
-        }
+//        popUpTo(navController.graph.findStartDestination().id) {
+//            saveState = true
+//        }
     }}
     val onProfileClick = {
         while(navController.navigateUp()){

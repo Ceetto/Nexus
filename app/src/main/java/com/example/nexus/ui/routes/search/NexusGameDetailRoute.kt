@@ -42,7 +42,7 @@ fun NexusGameDetailRoute(
         vM.onGetGameEvent()
     }
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = true) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
         if(vM.getGameList().isNotEmpty()) {
             val game = vM.getGameList()[0]

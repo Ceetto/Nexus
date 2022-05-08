@@ -36,7 +36,7 @@ fun NexusSearchRoute(
 ) {
     val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = false) },
+        topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) },
         modifier = Modifier.pointerInput(Unit) {
             detectTapGestures(onTap = { focusManager.clearFocus()})}
     ) {
