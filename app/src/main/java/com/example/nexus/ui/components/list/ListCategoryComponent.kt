@@ -1,10 +1,12 @@
 package com.example.nexus.ui.components.list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -14,6 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -81,10 +85,16 @@ fun ListItem(
         modifier = Modifier
             .padding(vertical = 4.dp)
             .clickable { onOpenGameDetails(game.gameId) }
-    ) { Row(){
+    ) { Row(Modifier.height(100.dp)){
+            ListCategoryColors[game.status]?.let {
+                Modifier.fillMaxHeight().width(10.dp).clip(RectangleShape).padding(start = 5.dp).background(
+                    it
+                )
+            }?.let { Divider(modifier = it) }
+
             Image(painter = rememberAsyncImagePainter(game.coverUrl), contentDescription = "cover",
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.size(120.dp))
+                modifier = Modifier.size(100.dp))
 
             Column() {
                 Text(text = game.title,
