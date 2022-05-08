@@ -72,6 +72,19 @@ fun NexusSettingsRoute(
                 }
             }
 
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 3.dp, bottom = 3.dp)) {
+                Button(onClick = { vM.logOut() }, modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp), shape = RoundedCornerShape(0)) {
+                    Text("Log Out", textAlign = TextAlign.Start)
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(">")
+                }
+            }
+
+
         }
 
     }

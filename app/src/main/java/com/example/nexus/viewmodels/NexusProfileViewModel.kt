@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -13,13 +14,17 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class NexusProfileViewModel @Inject constructor(private val profileRepo: ProfileRepository, private  val listRepo: ListRepository) : ViewModel(){
+class NexusProfileViewModel @Inject constructor(private val profileRepo: ProfileRepository,
+                                                private  val listRepo: ListRepository,
+                                                private val loginRepo: LoginRepository) : ViewModel(){
 
     val favorites = listRepo.favorites.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
         return listRepo.getCategoryByName(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
+
+    fun logOut() = loginRepo.signOut()
 
 
 }
