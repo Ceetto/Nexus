@@ -33,7 +33,7 @@ class FirebaseUserDao @Inject constructor(
         "",
         0L))
 
-    private val username = mutableStateOf("")
+    private val username = mutableStateOf("New User")
 
     private val eventListener =
         object: ValueEventListener {
