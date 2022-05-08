@@ -3,6 +3,7 @@ package com.example.nexus.data.db
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.ui.routes.ListCategory
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -18,9 +19,10 @@ import javax.inject.Singleton
 
 @Singleton
 class FirebaseListDao @Inject constructor(
-    private val database: FirebaseDatabase
+    private val database: FirebaseDatabase,
+    private val loginRepo: LoginRepository
 ){
-    private val listEntryRef = database.getReference("listEntry")
+    private val listEntryRef = database.getReference("user/${loginRepo.getUserId()}/list")
 
     var doneFetching = mutableStateOf(false)
 

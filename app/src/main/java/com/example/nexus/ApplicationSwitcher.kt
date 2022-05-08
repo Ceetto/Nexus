@@ -22,7 +22,7 @@ fun ApplicationSwitcher() {
             Home()
         }
     } else {
-        //NexusLoginRoute(vm)
-        Home()
+        NexusLoginRoute(vM)
+//        Home()
     }
 }

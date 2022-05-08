@@ -12,8 +12,8 @@ class LoginRepository @Inject constructor() {
 
     private val userId = mutableStateOf("")
 
-    fun getUserId(): MutableState<String> {
-        return userId
+    fun getUserId(): String {
+        return userId.value
     }
 
     fun setUserId(id: String) {
