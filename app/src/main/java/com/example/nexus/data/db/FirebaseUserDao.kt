@@ -19,7 +19,7 @@ class FirebaseUserDao @Inject constructor(
     private val database: FirebaseDatabase,
     private val auth: FirebaseAuth
 ){
-    private val userRef = database.getReference("user/${getUserId(auth.currentUser)}")
+    private val userRef = mutableStateOf(database.getReference("user/${getUserId(auth.currentUser)}"))
 
 
     var doneFetching = mutableStateOf(false)
@@ -33,33 +33,38 @@ class FirebaseUserDao @Inject constructor(
         "",
         0L))
 
-    private val realtimeEntries = userRef.addValueEventListener(
+    private val eventListener =
         object: ValueEventListener {
 
-            override fun onDataChange(snapshot: DataSnapshot) {
+        override fun onDataChange(snapshot: DataSnapshot) {
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
-
-                if (snapshot.children.count() > 1 && getUserId(auth.currentUser) != "") {
-                    newUser.value.email = snapshot.child("email").value as String
-                    newUser.value.username = snapshot.child("username").value as String
-                    newUser.value.friends = snapshot.child("friends").value as List<String>
-                    newUser.value.friendRequests = snapshot.child("friendRequests").value as List<String>
-                    newUser.value.profilePicture = snapshot.child("profilePicture").value as String
-                    newUser.value.profileBackground = snapshot.child("profileBackground").value as String
-                    newUser.value.releaseNotification = snapshot.child("releaseNotification").value as Long
-                }
-
-                doneFetching.value = true
-                }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to read value.", error.toException())
+            if (snapshot.children.count() >= 7 && getUserId(auth.currentUser) != "") {
+                newUser.value.email = snapshot.child("email").value as String
+                newUser.value.username = snapshot.child("username").value as String
+                newUser.value.friends = snapshot.child("friends").value as List<String>
+                newUser.value.friendRequests = snapshot.child("friendRequests").value as List<String>
+                newUser.value.profilePicture = snapshot.child("profilePicture").value as String
+                newUser.value.profileBackground = snapshot.child("profileBackground").value as String
+                newUser.value.releaseNotification = snapshot.child("releaseNotification").value as Long
             }
 
-
+            doneFetching.value = true
         }
-    )
+
+        override fun onCancelled(error: DatabaseError) {
+            Log.w(TAG, "Failed to read value.", error.toException())
+        }
+
+
+    }
+
+    private val realtimeEntries = mutableStateOf(userRef.value.addValueEventListener(eventListener))
+
+    fun updateUser(){
+        userRef.value = database.getReference("user/${getUserId(auth.currentUser)}")
+        realtimeEntries.value = userRef.value.addValueEventListener(eventListener)
+    }
 
     private val TAG = "UserRepository"
 
@@ -68,13 +73,13 @@ class FirebaseUserDao @Inject constructor(
     }
 
     fun storeNewUser(user : User)  {
-        println("in store new user")
-        userRef.child("email").setValue(user.email)
-        userRef.child("username").setValue(user.username)
-        userRef.child("friends").setValue(user.friends)
-        userRef.child("friendRequests").setValue(user.friendRequests)
-        userRef.child("profilePicture").setValue(user.profilePicture)
-        userRef.child("profileBackground").setValue(user.profileBackground)
-        userRef.child("releaseNotification").setValue(user.releaseNotification)
+        updateUser()
+        userRef.value.child("email").setValue(user.email)
+        userRef.value.child("username").setValue(user.username)
+        userRef.value.child("friends").setValue(user.friends)
+        userRef.value.child("friendRequests").setValue(user.friendRequests)
+        userRef.value.child("profilePicture").setValue(user.profilePicture)
+        userRef.value.child("profileBackground").setValue(user.profileBackground)
+        userRef.value.child("releaseNotification").setValue(user.releaseNotification)
     }
 }

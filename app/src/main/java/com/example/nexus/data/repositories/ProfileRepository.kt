@@ -52,5 +52,7 @@ class ProfileRepository @Inject constructor(
         fireBaseUserDao.storeNewUser(user)
     }
 
+    fun updateUser() = fireBaseUserDao.updateUser()
+
 
 }

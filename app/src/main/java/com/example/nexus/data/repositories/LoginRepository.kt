@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.activities.MainActivity
 import com.example.nexus.data.dataClasses.User
+import com.example.nexus.data.dataClasses.getUserId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
