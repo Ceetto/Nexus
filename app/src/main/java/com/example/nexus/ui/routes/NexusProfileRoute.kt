@@ -252,7 +252,7 @@ fun ProfilePicture(vM: NexusProfileViewModel, onOpenGameDetails: (gameId: Long) 
                     .clip(CircleShape)
             )
 
-            Text(text = "TestName", modifier = Modifier.padding(10.dp))
+            Text(text = vM.getUsername(), modifier = Modifier.padding(10.dp))
 
             ProfileStats(vM)
         Column(modifier = Modifier

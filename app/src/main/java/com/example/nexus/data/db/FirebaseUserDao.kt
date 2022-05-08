@@ -82,4 +82,9 @@ class FirebaseUserDao @Inject constructor(
         userRef.value.child("profileBackground").setValue(user.profileBackground)
         userRef.value.child("releaseNotification").setValue(user.releaseNotification)
     }
+
+    fun changeUsername(username: String) {
+        updateUser()
+        userRef.value.child("username").setValue(username)
+    }
 }

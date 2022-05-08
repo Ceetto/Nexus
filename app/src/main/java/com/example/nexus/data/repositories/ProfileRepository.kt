@@ -14,7 +14,7 @@ class ProfileRepository @Inject constructor(
     }
 
     fun updateUsername(username : String) {
-        //update
+        fireBaseUserDao.changeUsername(username)
     }
 
     fun updateEmail(username : String) {
@@ -54,5 +54,8 @@ class ProfileRepository @Inject constructor(
 
     fun updateUser() = fireBaseUserDao.updateUser()
 
+    fun getUsername(): String {
+        return fireBaseUserDao.getUser().username
+    }
 
 }

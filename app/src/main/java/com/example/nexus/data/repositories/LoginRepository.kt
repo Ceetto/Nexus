@@ -67,4 +67,5 @@ class LoginRepository @Inject constructor(
         auth.signOut()
         isLoggedIn.value = false
     }
+
 }
