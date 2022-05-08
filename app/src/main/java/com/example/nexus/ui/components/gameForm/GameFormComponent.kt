@@ -12,8 +12,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.ui.routes.ListCategory
-import com.example.nexus.ui.routes.ListCategoryColors
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable
@@ -39,7 +37,8 @@ fun GameFormComponent(
     setEditOrAddGames: (String) -> Unit
 ){
     val focusManager = LocalFocusManager.current
-
+    val weight1 = 1.5f
+    val weight2 = 3f
     Column(verticalArrangement = Arrangement.Top,
             modifier = Modifier
                 .pointerInput(Unit) {
@@ -65,66 +64,22 @@ fun GameFormComponent(
         }
 
         //score input
-        Row(modifier = Modifier.padding(5.dp)) {
-            Text(text = "Your score: ")
-            var expanded by remember { mutableStateOf(false) }
-            val scoreText = if (getGameScore() == 0){
-                "No score"
-            } else {
-                getGameScore().toString()
-            }
-            var text by remember { mutableStateOf(scoreText)}
-            OutlinedButton(onClick = { expanded = !expanded }) {
-                Text(text = text, color=MaterialTheme.colors.onBackground)
-            }
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                DropdownMenuItem(onClick = { expanded = false
-                                            text = "No score"
-                                            setGameScore(0)}) {
-                    Text(text = "No score")
-                }
-                listOf(1,2,3,4,5,6,7,8,9,10).forEach { score ->
-                    DropdownMenuItem(onClick = { expanded = false
-                                                text = score.toString()
-                                                setGameScore(score)}) {
-                        Text(text = score.toString())
-                    }
-                }
-            }
-        }
+        ScoreInput(getGameScore = getGameScore, setGameScore = setGameScore, weight1, weight2)
 
         //status input
-        Row(modifier = Modifier.padding(5.dp)){
-            Text(text = "Status: ")
-            var expanded by remember { mutableStateOf(false) }
-            var text by remember { mutableStateOf(getGameStatus())}
-            OutlinedButton(onClick = { expanded = !expanded }) {
-                ListCategoryColors[text]?.let { Text(text = text, color= it) }
-            }
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-
-                listOf(ListCategory.PLAYING, ListCategory.PLANNED, ListCategory.COMPLETED,
-                ListCategory.DROPPED).forEach { status ->
-                    DropdownMenuItem(onClick = { expanded = false
-                                                text = status.value
-                                                setGameStatus(status.value)}) {
-                        ListCategoryColors[status.value]
-                            ?.let { Text(text = status.value, color = it) }
-                    }
-                }
-            }
-        }
+        StatusInput(getGameStatus, setGameStatus, weight1, weight2)
 
         //hours input
         TimeInput(focusManager = focusManager, text = "Hours played: ", getTime = { getHours() },
-            setTime = {hours -> setHours(hours)})
+            setTime = {hours -> setHours(hours)}, weight1, weight2)
 
         //minutes input
         TimeInput(focusManager = focusManager, text = "Minutes played: ", getTime = { getMinutes() },
-            setTime = {minutes -> setMinutes(minutes)})
+            setTime = {minutes -> setMinutes(minutes)}, weight1, weight2)
 
 
-        Row(modifier = Modifier.padding(5.dp)){
+        Row(modifier = Modifier.padding(5.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center){
             GameSaveButton(focusManager = focusManager, getHours(), getMinutes(),
                 {b:Boolean -> onShowErrorPopupChanged(b)},
                 {m:Int -> setCurrentListEntryMinutes(m)},

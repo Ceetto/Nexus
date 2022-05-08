@@ -20,7 +20,10 @@ fun TimeInput(
     focusManager: FocusManager,
     text: String,
     getTime: () -> String,
-    setTime: (time: String) -> Unit){
+    setTime: (time: String) -> Unit,
+    weight1: Float,
+    weight2: Float
+){
     Row(modifier = Modifier
         .padding(5.dp)
         .pointerInput(Unit) {
@@ -28,7 +31,7 @@ fun TimeInput(
                 focusManager.clearFocus()
             })
         }){
-        Text(text = text)
+        Text(text = text, modifier = Modifier.padding(top = 20.dp).weight(weight1, true))
         TextField(
             value = getTime(),
             onValueChange = { value ->
@@ -40,7 +43,8 @@ fun TimeInput(
             ),
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
-            })
+            }),
+            modifier = Modifier.weight(weight2, true)
         )
     }
 }

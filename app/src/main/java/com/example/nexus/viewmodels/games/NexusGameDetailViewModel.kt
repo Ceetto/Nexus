@@ -208,7 +208,7 @@ class NexusGameDetailViewModel @Inject constructor(
                 setListEntry(games[i])
                 setMinutes(getListEntry().minutesPlayed.mod(60).toString())
                 setHours(((getListEntry().minutesPlayed - getMinutes().toInt())/60).toString())
-                setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.EDIT.value)
+                setEditOrAddGames(GameFormButton.EDIT.value)
                 if(games[i].favorited){
                     setIcon(Icons.Outlined.Star)
                 } else {
