@@ -21,7 +21,6 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SearchResultComponent(
-    vM: NexusSearchViewModel,
     game: Game,
     onClick: (gameId: Long) -> Unit,
     focusManager: FocusManager

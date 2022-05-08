@@ -1,5 +1,6 @@
 package com.example.nexus.ui.routes;
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -18,13 +20,14 @@ import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusProfileViewModel
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NexusSettingsRoute(
     vM: NexusProfileViewModel, navController: NavHostController
 ) {
-
+    val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = true) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ){
         Column(){
             Text("Settings", fontSize = dpToSp(40.dp), modifier = Modifier.padding(15.dp))

@@ -13,6 +13,7 @@ import com.example.nexus.viewmodels.NexusListViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.list.ListCategoryComponent
@@ -27,8 +28,9 @@ fun NexusListRoute(
     navController: NavHostController,
     onOpenGameDetails : (gameId: Long) -> Unit,
 ){
+    val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = false) }
+        topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
     ) {
         Scaffold(topBar = {
             ListTopNavigationBar(vM.getSelectedCategory(), vM::onSelectedCategoryChanged)

@@ -42,7 +42,7 @@ fun NexusGameDetailRoute(
         vM.onGetGameEvent()
     }
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = true) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
         if(vM.getGameList().isNotEmpty()) {
             val game = vM.getGameList()[0]
@@ -79,7 +79,16 @@ fun NexusGameDetailRoute(
             }
 
             if(!vM.getGameFormOpen() && !vM.ageVerifOpen()){
-                GameDetailComponent(vM, game, found, onOpenGameDetails, focusManager)
+                GameDetailComponent(game, found, onOpenGameDetails, focusManager,
+                        vM.isRefreshing(), {vM.onGetGameEvent()}, {b: Boolean -> vM.onGameFormOpenChanged(b)},
+                        vM.getEditOrAddGames(),
+                        onFavourite = {
+                            vM.toggleIcon()
+                            vM.setFavorite(vM.getFavoriteToggled())
+                            vM.storeListEntry(vM.getListEntry())
+                        },
+                        vM.getIcon()
+                    )
             } else {
                 if(vM.getGameFormOpen()){
                     GameFormComponent(
