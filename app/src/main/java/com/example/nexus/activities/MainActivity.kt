@@ -9,10 +9,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.CompositionLocalProvider
 import com.example.nexus.ApplicationSwitcher
 import com.example.nexus.ui.theme.MyApplicationTheme
+import com.example.nexus.viewmodels.NexusLoginViewModel
 import com.example.nexus.viewmodels.UserState
-import com.example.nexus.viewmodels.UserStateViewModel
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -20,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val TAG = MainActivity::class.java.name
-    private val userState by viewModels<UserStateViewModel>()
+    private val userState by viewModels<NexusLoginViewModel>()
     companion object {
         val TAG : String = MainActivity::class.java.simpleName
     }
