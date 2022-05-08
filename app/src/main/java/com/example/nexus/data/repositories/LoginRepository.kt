@@ -15,19 +15,21 @@ class LoginRepository @Inject constructor() {
 
     private val userId = mutableStateOf("")
     private var auth: FirebaseAuth = Firebase.auth
+    private var isLoggedIn = mutableStateOf(false)
 
     fun getUserId(): String {
         return userId.value
     }
 
-    fun setUserId(id: String) {
-        userId.value = id
+    fun getIsLoggedIn(): Boolean {
+        return isLoggedIn.value
     }
 
     fun createAccount(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
+                    isLoggedIn.value = true
                     Log.d(MainActivity.TAG, "The user registered a new account and logged in")
                 } else {
                     Log.w(MainActivity.TAG, "The user has FAILED to make a new account and log in", it.exception)
@@ -39,6 +41,7 @@ class LoginRepository @Inject constructor() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
+                    isLoggedIn.value = true
                     Log.d(MainActivity.TAG, "The user has successfully logged in")
                 } else {
                     Log.w(MainActivity.TAG, "The user has FAILED to log in", it.exception)
@@ -48,6 +51,7 @@ class LoginRepository @Inject constructor() {
 
     fun signOut() {
         auth.signOut()
+        isLoggedIn.value = false
     }
 
     fun signedIn(): Boolean {

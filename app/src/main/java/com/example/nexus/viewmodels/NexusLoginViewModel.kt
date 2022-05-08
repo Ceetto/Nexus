@@ -72,9 +72,7 @@ class NexusLoginViewModel  @Inject constructor(private val repo: LoginRepository
         isPasswordVisible.value = value
     }
 
-    fun getIsLoggedIn(): Boolean {
-        return isLoggedIn.value
-    }
+    fun getIsLoggedIn() = repo.getIsLoggedIn()
 
     fun createAccount() = repo.createAccount(email.value, password.value)
 
