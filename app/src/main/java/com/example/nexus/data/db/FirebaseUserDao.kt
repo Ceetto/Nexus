@@ -28,13 +28,13 @@ class FirebaseUserDao @Inject constructor(
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
 
-                newUser.value.email = snapshot.child("email").value as String
-                newUser.value.username = snapshot.child("username").value  as String
-                newUser.value.friends = snapshot.child("friends").value as List<String>
-                newUser.value.friendRequests = snapshot.child("friendRequests").value as List<String>
-                newUser.value.profilePicture = snapshot.child("profilePicture").value as String
-                newUser.value.profileBackground = snapshot.child("profileBackground").value as String
-                newUser.value.releaseNotification = snapshot.child("releaseNotification").value as Long
+//                newUser.value.email = snapshot.child("email").value as String
+//                newUser.value.username = snapshot.child("username").value  as String
+//                newUser.value.friends = snapshot.child("friends").value as List<String>
+//                newUser.value.friendRequests = snapshot.child("friendRequests").value as List<String>
+//                newUser.value.profilePicture = snapshot.child("profilePicture").value as String
+//                newUser.value.profileBackground = snapshot.child("profileBackground").value as String
+//                newUser.value.releaseNotification = snapshot.child("releaseNotification").value as Long
 
                 doneFetching.value = true
                 }
