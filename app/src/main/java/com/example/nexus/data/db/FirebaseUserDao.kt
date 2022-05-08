@@ -18,6 +18,7 @@ class FirebaseUserDao @Inject constructor(
 ){
     private val userRef = database.getReference("user/${loginRepo.getUserId()}")
 
+
     var doneFetching = mutableStateOf(false)
 
 
@@ -36,8 +37,6 @@ class FirebaseUserDao @Inject constructor(
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
 
-                println(loginRepo.getUserId())
-                println(snapshot.children.count())
                 if (snapshot.children.count() > 1 && loginRepo.getUserId() != "") {
                     newUser.value.email = snapshot.child("email").value as String
                     newUser.value.username = snapshot.child("username").value as String
@@ -66,6 +65,13 @@ class FirebaseUserDao @Inject constructor(
     }
 
     fun storeNewUser(user : User)  {
-        userRef.setValue(user.email)
+        println("in store new user")
+        userRef.child("email").setValue(user.email)
+        userRef.child("username").setValue(user.username)
+        userRef.child("friends").setValue(user.friends)
+        userRef.child("friendRequests").setValue(user.friendRequests)
+        userRef.child("profilePicture").setValue(user.profilePicture)
+        userRef.child("profileBackground").setValue(user.profileBackground)
+        userRef.child("releaseNotification").setValue(user.releaseNotification)
     }
 }

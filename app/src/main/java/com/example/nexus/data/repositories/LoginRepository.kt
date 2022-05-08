@@ -1,11 +1,9 @@
 package com.example.nexus.data.repositories
 
 
-import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.activities.MainActivity
-import com.example.nexus.data.db.FirebaseListDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
