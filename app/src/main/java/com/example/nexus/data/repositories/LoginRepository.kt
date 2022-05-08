@@ -1,9 +1,11 @@
 package com.example.nexus.data.repositories
 
 
+import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.activities.MainActivity
+import com.example.nexus.data.db.FirebaseListDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,14 +13,16 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepository @Inject constructor() {
-
-    private val userId = mutableStateOf("")
+class LoginRepository @Inject constructor(
+) {
     private var auth: FirebaseAuth = Firebase.auth
+    val userId = mutableStateOf(auth.currentUser?.uid)
     private var isLoggedIn = mutableStateOf(false)
 
     fun getUserId(): String {
-        return userId.value
+        println("User Id is " + auth.currentUser?.uid)
+        return auth.currentUser?.uid ?: ""
+//        return userId.value!!
     }
 
     fun getIsLoggedIn(): Boolean {
