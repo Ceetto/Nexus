@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.nexus.ui.routes.NexusLoginRoute
 import com.example.nexus.viewmodels.UserState
-import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
