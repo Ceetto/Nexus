@@ -6,6 +6,7 @@ import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
+import com.api.igdb.request.TwitchAuthenticator
 import com.api.igdb.request.games
 import proto.Game
 import javax.inject.Inject

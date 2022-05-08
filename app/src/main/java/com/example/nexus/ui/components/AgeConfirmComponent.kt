@@ -17,7 +17,7 @@ import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable
 fun AgeConfirmComponent(
-    vM: NexusGameDetailViewModel,
+    onAgeVerifOpenChange: (b: Boolean) -> Unit,
     navController: NavHostController,
 ){
 
@@ -40,7 +40,7 @@ fun AgeConfirmComponent(
                 .padding(10.dp)
                 .fillMaxWidth()){
             Button(onClick = {
-                vM.onAgeVerifOpenChange(false)
+                onAgeVerifOpenChange(false)
             }, Modifier.padding(10.dp)){
                 Text("Confirm", fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }

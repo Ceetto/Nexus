@@ -11,12 +11,14 @@ import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable
 fun GameDeleteButton(
-    vM: NexusGameDetailViewModel,
+//    vM: NexusGameDetailViewModel,
+    getEditOrAddGames : String,
+    onShowDeleteWarningChanged : (b : Boolean) -> Unit
 ){
-    if(vM.getEditOrAddGames() == NexusGameDetailViewModel.GameFormButton.EDIT.value){
+    if(getEditOrAddGames == NexusGameDetailViewModel.GameFormButton.EDIT.value){
         Button(modifier = Modifier.padding(10.dp),
             onClick = {
-                vM.onShowDeleteWarningChanged(true)}) {
+                onShowDeleteWarningChanged(true)}) {
             Text(text = "delete")
         }
     }

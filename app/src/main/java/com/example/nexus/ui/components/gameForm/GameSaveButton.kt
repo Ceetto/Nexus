@@ -7,22 +7,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.unit.dp
+import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable
 fun GameSaveButton(
-    vM: NexusGameDetailViewModel,
-    focusManager: FocusManager){
+    focusManager: FocusManager,
+    getHours: String,
+    getMinutes: String,
+    onShowErrorPopupChanged: (Boolean) -> Unit,
+    setCurrentListEntryMinutes: (Int) -> Unit,
+    storeListEntry: (ListEntry) -> Unit,
+    getListEntry : ListEntry,
+    onGameFormOpenChanged : (Boolean) -> Unit,
+){
     Button(modifier = Modifier.padding(10.dp),
         onClick = {
-            val intHours = vM.getHours().toIntOrNull()
-            val intMinutes = vM.getHours().toIntOrNull()
+            val intHours = getHours.toIntOrNull()
+            val intMinutes = getMinutes.toIntOrNull()
             if(intHours == null || intMinutes == null || intHours < 0 || intMinutes < 0){
-                vM.onShowErrorPopupChanged(true)
+                onShowErrorPopupChanged(true)
             } else{
-                vM.setCurrentListEntryMinutes(vM.getHours().toInt()*60+vM.getMinutes().toInt())
-                vM.storeListEntry(vM.getListEntry())
-                vM.onGameFormOpenChanged(false)
+                setCurrentListEntryMinutes(getHours.toInt()*60+getMinutes.toInt())
+                storeListEntry(getListEntry)
+                onGameFormOpenChanged(false)
                 focusManager.clearFocus()
             }
         }){

@@ -84,9 +84,8 @@ fun NexusGameDetailRoute(
                 if(vM.getGameFormOpen()){
                     GameFormComponent(vM)
                 } else{
-                    AgeConfirmComponent(vM, navController)
+                    AgeConfirmComponent({b : Boolean -> vM.onAgeVerifOpenChange(b)}, navController)
                 }
-
             }
         } else {
             Row(

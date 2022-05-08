@@ -11,6 +11,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.ui.components.list.ListCategoryColors
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
@@ -106,9 +107,15 @@ fun GameFormComponent(
 
 
         Row(modifier = Modifier.padding(5.dp)){
-            GameSaveButton(vM = vM, focusManager = focusManager)
+            GameSaveButton(focusManager = focusManager, vM.getHours(), vM.getMinutes(),
+                {b:Boolean -> vM.onShowErrorPopupChanged(b)},
+                {m:Int -> vM.setCurrentListEntryMinutes(m)},
+                {l:ListEntry -> vM.storeListEntry(l)},
+                vM.getListEntry(),
+                {b:Boolean -> vM.onGameFormOpenChanged(b)}
+            )
 
-            GameDeleteButton(vM = vM)
+            GameDeleteButton(vM.getEditOrAddGames()) { b: Boolean -> vM.onShowDeleteWarningChanged(b) }
         }
 
         if(vM.getShowErrorPopup()){
