@@ -22,7 +22,7 @@ class FirebaseListDao @Inject constructor(
     private val database: FirebaseDatabase,
     private val loginRepo: LoginRepository
 ){
-    private var listEntryRef = database.getReference("user/${loginRepo.getUserId()}/list")
+    private var listEntryRef = mutableStateOf(database.getReference("user/${loginRepo.getUserId()}/list"))
 
     private val eventListener = object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -59,11 +59,14 @@ class FirebaseListDao @Inject constructor(
         }
     }
 
+    private val realtimeEntries = mutableStateOf(listEntryRef.value.addValueEventListener(eventListener))
+
     fun changeUser(){
-        realtimeEntries.value = database.getReference("user/${loginRepo.getUserId()}/list").addValueEventListener(eventListener)
+        listEntryRef.value = database.getReference("user/${loginRepo.getUserId()}/list")
+        realtimeEntries.value = listEntryRef.value.addValueEventListener(eventListener)
     }
 
-    private val realtimeEntries = mutableStateOf(database.getReference("user/${loginRepo.getUserId()}/list").addValueEventListener(eventListener))
+
 
     var doneFetching = mutableStateOf(false)
 
@@ -102,11 +105,11 @@ class FirebaseListDao @Inject constructor(
     }
 
     suspend fun storeListEntry(entry: ListEntry){
-        listEntryRef.child(entry.gameId.toString()).setValue(entry)
+        listEntryRef.value.child(entry.gameId.toString()).setValue(entry)
     }
 
     suspend fun deleteListEntry(entry: ListEntry){
-        listEntryRef.child(entry.gameId.toString()).removeValue()
+        listEntryRef.value.child(entry.gameId.toString()).removeValue()
     }
 
     private var top10Favorites = mutableStateOf(emptyList<ListEntry>())
