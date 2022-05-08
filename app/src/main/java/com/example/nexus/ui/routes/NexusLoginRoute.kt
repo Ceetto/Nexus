@@ -155,7 +155,7 @@ fun NexusLoginRoute(vM: NexusLoginViewModel) {
                     show = showDialogState,
                     onDismiss = vM::onDialogDismiss,
                     onConfirm = vM::onDialogConfirm,
-                    text = "User doesn't exists try to register first"
+                    text = "Login has failed try again"
                 )
             }
         }
