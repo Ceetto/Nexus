@@ -1,47 +1,34 @@
 package com.example.nexus.ui.routes.search
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.components.AgeConfirmComponent
-import com.example.nexus.ui.components.gameForm.GameFormComponent
-import com.example.nexus.ui.components.HorizontalGamesListingComponent
-import com.example.nexus.ui.components.LinkComponent
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.gameDetails.GameDetailComponent
+import com.example.nexus.ui.components.gameForm.GameFormComponent
 import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import proto.Game
-import java.util.*
-import kotlin.math.roundToInt
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -55,7 +42,7 @@ fun NexusGameDetailRoute(
         vM.onGetGameEvent()
     }
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = true) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
         if(vM.getGameList().isNotEmpty()) {
             val game = vM.getGameList()[0]
@@ -92,14 +79,41 @@ fun NexusGameDetailRoute(
             }
 
             if(!vM.getGameFormOpen() && !vM.ageVerifOpen()){
-                GameDetailComponent(vM, game, found, onOpenGameDetails, focusManager)
+                GameDetailComponent(game, found, onOpenGameDetails, focusManager,
+                        vM.isRefreshing(), {vM.onGetGameEvent()}, {b: Boolean -> vM.onGameFormOpenChanged(b)},
+                        vM.getEditOrAddGames(),
+                        onFavourite = {
+                            vM.toggleIcon()
+                            vM.setFavorite(vM.getFavoriteToggled())
+                            vM.storeListEntry(vM.getListEntry())
+                        },
+                        vM.getIcon()
+                    )
             } else {
                 if(vM.getGameFormOpen()){
-                    GameFormComponent(vM)
+                    GameFormComponent(
+                        onGameFormOpenChanged = {b -> vM.onGameFormOpenChanged(b)},
+                        getListEntry = {vM.getListEntry()},
+                        storeListEntry = {e -> vM.storeListEntry(e)},
+                        deleteListEntry = {e-> vM.deleteListEntry(e)},
+                        getGameScore = {vM.getGameScore()},
+                        setGameScore = {s -> vM.setGameScore(s)},
+                        getGameStatus = {vM.getGameStatus()},
+                        setGameStatus = {s -> vM.setGameStatus(s)},
+                        getHours = {vM.getHours()},
+                        setHours = {h -> vM.setHours(h)},
+                        getMinutes = {vM.getMinutes()},
+                        setMinutes = {m -> vM.setMinutes(m)},
+                        onShowErrorPopupChanged = {b -> vM.onShowErrorPopupChanged(b)},
+                        onShowDeleteWarningChanged = {b -> vM.onShowDeleteWarningChanged(b)},
+                        setCurrentListEntryMinutes = {m -> vM.setCurrentListEntryMinutes(m)},
+                        getEditOrAddGames = {vM.getEditOrAddGames()},
+                        getShowErrorPopup = {vM.getShowErrorPopup()},
+                        getShowDeleteWarning = {vM.getShowDeleteWarning()},
+                        setEditOrAddGames = {e -> vM.setEditOrAddGames(e)})
                 } else{
-                    AgeConfirmComponent(vM, navController)
+                    AgeConfirmComponent({b : Boolean -> vM.onAgeVerifOpenChange(b)}, navController)
                 }
-
             }
         } else {
             Row(

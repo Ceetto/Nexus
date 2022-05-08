@@ -36,7 +36,7 @@ fun NexusHomeRoute(
 ) {
      val focusManager = LocalFocusManager.current
      Scaffold(
-         topBar = { NexusTopBar(navController = navController, canPop = false) }
+         topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
      ) {
          SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.fetchGames() }) {
              Column(

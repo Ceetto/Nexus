@@ -13,26 +13,25 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import com.example.nexus.viewmodels.games.NexusSearchViewModel
 
 @ExperimentalComposeUiApi
 @Composable
 fun SearchBarComponent(
-    vM: NexusSearchViewModel,
-    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
-    onSearch: () -> Unit? = {vM.setSearched(true); vM.onSearchEvent(); keyboardController?.hide()},
+    onSearch: () -> Unit?,
+    getSearchTerm: String,
+    setSearchTerm: (String) -> Unit,
+    setSearched: (Boolean) -> Unit,
+    onCancel: () -> Unit
 ) {
     TextField(
-        value = vM.getSearchTerm(),
+        value = getSearchTerm,
         onValueChange = {
             if(!it.contains("\n")){
-                vM.setSearchTerm(it);
+                setSearchTerm(it);
                 if(it.isEmpty()){
-                    vM.setSearched(false)
+                    setSearched(false)
                 }
             }
                         },
@@ -40,7 +39,6 @@ fun SearchBarComponent(
         maxLines = 1,
         modifier = Modifier
             .fillMaxWidth()
-//                .padding(5.dp, 1.dp)
         ,
         placeholder = { Text("search games") },
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -59,12 +57,10 @@ fun SearchBarComponent(
             }
         },
         trailingIcon = {
-            if(vM.getSearchTerm().isNotEmpty()){
+            if(getSearchTerm.isNotEmpty()){
                 IconButton(onClick = {
-                    vM.setSearched(false)
-                    vM.setSearchTerm("")
-                    vM.emptyList()
-                    }) {
+                    onCancel()
+                }) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "remove"

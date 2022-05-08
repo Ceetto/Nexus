@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -27,9 +28,9 @@ fun NexusSettingsRoute(
     onPictureClick: () -> Unit,
     onBackgroundClick: () -> Unit
 ) {
-
+    val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = true) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ){
         Column(){
             Text("Settings", fontSize = dpToSp(40.dp), modifier = Modifier.padding(15.dp))

@@ -13,11 +13,12 @@ import com.example.nexus.viewmodels.NexusListViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.list.ListCategoryComponent
-import com.example.nexus.ui.theme.NexusBlue
-import com.example.nexus.ui.theme.NexusGray
+import com.example.nexus.ui.components.list.ListTopNavigationBar
+import com.example.nexus.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalAnimationApi
@@ -27,68 +28,25 @@ fun NexusListRoute(
     navController: NavHostController,
     onOpenGameDetails : (gameId: Long) -> Unit,
 ){
+    val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = false) }
+        topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
     ) {
         Scaffold(topBar = {
-            TopNavigationBar(vM.getSelectedCategory(), vM::onSelectedCategoryChanged)
+            ListTopNavigationBar(vM.getSelectedCategory(), vM::onSelectedCategoryChanged)
         }){
-            ListCategoryComponent(category = vM.getSelectedCategory(), vM,
+            ListCategoryComponent(
+                category = vM.getSelectedCategory(),
+                getCategoryByName = { category -> vM.getCategoryByName(category) },
+                toggleDescendingOrAscendingIcon = {vM.toggleDescendingOrAscendingIcon()},
+                getDescendingOrAscendingIcon = {vM.getDescendingOrAscendingIcon()},
+                getSelectedCategory = {vM.getSelectedCategory()},
+                setSortOption = {s -> vM.setSortOption(s)},
+                getSortOption = {vM.getSortOption()},
                 onOpenGameDetails = onOpenGameDetails)
         }
     }
 
-}
-
-//scrollable TopNavigationbar
-@Composable
-fun TopNavigationBar(
-    selectedCategory: ListCategory,
-    onSelectedCategoryChanged: (ListCategory) -> Unit
-){
-
-    LazyRow(modifier = Modifier
-        .fillMaxWidth(),
-        state = rememberLazyListState()
-    ){
-        items(getAllListCategories()) { it ->
-            TopNavigationBox(
-                category = it,
-                isSelected = it == selectedCategory,
-                onSelectedCategoryChanged = {onSelectedCategoryChanged(it)})
-        }
-    }
-}
-
-//items in the TopNavigationBar
-@Composable
-fun TopNavigationBox(
-    category: ListCategory,
-    isSelected: Boolean,
-    onSelectedCategoryChanged: (ListCategory) -> Unit
-) {
-    Surface(
-        modifier = Modifier.padding(end = 8.dp),
-        elevation = 8.dp,
-        shape = MaterialTheme.shapes.medium,
-        color = if(isSelected) NexusBlue else NexusGray
-    ){
-        Row(modifier = Modifier
-            .toggleable(
-                value = isSelected,
-                onValueChange = {
-                    onSelectedCategoryChanged(category)
-                }
-            )
-        ) {
-            Text(
-                text = category.value,
-                style = MaterialTheme.typography.body2,
-                modifier = Modifier.padding(5.dp),
-                fontSize = 22.sp)
-        }
-
-    }
 }
 
 enum class ListCategory(val value: String){
@@ -103,3 +61,9 @@ fun getAllListCategories(): List<ListCategory> =
     listOf(ListCategory.ALL, ListCategory.PLAYING, ListCategory.COMPLETED,
         ListCategory.PLANNED, ListCategory.DROPPED
     )
+
+val ListCategoryColors = mapOf(ListCategory.PLAYING.value to Playing,
+    ListCategory.COMPLETED.value to Completed,
+    ListCategory.DROPPED.value to Dropped,
+    ListCategory.PLANNED.value to Planned
+)

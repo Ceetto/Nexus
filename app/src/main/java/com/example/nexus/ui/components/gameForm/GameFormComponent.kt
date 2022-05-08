@@ -11,13 +11,32 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.routes.ListCategory
-import com.example.nexus.ui.components.list.ListCategoryColors
+import com.example.nexus.ui.routes.ListCategoryColors
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @Composable
 fun GameFormComponent(
-    vM: NexusGameDetailViewModel
+    onGameFormOpenChanged: (Boolean) -> Unit,
+    getListEntry: () -> ListEntry,
+    storeListEntry: (ListEntry) -> Unit,
+    deleteListEntry: (ListEntry) -> Unit,
+    getGameScore: () -> Int,
+    setGameScore: (Int) -> Unit,
+    getGameStatus: () -> String,
+    setGameStatus: (String) -> Unit,
+    getHours: () -> String,
+    setHours: (String) -> Unit,
+    getMinutes: () -> String,
+    setMinutes: (String) -> Unit,
+    onShowErrorPopupChanged: (Boolean) -> Unit,
+    onShowDeleteWarningChanged: (Boolean) -> Unit,
+    setCurrentListEntryMinutes: (Int) -> Unit,
+    getEditOrAddGames: () -> String,
+    getShowErrorPopup: () -> Boolean,
+    getShowDeleteWarning: () -> Boolean,
+    setEditOrAddGames: (String) -> Unit
 ){
     val focusManager = LocalFocusManager.current
 
@@ -30,7 +49,7 @@ fun GameFormComponent(
                 }
                 .fillMaxSize()) {
         Row(){
-            IconButton(onClick = { vM.onGameFormOpenChanged(false)
+            IconButton(onClick = { onGameFormOpenChanged(false)
                                     focusManager.clearFocus()}) {
                 Icon(
                     imageVector = Icons.Default.Close,
@@ -42,17 +61,17 @@ fun GameFormComponent(
                 modifier = Modifier
                     .padding(10.dp)
                     .fillMaxWidth()) {
-            Text(text = vM.getListEntry().title, fontSize = 20.sp)
+            Text(text = getListEntry().title, fontSize = 20.sp)
         }
 
         //score input
         Row(modifier = Modifier.padding(5.dp)) {
             Text(text = "Your score: ")
             var expanded by remember { mutableStateOf(false) }
-            val scoreText = if (vM.getGameScore() == 0){
+            val scoreText = if (getGameScore() == 0){
                 "No score"
             } else {
-                vM.getGameScore().toString()
+                getGameScore().toString()
             }
             var text by remember { mutableStateOf(scoreText)}
             OutlinedButton(onClick = { expanded = !expanded }) {
@@ -61,13 +80,13 @@ fun GameFormComponent(
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 DropdownMenuItem(onClick = { expanded = false
                                             text = "No score"
-                                            vM.setGameScore(0)}) {
+                                            setGameScore(0)}) {
                     Text(text = "No score")
                 }
                 listOf(1,2,3,4,5,6,7,8,9,10).forEach { score ->
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = score.toString()
-                                                vM.setGameScore(score)}) {
+                                                setGameScore(score)}) {
                         Text(text = score.toString())
                     }
                 }
@@ -78,7 +97,7 @@ fun GameFormComponent(
         Row(modifier = Modifier.padding(5.dp)){
             Text(text = "Status: ")
             var expanded by remember { mutableStateOf(false) }
-            var text by remember { mutableStateOf(vM.getGameStatus())}
+            var text by remember { mutableStateOf(getGameStatus())}
             OutlinedButton(onClick = { expanded = !expanded }) {
                 ListCategoryColors[text]?.let { Text(text = text, color= it) }
             }
@@ -88,7 +107,7 @@ fun GameFormComponent(
                 ListCategory.DROPPED).forEach { status ->
                     DropdownMenuItem(onClick = { expanded = false
                                                 text = status.value
-                                                vM.setGameStatus(status.value)}) {
+                                                setGameStatus(status.value)}) {
                         ListCategoryColors[status.value]
                             ?.let { Text(text = status.value, color = it) }
                     }
@@ -97,25 +116,31 @@ fun GameFormComponent(
         }
 
         //hours input
-        TimeInput(focusManager = focusManager, text = "Hours played: ", getTime = { vM.getHours() },
-            setTime = {hours -> vM.setHours(hours)})
+        TimeInput(focusManager = focusManager, text = "Hours played: ", getTime = { getHours() },
+            setTime = {hours -> setHours(hours)})
 
         //minutes input
-        TimeInput(focusManager = focusManager, text = "Minutes played: ", getTime = { vM.getMinutes() },
-            setTime = {minutes -> vM.setMinutes(minutes)})
+        TimeInput(focusManager = focusManager, text = "Minutes played: ", getTime = { getMinutes() },
+            setTime = {minutes -> setMinutes(minutes)})
 
 
         Row(modifier = Modifier.padding(5.dp)){
-            GameSaveButton(vM = vM, focusManager = focusManager)
+            GameSaveButton(focusManager = focusManager, getHours(), getMinutes(),
+                {b:Boolean -> onShowErrorPopupChanged(b)},
+                {m:Int -> setCurrentListEntryMinutes(m)},
+                {l:ListEntry -> storeListEntry(l)},
+                getListEntry(),
+                {b:Boolean -> onGameFormOpenChanged(b)}
+            )
 
-            GameDeleteButton(vM = vM)
+            GameDeleteButton(getEditOrAddGames()) { b: Boolean -> onShowDeleteWarningChanged(b) }
         }
 
-        if(vM.getShowErrorPopup()){
+        if(getShowErrorPopup()){
             AlertDialog(
                 onDismissRequest = { },
                 confirmButton = {
-                    TextButton(onClick = {vM.onShowErrorPopupChanged(false)})
+                    TextButton(onClick = {onShowErrorPopupChanged(false)})
                     { Text(text = "OK", color=MaterialTheme.colors.onBackground) }
                 },
                 title = { Text(text = "wrong time") },
@@ -123,21 +148,21 @@ fun GameFormComponent(
             )
         }
 
-        if(vM.getShowDeleteWarning()){
+        if(getShowDeleteWarning()){
             AlertDialog(onDismissRequest = { },
             confirmButton = {
                 TextButton(onClick = {
-                    vM.deleteListEntry(vM.getListEntry())
-                    vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
-                    vM.onGameFormOpenChanged(false)
+                    deleteListEntry(getListEntry())
+                    setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
+                    onGameFormOpenChanged(false)
                     focusManager.clearFocus()
-                    vM.onShowDeleteWarningChanged(false)}) {
+                    onShowDeleteWarningChanged(false)}) {
                     Text(text = "Confirm", color=MaterialTheme.colors.onBackground)
                 }
             },
                 dismissButton = {
                     TextButton(onClick = {
-                    vM.onShowDeleteWarningChanged(false) }) {
+                    onShowDeleteWarningChanged(false) }) {
                     Text(text = "Cancel", color=MaterialTheme.colors.onBackground)
                 }},
             text = { Text(text = "Are you sure you want to delete this game from your list?")}

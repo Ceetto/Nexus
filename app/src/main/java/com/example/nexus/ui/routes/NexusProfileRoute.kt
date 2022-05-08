@@ -1,6 +1,5 @@
 package com.example.nexus.ui.routes
 
-
 import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -34,7 +33,6 @@ import com.example.nexus.ui.theme.Playing
 import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Planned
 import com.example.nexus.ui.theme.Dropped
-
 import com.example.nexus.viewmodels.NexusProfileViewModel
 import kotlin.math.roundToLong
 
@@ -53,14 +51,16 @@ fun NexusProfileRoute(
 fun InitProfile(vM: NexusProfileViewModel,
                     navController: NavHostController,
                     onOpenGameDetails: (gameId: Long) -> Unit){
+
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = true) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
         ProfileScreen(
             vM, onOpenGameDetails
         )
     }
 }
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(vM: NexusProfileViewModel, onOpenGameDetails: (gameId: Long) -> Unit){

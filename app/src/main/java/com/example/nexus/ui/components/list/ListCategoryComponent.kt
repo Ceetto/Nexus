@@ -14,36 +14,55 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.routes.ListCategoryColors
 import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Dropped
 import com.example.nexus.ui.theme.Planned
 import com.example.nexus.ui.theme.Playing
 import com.example.nexus.viewmodels.NexusListViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ListCategoryComponent(
     category: ListCategory,
-    vM: NexusListViewModel,
+    getCategoryByName: (category: String) -> StateFlow<List<ListEntry>>,
+    toggleDescendingOrAscendingIcon: () -> Unit,
+    getDescendingOrAscendingIcon:  () -> ImageVector,
+    getSelectedCategory: () -> ListCategory,
+    setSortOption: (String) -> Unit,
+    getSortOption: () -> String,
     onOpenGameDetails : (gameId: Long) -> Unit
 ) {
-    val games by vM.getCategoryByName(category.value).collectAsState()
-    ListCategoryScreen(games, onOpenGameDetails, vM)
+    val games by getCategoryByName(category.value).collectAsState()
+    ListCategoryScreen(games, onOpenGameDetails, toggleDescendingOrAscendingIcon,
+        getDescendingOrAscendingIcon, getSelectedCategory, setSortOption, getSortOption)
 }
 
 @Composable
 fun ListCategoryScreen(
     games: List<ListEntry>,
     onOpenGameDetails : (gameId: Long) -> Unit,
-    vM: NexusListViewModel
+    toggleDescendingOrAscendingIcon: () -> Unit,
+    getDescendingOrAscendingIcon: () -> ImageVector,
+    getSelectedCategory: () -> ListCategory,
+    setSortOption: (String) -> Unit,
+    getSortOption: () -> String
 ){
     Column(){
-        SortListComponent(games = games, vM = vM)
+        SortListComponent(
+            games = games,
+            toggleDescendingOrAscendingIcon = toggleDescendingOrAscendingIcon,
+            getDescendingOrAscendingIcon = getDescendingOrAscendingIcon,
+            getSelectedCategory = getSelectedCategory,
+            setSortOption = setSortOption,
+            getSortOption = getSortOption)
         LazyColumn(
         ){
             items(games) {game ->
@@ -100,9 +119,4 @@ fun ListItem(
         }
     }
 }
-
-val ListCategoryColors = mapOf(ListCategory.PLAYING.value to Playing,
-                                ListCategory.COMPLETED.value to Completed,
-                                ListCategory.DROPPED.value to Dropped,
-                                ListCategory.PLANNED.value to Planned)
 

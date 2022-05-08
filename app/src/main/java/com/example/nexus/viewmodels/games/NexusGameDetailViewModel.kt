@@ -8,13 +8,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.api.igdb.utils.ImageSize
-import com.api.igdb.utils.ImageType
-import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
-import com.example.nexus.ui.routes.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,8 +19,6 @@ import kotlinx.coroutines.launch
 import proto.AgeRatingCategoryEnum
 import proto.AgeRatingRatingEnum
 import proto.Game
-import proto.Platform
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -73,7 +67,7 @@ class NexusGameDetailViewModel @Inject constructor(
         return isRefreshing.value
     }
 
-    fun isAdult(): Boolean{
+    private fun isAdult(): Boolean{
         if(gameList.value.value.isNotEmpty()){
             val game = gameList.value.value[0]
             for(rating in game.ageRatingsList){
