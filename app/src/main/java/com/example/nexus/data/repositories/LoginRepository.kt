@@ -4,6 +4,8 @@ package com.example.nexus.data.repositories
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.activities.MainActivity
+import com.example.nexus.data.dataClasses.User
+import com.example.nexus.data.db.FirebaseUserDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,11 +13,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepository @Inject constructor() {
+class LoginRepository @Inject constructor(
+) {
 
     private val userId = mutableStateOf("")
     private var auth: FirebaseAuth = Firebase.auth
     private var isLoggedIn = mutableStateOf(false)
+
 
     fun getUserId(): String {
         return userId.value

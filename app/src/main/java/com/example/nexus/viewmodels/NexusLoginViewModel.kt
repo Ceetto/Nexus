@@ -3,13 +3,17 @@ package com.example.nexus.viewmodels
 import android.util.Patterns
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.LoginRepository
+import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class NexusLoginViewModel  @Inject constructor(private val repo: LoginRepository) : ViewModel() {
+class NexusLoginViewModel  @Inject constructor(
+    private val repo: LoginRepository,
+    private val profileRepo : ProfileRepository) : ViewModel() {
     private val _showDialog = MutableStateFlow(false)
     val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
     private var isLoggedIn = mutableStateOf(false)
@@ -74,7 +78,12 @@ class NexusLoginViewModel  @Inject constructor(private val repo: LoginRepository
 
     fun getIsLoggedIn() = repo.getIsLoggedIn()
 
-    fun createAccount() = repo.createAccount(email.value, password.value)
+    fun createAccount() {
+        repo.createAccount(email.value, password.value)
+        if (repo.getIsLoggedIn()){
+            profileRepo.storeNewUser(User(email.value, "NewUser", emptyList(), emptyList(), "", "", 0L))
+        }
+    }
 
     fun signIn() = repo.signIn(email.value, password.value)
 
