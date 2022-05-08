@@ -1,4 +1,12 @@
 buildscript {
+    repositories {
+        google()    // Google's Maven repository
+    }
+
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.10'  // Google Services plugin
+    }
+
     ext {
         compose_version = '1.0.1'
 
@@ -6,17 +14,12 @@ buildscript {
             classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
         }
     }
-    dependencies {
-        classpath 'com.google.gms:google-services:4.3.10'
-    }
-    dependencies {
-        classpath 'com.google.gms:google-services:4.3.10'
-    }
     ext.retrofit_version = '2.9.0'
     ext.moshi_version = '2.9.0'
     ext.okhttp_version = '4.9.0'
 
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 plugins {
     id 'com.android.application' version '7.1.2' apply false
     id 'com.android.library' version '7.1.2' apply false

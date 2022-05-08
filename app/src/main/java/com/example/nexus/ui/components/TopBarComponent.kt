@@ -23,7 +23,6 @@ fun NexusTopBar(
     focusManager: FocusManager
 ){
     val onSettingsClick = {
-        focusManager.clearFocus()
         while(navController.navigateUp()){
             navController.navigateUp()
         }
@@ -52,7 +51,10 @@ fun NexusTopBar(
             title = { Text("nexus") },
             backgroundColor = NexusBlack,
             navigationIcon = {
-                IconButton(onClick = {navController.navigateUp()}) {
+                IconButton(onClick = {
+                    focusManager.clearFocus()
+                    navController.navigateUp()
+                }) {
                     Icon(Icons.Filled.ArrowBack, "backIcon")
                 }
             },

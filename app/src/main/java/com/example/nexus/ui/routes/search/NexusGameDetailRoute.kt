@@ -83,7 +83,8 @@ fun NexusGameDetailRoute(
                         getEditOrAddGames = {vM.getEditOrAddGames()},
                         getShowErrorPopup = {vM.getShowErrorPopup()},
                         getShowDeleteWarning = {vM.getShowDeleteWarning()},
-                        setEditOrAddGames = {e -> vM.setEditOrAddGames(e)})
+                        setEditOrAddGames = {e -> vM.setEditOrAddGames(e)},
+                        focusManager)
                 } else{
                     AgeConfirmComponent({b : Boolean -> vM.onAgeVerifOpenChange(b)}, navController)
                 }

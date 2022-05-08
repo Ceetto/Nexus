@@ -14,7 +14,7 @@ import com.example.nexus.viewmodels.UserState
 @Composable
 fun ApplicationSwitcher() {
     val vm = UserState.current
-    if (vm.isLoggedIn) {
+    if (vm.getIsLoggedIn()) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
@@ -22,6 +22,6 @@ fun ApplicationSwitcher() {
             Home()
         }
     } else {
-        NexusLoginRoute(vM = hiltViewModel())
+        NexusLoginRoute(vm)
     }
 }
