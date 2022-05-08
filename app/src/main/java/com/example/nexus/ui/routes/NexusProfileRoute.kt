@@ -45,6 +45,14 @@ fun NexusProfileRoute(
     navController: NavHostController,
     onOpenGameDetails: (gameId: Long) -> Unit
 ){
+   InitProfile(vM = vM, navController = navController, onOpenGameDetails = onOpenGameDetails)
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun InitProfile(vM: NexusProfileViewModel,
+                    navController: NavHostController,
+                    onOpenGameDetails: (gameId: Long) -> Unit){
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true) }
     ) {
@@ -52,10 +60,7 @@ fun NexusProfileRoute(
             vM, onOpenGameDetails
         )
     }
-
 }
-
-
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(vM: NexusProfileViewModel, onOpenGameDetails: (gameId: Long) -> Unit){
@@ -296,6 +301,5 @@ fun FavoriteListComponent(entry: ListEntry, onOpenGameDetails: (gameId: Long) ->
         )
         Text(entry.title)
     }
-
 }
 

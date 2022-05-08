@@ -60,9 +60,7 @@ fun NexusSettingsPicture(vM: NexusProfileViewModel, navController: NavHostContro
                 Box(
                     modifier = Modifier.size(100.dp).clip(CircleShape).background(Color.Red)
                 )
-
             }
-
 
             Row(modifier = Modifier
                 .fillMaxWidth()
