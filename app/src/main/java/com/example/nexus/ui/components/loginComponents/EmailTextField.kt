@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.dp
 fun EmailTextField(
     getEmail: () -> String,
     setEmail: (String) -> Unit,
-    getIsEmailValid: () -> Boolean
+    getIsEmailValidTest: () -> Boolean,
+    getUserAlreadyExists: () -> Boolean,
+    getUserDoesNotExists: () -> Boolean
 ) {
     val focusManager =  LocalFocusManager.current
 
@@ -37,7 +39,7 @@ fun EmailTextField(
             keyboardActions = KeyboardActions (
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            isError = !getIsEmailValid(),
+            isError = !getIsEmailValidTest(),
             trailingIcon = {
                 if (getEmail().isNotBlank()) {
                     IconButton(onClick = { setEmail("") }) {
@@ -49,13 +51,22 @@ fun EmailTextField(
                 }
             }
         )
-        if (!getIsEmailValid()) {
-            Text(
-                text = "Incorrect email address",
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = 16.dp)
-            )
+        if (!getIsEmailValidTest()) {
+            ErrorMessage(text = "Incorrect email address")
+        } else if (getUserAlreadyExists()) {
+            ErrorMessage(text = "Email already in use")
+        } else if (getUserDoesNotExists()) {
+            ErrorMessage(text = "Email does not exist")
         }
     }
+}
+
+@Composable
+fun ErrorMessage(text: String) {
+    Text(
+        text = text,
+        color = MaterialTheme.colors.error,
+        style = MaterialTheme.typography.caption,
+        modifier = Modifier.padding(start = 16.dp)
+    )
 }

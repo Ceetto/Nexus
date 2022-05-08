@@ -3,7 +3,6 @@ package com.example.nexus.viewmodels
 import android.util.Patterns
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
@@ -17,12 +16,11 @@ import javax.inject.Inject
 class NexusLoginViewModel  @Inject constructor(
     private val repo: LoginRepository,
     private val profileRepo : ProfileRepository) : ViewModel() {
-    private val _showDialog = MutableStateFlow(false)
-    val showDialog: StateFlow<Boolean> = _showDialog.asStateFlow()
-    private var isLoggedIn = mutableStateOf(false)
     private var isBusy = mutableStateOf(false)
     private var email = mutableStateOf("")
     private var password = mutableStateOf("")
+    private var isEmailValidTest = mutableStateOf(true)
+    private var isPasswordValidTest = mutableStateOf(true)
     private val isEmailValid by derivedStateOf {
         Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
@@ -30,6 +28,22 @@ class NexusLoginViewModel  @Inject constructor(
         password.value.length > 7
     }
     private var isPasswordVisible = mutableStateOf(false)
+
+    fun checkEmail() {
+        isEmailValidTest.value = Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
+    }
+
+    fun checkPassword() {
+        isPasswordValidTest.value = password.value.length > 7
+    }
+
+    fun getIsEmailValidTest(): Boolean {
+        return isEmailValidTest.value
+    }
+
+    fun getIsPasswordValidTest(): Boolean {
+        return isPasswordValidTest.value
+    }
 
     fun getEmail(): String {
         return email.value
@@ -82,6 +96,10 @@ class NexusLoginViewModel  @Inject constructor(
     fun createAccount() = repo.createAccount(email.value, password.value)
 
     fun signIn() = repo.signIn(email.value, password.value)
+
+    fun getUserAlreadyExists() = repo.getUserAlreadyExists()
+
+    fun getUserDoesNotExists() = repo.getUserDoesNotExists()
 }
 
 val UserState = compositionLocalOf<NexusLoginViewModel> { error("User State Context Not Found!") }

@@ -14,10 +14,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RegisterButton(
-    createAccount: () -> Unit
+    createAccount: () -> Unit,
+    checkEmail: () -> Unit,
+    checkPassword: () -> Unit,
+    getIsEmailValid: () -> Boolean,
+    getIsPasswordValid: () -> Boolean
 ) {
     OutlinedButton(onClick = {
-        createAccount()
+        checkEmail()
+        checkPassword()
+        if (getIsEmailValid() && getIsPasswordValid()) {
+            createAccount()
+        }
     }, content = {
         Text("Register")
     }, modifier = Modifier

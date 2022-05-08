@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 fun PasswordTextField(
     getPassword: () -> String,
     setPassword: (String) -> Unit,
-    getIsPasswordValid: () -> Boolean,
+    getIsPasswordValidTest: () -> Boolean,
     setIsPasswordVisible: (Boolean) -> Unit,
     getIsPasswordVisible: () -> Boolean
 ) {
@@ -40,7 +40,7 @@ fun PasswordTextField(
             keyboardActions = KeyboardActions (
                 onNext = { focusManager.clearFocus() }
             ),
-            isError = !getIsPasswordValid(),
+            isError = !getIsPasswordValidTest(),
             trailingIcon = {
                 IconButton(onClick = { setIsPasswordVisible(!getIsPasswordVisible()) }) {
                     Icon(imageVector = if(getIsPasswordVisible()) Icons.Default.Visibility else Icons.Default.VisibilityOff,
@@ -49,7 +49,7 @@ fun PasswordTextField(
             },
             visualTransformation = if(getIsPasswordVisible()) VisualTransformation.None else PasswordVisualTransformation()
         )
-        if (!getIsPasswordValid()) {
+        if (!getIsPasswordValidTest()) {
             Text(
                 text = "Incorrect password",
                 color = MaterialTheme.colors.error,
