@@ -41,7 +41,6 @@ class LoginRepository @Inject constructor() {
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     isLoggedIn.value = true
-                    println(auth.currentUser!!.uid)
                     Log.d(MainActivity.TAG, "The user has successfully logged in")
                 } else {
                     Log.w(MainActivity.TAG, "The user has FAILED to log in", it.exception)

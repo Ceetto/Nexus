@@ -22,48 +22,51 @@ class FirebaseListDao @Inject constructor(
     private val database: FirebaseDatabase,
     private val loginRepo: LoginRepository
 ){
-    private val listEntryRef = database.getReference("user/${loginRepo.getUserId()}/list")
+    private var listEntryRef = database.getReference("user/${loginRepo.getUserId()}/list")
+
+    private val eventListener = object: ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            // This method is called once with the initial value and again
+            // whenever data at this location is updated.
+            val newList = mutableListOf<ListEntry>()
+            for(child in snapshot.children ){
+                newList.add(
+                    ListEntry(
+                        child.child("gameId").value as Long,
+                        child.child("title").value as String,
+                        (child.child("score").value as Long).toInt(),
+                        (child.child("minutesPlayed").value as Long).toInt(),
+                        child.child("status").value as String,
+                        child.child("coverUrl").value as String?,
+                        child.child("favorited").value as Boolean,
+                        child.child("releaseDate").value as Long
+                    )
+                )
+            }
+            newList.sortBy { entry: ListEntry -> entry.title }
+            playing.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLAYING.value } }
+            completed.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.COMPLETED.value } }
+            planned.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }
+            dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
+            allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
+            favorites.update{newList.filter { entry: ListEntry -> entry.favorited}}
+            top10Favorites.value = newList.filter { entry: ListEntry -> entry.favorited }.sortedBy {it.score}.reversed()
+            allGamesState.value = playing.value.plus(completed.value).plus(planned.value).plus(dropped.value)
+            doneFetching.value = true
+        }
+        override fun onCancelled(error: DatabaseError) {
+            Log.w(TAG, "Failed to read value.", error.toException())
+        }
+    }
+
+    fun changeUser(){
+        realtimeEntries.value = database.getReference("user/${loginRepo.getUserId()}/list").addValueEventListener(eventListener)
+    }
+
+    private val realtimeEntries = mutableStateOf(database.getReference("user/${loginRepo.getUserId()}/list").addValueEventListener(eventListener))
 
     var doneFetching = mutableStateOf(false)
 
-    private val realtimeEntries = listEntryRef.addValueEventListener(
-        object: ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val newList = mutableListOf<ListEntry>()
-                for(child in snapshot.children ){
-                    newList.add(
-                        ListEntry(
-                            child.child("gameId").value as Long,
-                            child.child("title").value as String,
-                            (child.child("score").value as Long).toInt(),
-                            (child.child("minutesPlayed").value as Long).toInt(),
-                            child.child("status").value as String,
-                            child.child("coverUrl").value as String?,
-                            child.child("favorited").value as Boolean,
-                            child.child("releaseDate").value as Long
-                        )
-                    )
-                }
-                newList.sortBy { entry: ListEntry -> entry.title }
-                playing.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLAYING.value } }
-                completed.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.COMPLETED.value } }
-                planned.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }
-                dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
-                allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
-                favorites.update{newList.filter { entry: ListEntry -> entry.favorited}}
-                top10Favorites.value = newList.filter { entry: ListEntry -> entry.favorited }.sortedBy {it.score}.reversed()
-                allGamesState.value = playing.value.plus(completed.value).plus(planned.value).plus(dropped.value)
-                doneFetching.value = true
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        }
-    )
 
     private val TAG = "ListRepository"
 

@@ -4,13 +4,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.repositories.HomeRepository
+import com.example.nexus.data.repositories.ListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import proto.Game
 import javax.inject.Inject
 
 @HiltViewModel
-class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) : ViewModel(){
+class NexusHomeViewModel  @Inject constructor(
+    private val repo: HomeRepository,
+    private val listRepo: ListRepository
+) : ViewModel(){
     private val popularList = repo.popularList.value
     private val searchingPopular = repo.searchingPopular.value
     private val bestList = repo.bestList.value
@@ -127,5 +131,9 @@ class NexusHomeViewModel  @Inject constructor(private val repo: HomeRepository) 
 
     fun getGotIds(): List<Long> {
         return gotIds.value
+    }
+
+    fun updateUser(){
+        listRepo.updateUser()
     }
 }
