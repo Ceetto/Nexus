@@ -8,9 +8,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.api.igdb.utils.ImageSize
+import com.api.igdb.utils.ImageType
+import com.api.igdb.utils.imageBuilder
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
+import com.example.nexus.ui.routes.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -36,13 +40,17 @@ class NexusGameDetailViewModel @Inject constructor(
     private var showErrorPopup = mutableStateOf(false)
     private val currentListEntry = mutableStateOf(ListEntry(0, "", 0,
     0, "", "", false, 0))
-    private val minutes = mutableStateOf("0")
     private val hours = mutableStateOf("0")
+    private val minutes = mutableStateOf("0")
     private val editOrAddGames = mutableStateOf(GameFormButton.ADD.value)
     private val showDeleteWarning = mutableStateOf(false)
     private val icon = mutableStateOf(Icons.Outlined.StarBorder)
     private val favoriteToggled = mutableStateOf(false)
+    private val prefilledGame = mutableStateOf(false)
 
+    fun isPrefilledGame(): Boolean {
+        return prefilledGame.value
+    }
 
     fun onGetGameEvent(){
 
@@ -191,6 +199,38 @@ class NexusGameDetailViewModel @Inject constructor(
 
     fun getShowDeleteWarning(): Boolean {
         return showDeleteWarning.value
+    }
+
+    fun prefillGame(game: Game, games: List<ListEntry>){
+        var i = 0
+        while (i < games.size && !prefilledGame.value){
+            if(games[i].gameId == game.id){
+                setListEntry(games[i])
+                setMinutes(getListEntry().minutesPlayed.mod(60).toString())
+                setHours(((getListEntry().minutesPlayed - getMinutes().toInt())/60).toString())
+                setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.EDIT.value)
+                if(games[i].favorited){
+                    setIcon(Icons.Outlined.Star)
+                } else {
+                    setIcon(Icons.Outlined.StarBorder)
+                }
+                prefilledGame.value = true
+            }
+            i++
+        }
+
+        //fills in the current ListEntry in case the game was not found in your list
+        if (!prefilledGame.value){
+            setListEntry(ListEntry(game.id, game.name, 0, 0, ListCategory.PLAYING.value,
+                game.cover?.let {
+                    imageBuilder(
+                        it.imageId,
+                        ImageSize.COVER_BIG,
+                        ImageType.JPEG
+                    )
+                }, false, game.firstReleaseDate.seconds))
+            setEditOrAddGames(GameFormButton.ADD.value)
+        }
     }
 
 

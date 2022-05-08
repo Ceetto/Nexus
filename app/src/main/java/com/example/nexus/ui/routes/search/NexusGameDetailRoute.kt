@@ -48,38 +48,11 @@ fun NexusGameDetailRoute(
             val game = vM.getGameList()[0]
             //checks if the game is already in your list
             val games by vM.allGames.collectAsState()
-            var i = 0
-            var found = false
-            while (i < games.size && !found){
-                if(games[i].gameId == game.id){
-                    vM.setListEntry(games[i])
-                    vM.setMinutes(vM.getListEntry().minutesPlayed.mod(60).toString())
-                    vM.setHours(((vM.getListEntry().minutesPlayed - vM.getMinutes().toInt())/60).toString())
-                    vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.EDIT.value)
-                    if(games[i].favorited){
-                        vM.setIcon(Icons.Outlined.Star)
-                    } else {
-                        vM.setIcon(Icons.Outlined.StarBorder)
-                    }
-                    found = true
-                }
-                i++
-            }
 
-            //fills in the current ListEntry in case the game was not found in your list
-            if (!found){
-                vM.setListEntry(ListEntry(game.id, game.name, 0, 0, ListCategory.PLAYING.value,
-                game.cover?.let {
-                    imageBuilder(
-                        it.imageId,
-                        ImageSize.COVER_BIG,
-                        ImageType.JPEG
-                    )}, false, game.firstReleaseDate.seconds))
-                vM.setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
-            }
+            vM.prefillGame(game, games)
 
             if(!vM.getGameFormOpen() && !vM.ageVerifOpen()){
-                GameDetailComponent(game, found, onOpenGameDetails, focusManager,
+                GameDetailComponent(game, vM.isPrefilledGame(), onOpenGameDetails, focusManager,
                         vM.isRefreshing(), {vM.onGetGameEvent()}, {b: Boolean -> vM.onGameFormOpenChanged(b)},
                         vM.getEditOrAddGames(),
                         onFavourite = {
