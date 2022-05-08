@@ -54,8 +54,6 @@ class ProfileRepository @Inject constructor(
 
     fun updateUser() = fireBaseUserDao.updateUser()
 
-    fun getUsername(): String {
-        return fireBaseUserDao.getUser().username
-    }
+    fun getUsername() = fireBaseUserDao.getUsername()
 
 }

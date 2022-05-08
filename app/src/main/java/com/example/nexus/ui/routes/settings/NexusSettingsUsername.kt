@@ -54,7 +54,7 @@ fun NexusSettingsUsername(vM: NexusProfileViewModel, navController: NavHostContr
             Row(horizontalArrangement = Arrangement.Center){
                 Button(onClick = {
                     if (vM.getUsername() != ""){
-                        vM.storeUsername(vM.getUsername())
+                        vM.storeUsername(vM.getNewUsername())
                     }
                 }){
                     Text(text = "Save")

@@ -33,15 +33,20 @@ class FirebaseUserDao @Inject constructor(
         "",
         0L))
 
+    private val username = mutableStateOf("")
+
     private val eventListener =
         object: ValueEventListener {
 
         override fun onDataChange(snapshot: DataSnapshot) {
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
+            println("------------on data change-------------")
+            println("children: ${snapshot.children.count()}")
+            println(getUserId(auth.currentUser))
             if (snapshot.children.count() >= 7 && getUserId(auth.currentUser) != "") {
                 newUser.value.email = snapshot.child("email").value as String
-                newUser.value.username = snapshot.child("username").value as String
+                username.value = snapshot.child("username").value as String
                 newUser.value.friends = snapshot.child("friends").value as List<String>
                 newUser.value.friendRequests = snapshot.child("friendRequests").value as List<String>
                 newUser.value.profilePicture = snapshot.child("profilePicture").value as String
@@ -72,6 +77,13 @@ class FirebaseUserDao @Inject constructor(
         return newUser.value
     }
 
+    fun getUsername(): String{
+        updateUser()
+        println("-----------------username-----------------")
+        println(username.value)
+        return username.value
+    }
+
     fun storeNewUser(user : User)  {
         updateUser()
         userRef.value.child("email").setValue(user.email)
@@ -84,7 +96,6 @@ class FirebaseUserDao @Inject constructor(
     }
 
     fun changeUsername(username: String) {
-        updateUser()
         userRef.value.child("username").setValue(username)
     }
 }
