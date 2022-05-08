@@ -51,7 +51,7 @@ class FirebaseListDao @Inject constructor(
                 planned.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }
                 dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
                 allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
-                favorites.update{newList.filter { entry: ListEntry -> entry.favorited }}
+                favorites.update{newList.filter { entry: ListEntry -> entry.favorited}}
                 top10Favorites.value = newList.filter { entry: ListEntry -> entry.favorited }.sortedBy {it.score}.reversed()
                 allGamesState.value = playing.value.plus(completed.value).plus(planned.value).plus(dropped.value)
                 doneFetching.value = true
