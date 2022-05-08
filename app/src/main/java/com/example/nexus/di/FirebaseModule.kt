@@ -11,11 +11,11 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class FirestoreModule {
+class FirebaseModule {
 
     @Singleton
     @Provides
-    fun provideFirestoreDatabase(): FirebaseDatabase{
+    fun provideFirebaseDatabase(): FirebaseDatabase{
         return Database.getInstance()
     }
 }
