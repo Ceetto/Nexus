@@ -14,6 +14,10 @@ import javax.inject.Singleton
 class ListRepository @Inject constructor(
     private val firebaseListDao: FirebaseListDao
 ) {
+
+    init {
+        println("INITIALIZING LISTREPO")
+    }
     suspend fun storeListEntry(entry: ListEntry) = firebaseListDao.storeListEntry(entry)
 
     suspend fun deleteListEntry(entry: ListEntry) = firebaseListDao.deleteListEntry(entry)
@@ -104,4 +108,8 @@ class ListRepository @Inject constructor(
     suspend fun getTop10Favorites() = firebaseListDao.getTop10Favorites()
 
     suspend fun getAllGamesAsState() = firebaseListDao.getAllGamesAsState()
+
+    fun updateUser(){
+        firebaseListDao.changeUser()
+    }
 }

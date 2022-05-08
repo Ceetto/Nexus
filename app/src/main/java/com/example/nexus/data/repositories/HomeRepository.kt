@@ -63,7 +63,6 @@ class HomeRepository @Inject constructor(
             gotIds.value.value += li.gameId
         }
 
-        println("GETTING GAMES")
         val apicalypsePopular = APICalypse().fields("cover.image_id,name").where("rating_count > 0")
             .sort("rating_count", Sort.DESCENDING)
             .limit(20)
@@ -84,7 +83,6 @@ class HomeRepository @Inject constructor(
                 .where("id = ($favIds)")
 
         try{
-            println("STILL GETTING GAMES")
             trendingList.value.value = IGDBWrapper.games(apiCalypseTrending)
             searchingTrending.value.value = false
             if(favourites.isNotEmpty()){
@@ -98,7 +96,6 @@ class HomeRepository @Inject constructor(
             searchingBest.value.value = false
             popularList.value.value = IGDBWrapper.games(apicalypsePopular)
             searchingPopular.value.value = false
-            println("GOT GAMES")
 
         }catch(e: RequestException){
             print("NEXUS API FETCH ERROR: ")

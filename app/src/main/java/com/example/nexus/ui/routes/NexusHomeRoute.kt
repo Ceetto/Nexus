@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -34,6 +35,9 @@ fun NexusHomeRoute(
     onOpenGameDetails : (gameId: Long) -> Unit,
     isShuffling: MutableState<Boolean> = mutableStateOf(false)
 ) {
+     LaunchedEffect(Unit){
+         vM.updateUser()
+     }
      val focusManager = LocalFocusManager.current
      Scaffold(
          topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }

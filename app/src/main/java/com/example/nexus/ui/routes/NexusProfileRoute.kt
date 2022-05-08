@@ -270,7 +270,7 @@ fun FavoriteList(vM: NexusProfileViewModel, onOpenGameDetails: (gameId: Long) ->
     Column(
         Modifier.padding(start = 5.dp, top = 5.dp, bottom = 10.dp)
     ){
-        Text("Favoruites:", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text("Favourites:", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Row(Modifier.horizontalScroll(rememberScrollState())){
                 favorites.forEach { entry -> Row{
                     FavoriteListComponent(entry, onOpenGameDetails, LocalFocusManager.current)
