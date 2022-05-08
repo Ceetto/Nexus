@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
@@ -36,9 +37,9 @@ fun GameFormComponent(
     getEditOrAddGames: () -> String,
     getShowErrorPopup: () -> Boolean,
     getShowDeleteWarning: () -> Boolean,
-    setEditOrAddGames: (String) -> Unit
+    setEditOrAddGames: (String) -> Unit,
+    focusManager: FocusManager
 ){
-    val focusManager = LocalFocusManager.current
 
     Column(verticalArrangement = Arrangement.Top,
             modifier = Modifier
