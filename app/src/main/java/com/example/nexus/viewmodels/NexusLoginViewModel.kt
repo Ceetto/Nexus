@@ -8,6 +8,7 @@ import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -68,16 +69,17 @@ class NexusLoginViewModel  @Inject constructor(
 
     fun getIsLoggedIn() = repo.getIsLoggedIn()
 
-    fun createAccount() {
+//    fun createAccount() {
+//        repo.createAccount(email.value, password.value)
+//
+//
+//        if (repo.getIsLoggedIn()){
+//            println("in if in create account")
+//            profileRepo.storeNewUser(User(email.value, "NewUser", emptyList(), emptyList(), "", "", 0L))
+//        }
+//    }
 
-        repo.createAccount(email.value, password.value)
-
-
-        if (repo.getIsLoggedIn()){
-            println("in if in create account")
-            profileRepo.storeNewUser(User(email.value, "NewUser", emptyList(), emptyList(), "", "", 0L))
-        }
-    }
+    fun createAccount() = repo.createAccount(email.value, password.value)
 
     fun signIn() = repo.signIn(email.value, password.value)
 }

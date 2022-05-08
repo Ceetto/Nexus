@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.nexus.ui.components.loginComponents.*
 import com.example.nexus.viewmodels.NexusLoginViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun NexusLoginRoute(vM: NexusLoginViewModel) {

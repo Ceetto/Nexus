@@ -1,5 +1,6 @@
 package com.example.nexus.data.dataClasses
 
+import com.google.firebase.auth.FirebaseUser
 
 
 data class User(var email: String,
@@ -11,3 +12,6 @@ data class User(var email: String,
                      var releaseNotification : Long
                      )
 
+fun getUserId(currentUser: FirebaseUser?): String {
+    return currentUser?.uid ?: ""
+}

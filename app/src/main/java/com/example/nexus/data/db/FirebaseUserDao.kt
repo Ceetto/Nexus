@@ -3,7 +3,10 @@ package com.example.nexus.data.db
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.User
+import com.example.nexus.data.dataClasses.getUserId
 import com.example.nexus.data.repositories.LoginRepository
+import com.example.nexus.di.AuthenticationModule
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -14,9 +17,9 @@ import javax.inject.Singleton
 @Singleton
 class FirebaseUserDao @Inject constructor(
     private val database: FirebaseDatabase,
-    private val loginRepo: LoginRepository
+    private val auth: FirebaseAuth
 ){
-    private val userRef = database.getReference("user/${loginRepo.getUserId()}")
+    private val userRef = database.getReference("user/${getUserId(auth.currentUser)}")
 
 
     var doneFetching = mutableStateOf(false)
@@ -37,7 +40,7 @@ class FirebaseUserDao @Inject constructor(
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
 
-                if (snapshot.children.count() > 1 && loginRepo.getUserId() != "") {
+                if (snapshot.children.count() > 1 && getUserId(auth.currentUser) != "") {
                     newUser.value.email = snapshot.child("email").value as String
                     newUser.value.username = snapshot.child("username").value as String
                     newUser.value.friends = snapshot.child("friends").value as List<String>

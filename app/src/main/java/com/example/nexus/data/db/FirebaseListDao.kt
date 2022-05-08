@@ -3,8 +3,11 @@ package com.example.nexus.data.db
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.dataClasses.getUserId
 import com.example.nexus.data.repositories.LoginRepository
+import com.example.nexus.di.AuthenticationModule
 import com.example.nexus.ui.routes.ListCategory
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -20,9 +23,9 @@ import javax.inject.Singleton
 @Singleton
 class FirebaseListDao @Inject constructor(
     private val database: FirebaseDatabase,
-    private val loginRepo: LoginRepository
+    private val auth: FirebaseAuth
 ){
-    private var listEntryRef = mutableStateOf(database.getReference("user/${loginRepo.getUserId()}/list"))
+    private var listEntryRef = mutableStateOf(database.getReference("user/${getUserId(auth.currentUser)}/list"))
 
     private val eventListener = object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -62,7 +65,7 @@ class FirebaseListDao @Inject constructor(
     private val realtimeEntries = mutableStateOf(listEntryRef.value.addValueEventListener(eventListener))
 
     fun changeUser(){
-        listEntryRef.value = database.getReference("user/${loginRepo.getUserId()}/list")
+        listEntryRef.value = database.getReference("user/${getUserId(auth.currentUser)}/list")
         realtimeEntries.value = listEntryRef.value.addValueEventListener(eventListener)
     }
 

@@ -4,6 +4,7 @@ package com.example.nexus.data.repositories
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.activities.MainActivity
+import com.example.nexus.data.dataClasses.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,14 +12,16 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepository @Inject constructor() {
+class LoginRepository @Inject constructor(
+    private var profileRepo: ProfileRepository
+) {
 
     private var auth: FirebaseAuth = Firebase.auth
     private var isLoggedIn = mutableStateOf(auth.currentUser != null)
 
-    fun getUserId(): String {
-        return auth.currentUser?.uid ?: ""
-    }
+//    fun getUserId(): String {
+//        return auth.currentUser?.uid ?: ""
+//    }
 
     fun getIsLoggedIn(): Boolean {
         return isLoggedIn.value
@@ -29,6 +32,7 @@ class LoginRepository @Inject constructor() {
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     isLoggedIn.value = true
+                    profileRepo.storeNewUser(User(email, "NewUser", emptyList(), emptyList(), "", "", 0L))
                     Log.d(MainActivity.TAG, "The user registered a new account and logged in")
                 } else {
                     Log.w(MainActivity.TAG, "The user has FAILED to make a new account and log in", it.exception)
