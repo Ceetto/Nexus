@@ -11,16 +11,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginRepository @Inject constructor(
-) {
+class LoginRepository @Inject constructor() {
+
     private var auth: FirebaseAuth = Firebase.auth
-    val userId = mutableStateOf(auth.currentUser?.uid)
-    private var isLoggedIn = mutableStateOf(false)
+    private var isLoggedIn = mutableStateOf(auth.currentUser != null)
 
     fun getUserId(): String {
-        println("User Id is " + auth.currentUser?.uid)
         return auth.currentUser?.uid ?: ""
-//        return userId.value!!
     }
 
     fun getIsLoggedIn(): Boolean {
@@ -54,13 +51,5 @@ class LoginRepository @Inject constructor(
     fun signOut() {
         auth.signOut()
         isLoggedIn.value = false
-    }
-
-    fun signedIn(): Boolean {
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            println(currentUser.email)
-        }
-        return currentUser != null
     }
 }

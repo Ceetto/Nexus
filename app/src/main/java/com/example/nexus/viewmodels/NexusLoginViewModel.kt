@@ -30,18 +30,6 @@ class NexusLoginViewModel  @Inject constructor(
     }
     private var isPasswordVisible = mutableStateOf(false)
 
-    fun onOpenDialogClicked() {
-        _showDialog.value = true
-    }
-
-    fun onDialogConfirm() {
-        _showDialog.value = false
-    }
-
-    fun onDialogDismiss() {
-        _showDialog.value = false
-    }
-
     fun getEmail(): String {
         return email.value
     }
@@ -92,8 +80,6 @@ class NexusLoginViewModel  @Inject constructor(
     }
 
     fun signIn() = repo.signIn(email.value, password.value)
-
-    fun signedIn() = repo.signedIn()
 }
 
 val UserState = compositionLocalOf<NexusLoginViewModel> { error("User State Context Not Found!") }
