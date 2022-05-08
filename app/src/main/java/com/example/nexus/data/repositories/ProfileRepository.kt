@@ -47,4 +47,10 @@ class ProfileRepository @Inject constructor(
     fun updateNotifification(new : Long){
         //update
     }
+
+    fun storeNewUser(user: User) {
+        fireBaseUserDao.storeNewUser(user)
+    }
+
+
 }
