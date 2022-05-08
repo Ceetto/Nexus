@@ -67,7 +67,7 @@ class NexusGameDetailViewModel @Inject constructor(
         return isRefreshing.value
     }
 
-    fun isAdult(): Boolean{
+    private fun isAdult(): Boolean{
         if(gameList.value.value.isNotEmpty()){
             val game = gameList.value.value[0]
             for(rating in game.ageRatingsList){

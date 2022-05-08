@@ -82,7 +82,26 @@ fun NexusGameDetailRoute(
                 GameDetailComponent(vM, game, found, onOpenGameDetails, focusManager)
             } else {
                 if(vM.getGameFormOpen()){
-                    GameFormComponent(vM)
+                    GameFormComponent(
+                        onGameFormOpenChanged = {b -> vM.onGameFormOpenChanged(b)},
+                        getListEntry = {vM.getListEntry()},
+                        storeListEntry = {e -> vM.storeListEntry(e)},
+                        deleteListEntry = {e-> vM.deleteListEntry(e)},
+                        getGameScore = {vM.getGameScore()},
+                        setGameScore = {s -> vM.setGameScore(s)},
+                        getGameStatus = {vM.getGameStatus()},
+                        setGameStatus = {s -> vM.setGameStatus(s)},
+                        getHours = {vM.getHours()},
+                        setHours = {h -> vM.setHours(h)},
+                        getMinutes = {vM.getMinutes()},
+                        setMinutes = {m -> vM.setMinutes(m)},
+                        onShowErrorPopupChanged = {b -> vM.onShowErrorPopupChanged(b)},
+                        onShowDeleteWarningChanged = {b -> vM.onShowDeleteWarningChanged(b)},
+                        setCurrentListEntryMinutes = {m -> vM.setCurrentListEntryMinutes(m)},
+                        getEditOrAddGames = {vM.getEditOrAddGames()},
+                        getShowErrorPopup = {vM.getShowErrorPopup()},
+                        getShowDeleteWarning = {vM.getShowDeleteWarning()},
+                        setEditOrAddGames = {e -> vM.setEditOrAddGames(e)})
                 } else{
                     AgeConfirmComponent({b : Boolean -> vM.onAgeVerifOpenChange(b)}, navController)
                 }
