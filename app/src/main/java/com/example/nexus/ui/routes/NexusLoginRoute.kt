@@ -27,14 +27,15 @@ fun NexusLoginRoute(vM: NexusLoginViewModel) {
                 EmailTextField(
                     { vM.getEmail() },
                     { e -> vM.setEmail(e) },
-                    { vM.getIsEmailValid() },
-                    { vM.getIsEmailValidTest() }
+                    { vM.getIsEmailValidTest() },
+                    { vM.getUserAlreadyExists() },
+                    { vM.getUserDoesNotExists() }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 PasswordTextField(
                     { vM.getPassword() },
                     { e -> vM.setPassword(e) },
-                    { vM.getIsPasswordValid() },
+                    { vM.getIsPasswordValidTest() },
                     { e -> vM.setIsPasswordVisible(e) },
                     { vM.getIsPasswordVisible() }
                 )
@@ -42,11 +43,16 @@ fun NexusLoginRoute(vM: NexusLoginViewModel) {
                 LoginButton(
                     { vM.getIsEmailValid() },
                     { vM.getIsPasswordValid() },
-                    { vM.signIn() },
-                    { vM.checkEmail() }
+                    { vM.signIn() }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                RegisterButton { vM.createAccount() }
+                RegisterButton (
+                    { vM.createAccount() },
+                    { vM.checkEmail() },
+                    { vM.checkPassword() },
+                    { vM.getIsEmailValid() },
+                    { vM.getIsPasswordValid() }
+                )
             }
         }
     }

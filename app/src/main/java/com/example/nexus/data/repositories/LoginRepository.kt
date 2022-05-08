@@ -15,6 +15,8 @@ class LoginRepository @Inject constructor() {
 
     private var auth: FirebaseAuth = Firebase.auth
     private var isLoggedIn = mutableStateOf(auth.currentUser != null)
+    private var userAlreadyExists = mutableStateOf(false)
+    private var userDoesNotExists = mutableStateOf(false)
 
     fun getUserId(): String {
         return auth.currentUser?.uid ?: ""
@@ -24,13 +26,23 @@ class LoginRepository @Inject constructor() {
         return isLoggedIn.value
     }
 
+    fun getUserAlreadyExists(): Boolean {
+        return userAlreadyExists.value
+    }
+
+    fun getUserDoesNotExists(): Boolean {
+        return userDoesNotExists.value
+    }
+
     fun createAccount(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     isLoggedIn.value = true
+                    userAlreadyExists.value = false
                     Log.d(MainActivity.TAG, "The user registered a new account and logged in")
                 } else {
+                    userAlreadyExists.value = true
                     Log.w(MainActivity.TAG, "The user has FAILED to make a new account and log in", it.exception)
                 }
             }
@@ -41,8 +53,10 @@ class LoginRepository @Inject constructor() {
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     isLoggedIn.value = true
+                    userDoesNotExists.value = false
                     Log.d(MainActivity.TAG, "The user has successfully logged in")
                 } else {
+                    userDoesNotExists.value = true
                     Log.w(MainActivity.TAG, "The user has FAILED to log in", it.exception)
                 }
             }

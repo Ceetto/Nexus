@@ -16,11 +16,9 @@ import androidx.compose.ui.unit.dp
 fun LoginButton(
     getIsEmailValid: () -> Boolean,
     getIsPasswordValid: () -> Boolean,
-    signIn: () -> Unit,
-    checkEmail: () -> Unit
+    signIn: () -> Unit
 ) {
     OutlinedButton(onClick = {
-        checkEmail()
         signIn()
     }, content = {
         Text("Login")

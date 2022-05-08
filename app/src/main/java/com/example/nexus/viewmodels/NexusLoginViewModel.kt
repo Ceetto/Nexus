@@ -17,6 +17,7 @@ class NexusLoginViewModel  @Inject constructor(
     private var email = mutableStateOf("")
     private var password = mutableStateOf("")
     private var isEmailValidTest = mutableStateOf(true)
+    private var isPasswordValidTest = mutableStateOf(true)
     private val isEmailValid by derivedStateOf {
         Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
@@ -29,8 +30,16 @@ class NexusLoginViewModel  @Inject constructor(
         isEmailValidTest.value = Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
 
+    fun checkPassword() {
+        isPasswordValidTest.value = password.value.length > 7
+    }
+
     fun getIsEmailValidTest(): Boolean {
         return isEmailValidTest.value
+    }
+
+    fun getIsPasswordValidTest(): Boolean {
+        return isPasswordValidTest.value
     }
 
     fun getEmail(): String {
@@ -79,6 +88,10 @@ class NexusLoginViewModel  @Inject constructor(
     }
 
     fun signIn() = repo.signIn(email.value, password.value)
+
+    fun getUserAlreadyExists() = repo.getUserAlreadyExists()
+
+    fun getUserDoesNotExists() = repo.getUserDoesNotExists()
 }
 
 val UserState = compositionLocalOf<NexusLoginViewModel> { error("User State Context Not Found!") }
