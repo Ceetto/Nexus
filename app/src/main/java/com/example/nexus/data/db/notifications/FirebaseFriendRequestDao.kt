@@ -60,9 +60,9 @@ class FirebaseFriendRequestDao @Inject constructor(
     }
 
     //TODO
-    //@Whoever dat dit gaat uitbreiden/gebruiken, note dat je hier waarschijnlijk eerder een
-    //notication wilt sturen naar een andere user en niet naar uzelf, dus er gaan hier nog changes
-    //nodig zijn
+    //@Whoever dat dit gaat uitbreiden/gebruiken, note dat je hier waarschijnlijk eerder ook een
+    //notication wilt sturen naar een andere user en niet enkel naar uzelf(als de request accepten is),
+    // dus er gaan hier nog changes nodig zijn
     fun storeFriendRequest(req: FriendRequest){
         friendRequestRef.value.child(req.userId).setValue(req)
     }
