@@ -61,6 +61,10 @@ class ReleaseNotificationDao @Inject constructor(
         return notifications
     }
 
+    //TODO
+    //@Whoever dat dit gaat uitbreiden/gebruiken, note dat je hier waarschijnlijk eerder een
+    //notication wilt sturen naar een andere user en niet naar uzelf, dus er gaan hier nog changes
+    //nodig zijn
     fun storeReleaseNotification(notif: ReleaseNotification){
         releaseNotificationRef.value.child(notif.gameId.toString()).setValue(notif)
     }
