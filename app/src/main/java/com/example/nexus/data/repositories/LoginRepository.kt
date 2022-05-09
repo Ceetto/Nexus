@@ -39,7 +39,7 @@ class LoginRepository @Inject constructor(
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     isLoggedIn.value = true
-                    profileRepo.storeNewUser(User(email, "NewUser", emptyList(), emptyList(), "", "", 0L))
+                    profileRepo.storeNewUser(User(email, "NewUser", "", ""))
                     userAlreadyExists.value = false
                     Log.d(MainActivity.TAG, "The user registered a new account and logged in")
                 } else {

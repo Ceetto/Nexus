@@ -1,7 +1,6 @@
 package com.example.nexus.data.repositories
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
@@ -109,7 +108,6 @@ class ListRepository @Inject constructor(
 
     suspend fun getAllGamesAsState() = firebaseListDao.getAllGamesAsState()
 
-    fun updateUser(){
-        firebaseListDao.changeUser()
-    }
+    fun updateUser() = firebaseListDao.updateUser()
+
 }

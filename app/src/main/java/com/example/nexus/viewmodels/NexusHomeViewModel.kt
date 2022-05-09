@@ -3,9 +3,7 @@ package com.example.nexus.viewmodels
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nexus.data.repositories.HomeRepository
-import com.example.nexus.data.repositories.ListRepository
-import com.example.nexus.data.repositories.ProfileRepository
+import com.example.nexus.data.repositories.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import proto.Game
@@ -15,7 +13,9 @@ import javax.inject.Inject
 class NexusHomeViewModel  @Inject constructor(
     private val repo: HomeRepository,
     private val listRepo: ListRepository,
-    private val profileRepo: ProfileRepository
+    private val profileRepo: ProfileRepository,
+    private val notificationsRepo: NotificationsRepository,
+    private val friendsRepo: FriendsRepository
 ) : ViewModel(){
     private val popularList = repo.popularList.value
     private val searchingPopular = repo.searchingPopular.value
@@ -138,5 +138,7 @@ class NexusHomeViewModel  @Inject constructor(
     fun updateUser(){
         listRepo.updateUser()
         profileRepo.updateUser()
+        friendsRepo.updateUser()
+        notificationsRepo.updateUser()
     }
 }
