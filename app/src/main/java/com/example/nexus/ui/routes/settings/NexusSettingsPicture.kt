@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,10 +34,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusProfileViewModel
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NexusSettingsPicture(vM: NexusProfileViewModel, navController: NavHostController){
+    val coroutineScope = rememberCoroutineScope()
+
     val result = remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
         result.value = it
@@ -111,7 +117,9 @@ fun NexusSettingsPicture(vM: NexusProfileViewModel, navController: NavHostContro
 
                 Button(onClick = {
                     if (result.value != null){
-                        //TODO save image
+                        coroutineScope.launch {
+                            vM.storePicture(result.value!!)
+                        }
                     }
                 }){
                     Text("Save");

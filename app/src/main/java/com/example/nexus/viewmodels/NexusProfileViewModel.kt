@@ -1,9 +1,11 @@
 package com.example.nexus.viewmodels
 
+import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
@@ -38,6 +40,18 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
 
     fun storeUsername(username : String){
         profileRepo.updateUsername(username)
+    }
+
+    fun storePicture(picture : Uri){
+        profileRepo.updateProfilePicture(picture)
+    }
+
+    fun storeBackground(picture : Uri){
+        profileRepo.updateBackground(picture)
+    }
+
+    fun getUser() : User {
+        return profileRepo.getUser()
     }
 
     fun logOut() = loginRepo.signOut()

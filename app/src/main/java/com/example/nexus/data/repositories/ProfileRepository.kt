@@ -1,13 +1,16 @@
 package com.example.nexus.data.repositories
 
+import android.net.Uri
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.db.FirebaseUserDao
+import com.example.nexus.data.db.StorageDao
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ProfileRepository @Inject constructor(
-    private val fireBaseUserDao: FirebaseUserDao
+    private val fireBaseUserDao: FirebaseUserDao,
+    private val storageDao : StorageDao
 ) {
     fun getUser(): User {
         return fireBaseUserDao.getUser()
@@ -36,12 +39,12 @@ class ProfileRepository @Inject constructor(
         //update
     }
 
-    fun updateProfilePicture(picture : String) {
-        //update
+    fun updateProfilePicture(picture : Uri) {
+        storageDao.addPicture(picture, true)
     }
 
-    fun updateBackground(background : String) {
-        //update
+    fun updateBackground(background : Uri) {
+        storageDao.addPicture(background, false)
     }
 
     fun updateNotifification(new : Long){
