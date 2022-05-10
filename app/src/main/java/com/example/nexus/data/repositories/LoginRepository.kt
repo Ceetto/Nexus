@@ -72,8 +72,8 @@ class LoginRepository @Inject constructor(
         auth.createUserWithEmailAndPassword(email.value, password.value)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    isLoggedIn.value = true
                     profileRepo.storeNewUser(User(email.value, "NewUser", "", ""))
+                    isLoggedIn.value = true
                     userAlreadyExists.value = false
                     Log.d(MainActivity.TAG, "The user registered a new account and logged in")
                 } else {
