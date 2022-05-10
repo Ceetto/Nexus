@@ -1,36 +1,33 @@
 package com.example.nexus.ui.components.loginComponents
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 
 @Composable
-fun EmailTextField(
-    getEmail: () -> String,
-    setEmail: (String) -> Unit,
-    getIsEmailValidTest: () -> Boolean,
-    getUserAlreadyExists: () -> Boolean,
-    getUserDoesNotExists: () -> Boolean
+fun UsernameTextField(
+    getUsername : () -> String,
+    setUsername : (String) -> Unit
 ) {
     val focusManager =  LocalFocusManager.current
 
     Column {
         OutlinedTextField(
-            value = getEmail(),
-            label = { Text("Email Address") },
+            value = getUsername(),
+            label = { Text("Username") },
             onValueChange = { newText ->
-                setEmail(newText) },
+                setUsername(newText) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -38,10 +35,9 @@ fun EmailTextField(
             keyboardActions = KeyboardActions (
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            isError = !getIsEmailValidTest(),
             trailingIcon = {
-                if (getEmail().isNotBlank()) {
-                    IconButton(onClick = { setEmail("") }) {
+                if (getUsername().isNotBlank()) {
+                    IconButton(onClick = { setUsername("") }) {
                         Icon(
                             imageVector = Icons.Filled.Clear,
                             contentDescription = "Clear email"
@@ -50,22 +46,5 @@ fun EmailTextField(
                 }
             }
         )
-        if (!getIsEmailValidTest()) {
-            ErrorMessage(text = "Incorrect email address")
-        } else if (getUserAlreadyExists()) {
-            ErrorMessage(text = "Email already in use")
-        } else if (getUserDoesNotExists()) {
-            ErrorMessage(text = "Email does not exist")
-        }
     }
-}
-
-@Composable
-fun ErrorMessage(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colors.error,
-        style = MaterialTheme.typography.caption,
-        modifier = Modifier.padding(start = 16.dp)
-    )
 }

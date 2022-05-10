@@ -39,9 +39,9 @@ import com.google.accompanist.navigation.animation.*
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
-fun Home(
-){
+fun Home() {
     val navController = rememberNavController()
+
     Scaffold(bottomBar = {
         val currentSelectedItem by navController.currentScreenAsState()
         BottomNavigationBar(selectedNavigation = currentSelectedItem,

@@ -1,76 +1,65 @@
 package com.example.nexus.viewmodels
 
+
 import android.util.Patterns
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusLoginViewModel  @Inject constructor(
     private val repo: LoginRepository,
-    private val profileRepo : ProfileRepository) : ViewModel() {
-    private var isBusy = mutableStateOf(false)
-    private var email = mutableStateOf("")
-    private var password = mutableStateOf("")
+    private val profileRepo : ProfileRepository
+    ) : ViewModel() {
+    private var isPasswordVisible = mutableStateOf(false)
     private var isEmailValidTest = mutableStateOf(true)
     private var isPasswordValidTest = mutableStateOf(true)
-    private val isEmailValid by derivedStateOf {
-        Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
-    }
-    private val isPasswordValid by derivedStateOf {
-        password.value.length > 7
-    }
-    private var isPasswordVisible = mutableStateOf(false)
+    private val isPasswordValid = mutableStateOf(repo.getPassword().length > 7)
+    private val isEmailValid = mutableStateOf(Patterns.EMAIL_ADDRESS.matcher(repo.getEmail()).matches())
 
-    fun checkEmail() {
-        isEmailValidTest.value = Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
+    fun getIsPasswordValid(): Boolean {
+        println("passwordvalid" + isPasswordValid.value)
+        return isPasswordValid.value
+    }
+
+    fun getIsEmailValid(): Boolean {
+        print("emailvalid" + isEmailValid.value)
+        return isEmailValid.value
     }
 
     fun checkPassword() {
-        isPasswordValidTest.value = password.value.length > 7
-    }
-
-    fun getIsEmailValidTest(): Boolean {
-        return isEmailValidTest.value
+        isPasswordValidTest.value = repo.getPassword().length > 7
     }
 
     fun getIsPasswordValidTest(): Boolean {
         return isPasswordValidTest.value
     }
 
-    fun getEmail(): String {
-        return email.value
+    fun getUsername() = repo.getUsername()
+
+    fun setUsername(username: String) = repo.setUsername(username)
+
+    fun checkEmail() = repo.checkEmail()
+
+    fun getIsEmailValidTest(): Boolean {
+        return isEmailValidTest.value
     }
+
+    fun getEmail() = repo.getEmail()
 
     fun setEmail(email: String) {
-        this.email.value = email
+        repo.setEmail(email)
+        isEmailValid.value = Patterns.EMAIL_ADDRESS.matcher(repo.getEmail()).matches()
     }
 
-    fun getPassword(): String {
-        return password.value
-    }
+    fun getPassword() = repo.getPassword()
 
     fun setPassword(password: String) {
-        this.password.value = password
-    }
-
-    fun getIsEmailValid(): Boolean {
-        return isEmailValid
-    }
-
-    fun getIsPasswordValid(): Boolean {
-        return isPasswordValid
-    }
-
-    fun getIsBusy(): Boolean {
-        return isBusy.value
+        repo.setPassword(password)
+        isPasswordValid.value = repo.getPassword().length > 7
     }
 
     fun getIsPasswordVisible(): Boolean {
@@ -93,9 +82,9 @@ class NexusLoginViewModel  @Inject constructor(
 //        }
 //    }
 
-    fun createAccount() = repo.createAccount(email.value, password.value)
+    fun createAccount() = repo.createAccount()
 
-    fun signIn() = repo.signIn(email.value, password.value)
+    fun signIn() = repo.signIn()
 
     fun getUserAlreadyExists() = repo.getUserAlreadyExists()
 

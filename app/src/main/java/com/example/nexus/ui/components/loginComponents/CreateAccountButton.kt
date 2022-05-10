@@ -11,25 +11,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.nexus.ui.routes.LoginRoutes
 
 @Composable
-fun RegisterButton(
-    createAccount: () -> Unit,
-    checkEmail: () -> Unit,
-    checkPassword: () -> Unit,
-    getIsEmailValid: () -> Boolean,
-    getIsPasswordValid: () -> Boolean,
+fun CreateAccountButton(
+    navController: NavHostController,
 ) {
     OutlinedButton(onClick = {
-        checkEmail()
-        checkPassword()
-        if (getIsEmailValid() && getIsPasswordValid()) {
-           createAccount()
-        }
+          navController.navigate(LoginRoutes.Register.route)
     }, content = {
-        Text("Register")
-    }, enabled = getIsPasswordValid() && getIsEmailValid()
-        , modifier = Modifier
+        Text("Create Account")
+    }, modifier = Modifier
         .height(40.dp)
         .width(225.dp)
         , shape = RoundedCornerShape(50)

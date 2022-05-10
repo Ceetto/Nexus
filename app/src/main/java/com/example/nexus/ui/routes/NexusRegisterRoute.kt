@@ -1,9 +1,12 @@
 package com.example.nexus.ui.routes
 
-
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -12,8 +15,14 @@ import com.example.nexus.ui.components.loginComponents.*
 import com.example.nexus.viewmodels.NexusLoginViewModel
 
 @Composable
-fun NexusLoginRoute(vM: NexusLoginViewModel, navController: NavHostController) {
+fun NexusRegisterRoute(vM: NexusLoginViewModel, navController: NavHostController) {
     Surface {
+        IconButton(onClick = { navController.navigateUp() }) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Back"
+            )
+        }
         Column(
             Modifier
                 .fillMaxSize()
@@ -22,6 +31,10 @@ fun NexusLoginRoute(vM: NexusLoginViewModel, navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Logo()
+            UsernameTextField(
+                { vM.getUsername() },
+                { e -> vM.setUsername(e) }
+            )
             EmailTextField(
                 { vM.getEmail() },
                 { e -> vM.setEmail(e) },
@@ -37,14 +50,12 @@ fun NexusLoginRoute(vM: NexusLoginViewModel, navController: NavHostController) {
                 { vM.getIsPasswordVisible() }
             )
             Spacer(modifier = Modifier.height(70.dp))
-            LoginButton(
+            RegisterButton(
+                { vM.createAccount() },
+                { vM.checkEmail() },
+                { vM.checkPassword() },
                 { vM.getIsEmailValid() },
-                { vM.getIsPasswordValid() },
-                { vM.signIn() }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            CreateAccountButton (
-                navController
+                { vM.getIsPasswordValid() }
             )
         }
     }
