@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.activities.MainActivity
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.dataClasses.getUserId
+import com.example.nexus.data.db.FirebaseUserDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -17,7 +18,8 @@ import javax.inject.Singleton
 
 @Singleton
 class LoginRepository @Inject constructor(
-    private var profileRepo: ProfileRepository
+    private var profileRepo: ProfileRepository,
+    private val fireBaseUserDao: FirebaseUserDao
 ) {
 
     private var auth: FirebaseAuth = Firebase.auth
@@ -72,7 +74,8 @@ class LoginRepository @Inject constructor(
         auth.createUserWithEmailAndPassword(email.value, password.value)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    profileRepo.storeNewUser(User(email.value, "NewUser", "", ""))
+                    fireBaseUserDao.updateUser()
+                    profileRepo.storeNewUser(User(email.value, username.value, "", ""))
                     isLoggedIn.value = true
                     userAlreadyExists.value = false
                     Log.d(MainActivity.TAG, "The user registered a new account and logged in")
