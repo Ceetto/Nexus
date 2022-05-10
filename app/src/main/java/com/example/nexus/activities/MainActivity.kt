@@ -7,10 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.nexus.ApplicationSwitcher
 import com.example.nexus.ui.theme.MyApplicationTheme
 import com.example.nexus.viewmodels.NexusLoginViewModel
-import com.example.nexus.viewmodels.UserState
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     val TAG = MainActivity::class.java.name
-    private val userState by viewModels<NexusLoginViewModel>()
+//    private val userState by viewModels<NexusLoginViewModel>()
     companion object {
         val TAG : String = MainActivity::class.java.simpleName
     }
@@ -28,9 +28,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                CompositionLocalProvider(UserState provides userState) {
-                    ApplicationSwitcher()
-                }
+                ApplicationSwitcher(vM = hiltViewModel())
+//                CompositionLocalProvider(UserState provides userState) {
+//
+//                }
                 // A surface container using the 'background' color from the theme
             }
         }

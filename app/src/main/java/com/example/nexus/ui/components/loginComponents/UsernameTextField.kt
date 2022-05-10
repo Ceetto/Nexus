@@ -18,7 +18,8 @@ import androidx.compose.ui.text.input.KeyboardType
 @Composable
 fun UsernameTextField(
     getUsername : () -> String,
-    setUsername : (String) -> Unit
+    setUsername : (String) -> Unit,
+    getIsUsernameValidTest : () -> Boolean
 ) {
     val focusManager =  LocalFocusManager.current
 
@@ -35,6 +36,7 @@ fun UsernameTextField(
             keyboardActions = KeyboardActions (
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
+            isError = !getIsUsernameValidTest(),
             trailingIcon = {
                 if (getUsername().isNotBlank()) {
                     IconButton(onClick = { setUsername("") }) {
@@ -46,5 +48,8 @@ fun UsernameTextField(
                 }
             }
         )
+        if (!getIsUsernameValidTest()) {
+            ErrorMessage(text = "Incorrect Username")
+        }
     }
 }

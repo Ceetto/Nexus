@@ -19,16 +19,19 @@ fun RegisterButton(
     checkPassword: () -> Unit,
     getIsEmailValid: () -> Boolean,
     getIsPasswordValid: () -> Boolean,
+    checkUsername: () -> Unit,
+    getIsUsernameValid: () -> Boolean
 ) {
     OutlinedButton(onClick = {
         checkEmail()
         checkPassword()
-        if (getIsEmailValid() && getIsPasswordValid()) {
+        checkUsername()
+        if (getIsEmailValid() && getIsPasswordValid() && getIsUsernameValid()) {
            createAccount()
         }
     }, content = {
         Text("Register")
-    }, enabled = getIsPasswordValid() && getIsEmailValid()
+    }, enabled = getIsPasswordValid() && getIsEmailValid() && getIsUsernameValid()
         , modifier = Modifier
         .height(40.dp)
         .width(225.dp)

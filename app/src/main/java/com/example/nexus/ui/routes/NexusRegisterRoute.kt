@@ -33,7 +33,8 @@ fun NexusRegisterRoute(vM: NexusLoginViewModel, navController: NavHostController
             Logo()
             UsernameTextField(
                 { vM.getUsername() },
-                { e -> vM.setUsername(e) }
+                { e -> vM.setUsername(e) },
+                { vM.getIsUsernameValidTest() }
             )
             EmailTextField(
                 { vM.getEmail() },
@@ -55,7 +56,9 @@ fun NexusRegisterRoute(vM: NexusLoginViewModel, navController: NavHostController
                 { vM.checkEmail() },
                 { vM.checkPassword() },
                 { vM.getIsEmailValid() },
-                { vM.getIsPasswordValid() }
+                { vM.getIsPasswordValid() },
+                { vM.checkUsername() },
+                { vM.getIsUsernameValid() }
             )
         }
     }

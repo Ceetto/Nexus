@@ -59,13 +59,3 @@ fun EmailTextField(
         }
     }
 }
-
-@Composable
-fun ErrorMessage(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colors.error,
-        style = MaterialTheme.typography.caption,
-        modifier = Modifier.padding(start = 16.dp)
-    )
-}

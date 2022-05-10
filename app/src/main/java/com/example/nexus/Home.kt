@@ -68,7 +68,8 @@ fun Home() {
         )
     },){
         Row(Modifier.fillMaxSize()) {
-            NexusNavGraph(navController, modifier = Modifier
+            NexusNavGraph(navController,
+                modifier = Modifier
                 .fillMaxSize()
                 .weight(1f)
                 .padding(0.dp, 0.dp, 0.dp, 65.dp))

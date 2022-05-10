@@ -17,21 +17,33 @@ class NexusLoginViewModel  @Inject constructor(
     private var isPasswordVisible = mutableStateOf(false)
     private var isEmailValidTest = mutableStateOf(true)
     private var isPasswordValidTest = mutableStateOf(true)
+    private var isUsernameValidTest = mutableStateOf(true)
     private val isPasswordValid = mutableStateOf(repo.getPassword().length > 7)
     private val isEmailValid = mutableStateOf(Patterns.EMAIL_ADDRESS.matcher(repo.getEmail()).matches())
+    private val isUsernameValid = mutableStateOf(repo.getUsername().length > 4)
 
     fun getIsPasswordValid(): Boolean {
-        println("passwordvalid" + isPasswordValid.value)
         return isPasswordValid.value
     }
 
+    fun getIsUsernameValidTest(): Boolean {
+        return isUsernameValidTest.value
+    }
+
     fun getIsEmailValid(): Boolean {
-        print("emailvalid" + isEmailValid.value)
         return isEmailValid.value
+    }
+
+    fun getIsUsernameValid(): Boolean {
+        return isUsernameValid.value
     }
 
     fun checkPassword() {
         isPasswordValidTest.value = repo.getPassword().length > 7
+    }
+
+    fun checkUsername() {
+        isUsernameValidTest.value = repo.getUsername().length > 4
     }
 
     fun getIsPasswordValidTest(): Boolean {
@@ -40,9 +52,14 @@ class NexusLoginViewModel  @Inject constructor(
 
     fun getUsername() = repo.getUsername()
 
-    fun setUsername(username: String) = repo.setUsername(username)
+    fun setUsername(username: String) {
+        repo.setUsername(username)
+        isUsernameValid.value = repo.getUsername().length > 4
+    }
 
-    fun checkEmail() = repo.checkEmail()
+    fun checkEmail() {
+        isEmailValidTest.value = Patterns.EMAIL_ADDRESS.matcher(repo.getEmail()).matches()
+    }
 
     fun getIsEmailValidTest(): Boolean {
         return isEmailValidTest.value
@@ -91,4 +108,4 @@ class NexusLoginViewModel  @Inject constructor(
     fun getUserDoesNotExists() = repo.getUserDoesNotExists()
 }
 
-val UserState = compositionLocalOf<NexusLoginViewModel> { error("User State Context Not Found!") }
+//val UserState = compositionLocalOf<NexusLoginViewModel> { error("User State Context Not Found!") }

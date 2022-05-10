@@ -50,12 +50,7 @@ fun PasswordTextField(
             visualTransformation = if(getIsPasswordVisible()) VisualTransformation.None else PasswordVisualTransformation()
         )
         if (!getIsPasswordValidTest()) {
-            Text(
-                text = "Incorrect password",
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
-                modifier = Modifier.padding(start = 16.dp)
-            )
+            ErrorMessage(text = "Incorrect password")
         }
     }
 }

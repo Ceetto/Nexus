@@ -28,10 +28,6 @@ class LoginRepository @Inject constructor(
     private var password = mutableStateOf("")
     private var username = mutableStateOf("")
 
-    fun checkEmail(): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
-    }
-
     fun getUsername(): String {
         return username.value
     }
@@ -72,7 +68,7 @@ class LoginRepository @Inject constructor(
         auth.createUserWithEmailAndPassword(email.value, password.value)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    profileRepo.storeNewUser(User(email.value, "NewUser", "", ""))
+                    profileRepo.storeNewUser(User(email.value, username.value, "", ""))
                     isLoggedIn.value = true
                     userAlreadyExists.value = false
                     Log.d(MainActivity.TAG, "The user registered a new account and logged in")

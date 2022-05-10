@@ -54,6 +54,8 @@ sealed class LeafScreen(
         }
     }
 
+    object Register : LeafScreen("register")
+    object Login : LeafScreen("login")
     object Settings : LeafScreen("settings")
     object Profile : LeafScreen("profile")
     object Search : LeafScreen("search")
@@ -74,7 +76,7 @@ fun NexusNavGraph(
         startDestination = startDestination,
         modifier = modifier,
     ){
-        addLoginScreen(navController)
+        addLoginScreenTopLevel(navController)
         addNotificationsScreen(navController)
         addListScreenTopLevel(navController)
         addFriendsScreen(navController)
@@ -244,13 +246,37 @@ private fun NavGraphBuilder.addGameDetails(
     }
 }
 
+private fun NavGraphBuilder.addLoginScreenTopLevel(
+    navController: NavHostController,
+) {
+    navigation(
+        route = Screen.Login.route,
+        startDestination = LeafScreen.Login.createRoute(Screen.Login)
+    ) {
+        addLoginScreen(navController, Screen.Login)
+        addRegisterScreen(navController, Screen.Login)
+    }
+}
+
 private fun NavGraphBuilder.addLoginScreen(
     navController: NavHostController,
+    root: Screen,
 ){
     composable(
-        route = Screen.Login.route,
+        route = LeafScreen.Login.createRoute(root),
     ){
-        //NexusLoginRoute(vM = hiltViewModel())
+        NexusLoginRoute(vM = hiltViewModel(), navController)
+    }
+}
+
+private fun NavGraphBuilder.addRegisterScreen(
+    navController: NavHostController,
+    root: Screen,
+) {
+    composable(
+        route = LeafScreen.Register.createRoute(root),
+    ) {
+        NexusRegisterRoute(vM = hiltViewModel(), navController)
     }
 }
 

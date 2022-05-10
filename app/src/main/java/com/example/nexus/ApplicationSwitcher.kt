@@ -10,15 +10,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.nexus.ui.navigation.Screen
 import com.example.nexus.ui.routes.LoginRoutes
 import com.example.nexus.ui.routes.NexusLoginRoute
 import com.example.nexus.ui.routes.NexusRegisterRoute
-import com.example.nexus.viewmodels.UserState
+import com.example.nexus.viewmodels.NexusLoginViewModel
 
 @OptIn(ExperimentalAnimationApi::class, androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
-fun ApplicationSwitcher() {
-    val vM = UserState.current
+fun ApplicationSwitcher(vM: NexusLoginViewModel) {
     if (vM.getIsLoggedIn()) {
         Surface(
             modifier = Modifier.fillMaxSize(),
