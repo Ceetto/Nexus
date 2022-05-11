@@ -32,6 +32,8 @@ import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
+import com.example.nexus.R
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusProfileViewModel
 import com.google.firebase.storage.FirebaseStorage
@@ -52,6 +54,7 @@ fun NexusSettingsPicture(vM: NexusProfileViewModel, navController: NavHostContro
         mutableStateOf<Bitmap?>(null)
     }
     val focusManager = LocalFocusManager.current
+    val profilePic = vM.getProfilePicture()
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
@@ -64,10 +67,25 @@ fun NexusSettingsPicture(vM: NexusProfileViewModel, navController: NavHostContro
                 Text(text = "Current Picture: ")
                 
                 Spacer(Modifier.width(30.dp))
-
-                Box(
-                    modifier = Modifier.size(100.dp).clip(CircleShape).background(Color.Red)
-                )
+                if (profilePic != ""){
+                    Image(
+                        painter = rememberAsyncImagePainter(profilePic),
+                        contentDescription = "profile_picture",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                    )
+                }  else {
+                    Image(
+                        painter = rememberAsyncImagePainter(R.mipmap.ic_launcher_round),
+                        contentDescription = "profile_picture",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                    )
+                }
             }
 
             Row(modifier = Modifier
@@ -119,6 +137,8 @@ fun NexusSettingsPicture(vM: NexusProfileViewModel, navController: NavHostContro
                     if (result.value != null){
                         coroutineScope.launch {
                             vM.storePicture(result.value!!)
+                            focusManager.clearFocus()
+                            navController.navigateUp()
                         }
                     }
                 }){

@@ -50,6 +50,14 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
         profileRepo.updateBackground(picture)
     }
 
+    fun getProfilePicture() : String {
+        return profileRepo.getProfilePicture()
+    }
+
+    fun getBackground() : String {
+        return profileRepo.getBackground()
+    }
+
     fun getUser() : User {
         return profileRepo.getUser()
     }

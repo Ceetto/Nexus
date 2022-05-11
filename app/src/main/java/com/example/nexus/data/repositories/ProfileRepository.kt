@@ -16,38 +16,39 @@ class ProfileRepository @Inject constructor(
         return fireBaseUserDao.getUser()
     }
 
-    fun updateUsername(username : String) {
+    fun updateUsername(username: String) {
         fireBaseUserDao.changeUsername(username)
     }
 
-    fun updateEmail(username : String) {
+    fun updateEmail(username: String) {
         //update
     }
 
-    fun addFriend(email : String) {
+    fun addFriend(email: String) {
         //update
     }
 
-    fun removeFriend(email: String){
+    fun removeFriend(email: String) {
 
     }
 
-    fun removeFriendRequest(email : String){
+    fun removeFriendRequest(email: String) {
 
     }
-    fun addFriendRequest(email : String) {
+
+    fun addFriendRequest(email: String) {
         //update
     }
 
-    fun updateProfilePicture(picture : Uri) {
+    fun updateProfilePicture(picture: Uri) {
         storageDao.addPicture(picture, true)
     }
 
-    fun updateBackground(background : Uri) {
+    fun updateBackground(background: Uri) {
         storageDao.addPicture(background, false)
     }
 
-    fun updateNotifification(new : Long){
+    fun updateNotifification(new: Long) {
         //update
     }
 
@@ -59,4 +60,11 @@ class ProfileRepository @Inject constructor(
 
     fun getUsername() = fireBaseUserDao.getUser().username
 
+    fun getProfilePicture(): String {
+        return fireBaseUserDao.getProfilePicture()
+    }
+
+    fun getBackground(): String {
+        return fireBaseUserDao.getBackground()
+    }
 }

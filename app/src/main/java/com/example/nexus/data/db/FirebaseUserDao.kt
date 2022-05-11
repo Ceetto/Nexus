@@ -78,4 +78,12 @@ class FirebaseUserDao @Inject constructor(
     fun changeBackground(url: String){
         userRef.value.child("profileBackground").setValue(url)
     }
+
+    fun getProfilePicture(): String {
+        return newUser.value.profilePicture
+    }
+
+    fun getBackground(): String {
+        return newUser.value.profileBackground
+    }
 }

@@ -68,7 +68,6 @@ fun ProfileScreen(vM: NexusProfileViewModel, onOpenGameDetails: (gameId: Long) -
     Scaffold( ) {
         Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Column(modifier = Modifier.fillMaxWidth().height(200.dp)
-                //TODO dit veranderen voor profile background uit user data
 
             ) {
                 if (background != "") {
@@ -109,9 +108,9 @@ fun ProfileStats(vM: NexusProfileViewModel) {
     val totalWithScore : List<ListEntry> = total.filter { it.score != 0 }
     totalWithScore.forEach {tempScore += it.score}
 
-    var meanScore : Double = 0.0;
+    var meanScore = 0.0;
     if (totalWithScore.isNotEmpty()) {
-        meanScore = ((tempScore / totalWithScore.size) * 10.0).roundToLong() / 10.0
+        meanScore = ((tempScore.toDouble() / totalWithScore.size) * 100.0).roundToLong() / 100.0
     }
 
     val hours : Double = ((minutes / 60) * 10.0).roundToLong() /10.0
