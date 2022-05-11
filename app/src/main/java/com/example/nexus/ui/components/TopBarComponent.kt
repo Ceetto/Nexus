@@ -1,9 +1,6 @@
 package com.example.nexus.ui.components
 
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
@@ -44,7 +41,7 @@ fun NexusTopBar(
     if(canPop){
         TopAppBar(
             title = { Text("nexus") },
-            backgroundColor = NexusBlack,
+            backgroundColor = MaterialTheme.colors.primary,
             navigationIcon = {
                 IconButton(onClick = {
                     focusManager.clearFocus()
@@ -71,7 +68,7 @@ fun NexusTopBar(
     } else {
         TopAppBar(
             title = { Text("nexus") },
-            backgroundColor = NexusBlack,
+            backgroundColor = MaterialTheme.colors.primary,
             actions = {
                 IconButton(onClick = onProfileClick){
                     Icon(
