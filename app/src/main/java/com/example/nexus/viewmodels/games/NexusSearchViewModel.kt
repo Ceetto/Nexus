@@ -1,11 +1,9 @@
 package com.example.nexus.viewmodels.games
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.api.igdb.request.IGDBWrapper
 import com.example.nexus.data.repositories.gameData.SearchRepository
 import dagger.Module
 import dagger.Provides
@@ -21,16 +19,14 @@ import javax.inject.Inject
 import javax.inject.Qualifier
 
 @HiltViewModel
-class NexusSearchViewModel @Inject constructor(private val repo: SearchRepository,
-                                               @Dispatcher private val dispatcher: CoroutineDispatcher,
-                                               ) : ViewModel()
-{
-    private val gameList = repo.gameList.value
-    private val searchTerm = repo.searchTerm
-    private val searching = repo.searching.value
+class NexusSearchViewModel @Inject constructor(private val searchRepo: SearchRepository,
+) : ViewModel() {
+    private val gameList = searchRepo.gameList.value
+    private val searchTerm = searchRepo.searchTerm
+    private val searching = searchRepo.searching.value
     private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
     private val isRefreshing = mutableStateOf(false)
-    private val toLoad = repo.toLoad.value
+    private val toLoad = searchRepo.toLoad.value
 
     fun onSearchEvent(){
         viewModelScope.launch {
@@ -51,15 +47,15 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
         }
     }
 
-    suspend fun fetchGames() = withContext(dispatcher){
-        repo.getGames()
+    suspend fun fetchGames() = withContext(Dispatchers.Default){
+        searchRepo.getGames()
     }
 
     fun getSearchTerm(): String {
         return searchTerm.value
     }
 
-    fun setSearchTerm(term: String) = repo.setSearchTerm(term)
+    fun setSearchTerm(term: String) = searchRepo.setSearchTerm(term)
 
     fun getGameList(): List<Game> {
         return gameList.value
@@ -77,29 +73,16 @@ class NexusSearchViewModel @Inject constructor(private val repo: SearchRepositor
         return searched.value.value
     }
 
-    fun emptyList() = repo.emptyList()
+    fun emptyList() = searchRepo.emptyList()
 
     fun isRefreshing(): Boolean{
         return isRefreshing.value
     }
 
-    fun setToLoad(v : Int) = repo.setToLoad(v)
+    fun setToLoad(v : Int) = searchRepo.setToLoad(v)
 
     fun loadMore() {
-        repo.loadMore()
+        searchRepo.loadMore()
         onLoadMoreEvent()
     }
 }
-
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DispatcherModule {
-    @Dispatcher
-    @Provides
-    fun providesDispatcher(): CoroutineDispatcher = Dispatchers.Default
-}
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class Dispatcher
