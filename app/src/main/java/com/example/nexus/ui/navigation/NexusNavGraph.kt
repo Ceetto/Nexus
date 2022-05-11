@@ -279,6 +279,7 @@ private fun NavGraphBuilder.addListScreen(
     }
 }
 
+@ExperimentalComposeUiApi
 private fun NavGraphBuilder.addFriendsScreen(
     navController: NavHostController,
 ){
