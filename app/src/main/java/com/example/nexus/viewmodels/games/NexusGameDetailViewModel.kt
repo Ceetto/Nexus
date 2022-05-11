@@ -4,13 +4,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
+import com.example.nexus.R
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
@@ -23,6 +26,7 @@ import kotlinx.coroutines.launch
 import proto.AgeRatingCategoryEnum
 import proto.AgeRatingRatingEnum
 import proto.Game
+import proto.Website
 import javax.inject.Inject
 
 @HiltViewModel
@@ -248,5 +252,29 @@ class NexusGameDetailViewModel @Inject constructor(
     enum class GameFormButton(val value: String){
         ADD("Add game"),
         EDIT("Edit game")
+    }
+
+    private val linkIconsMap = hashMapOf(
+        "official" to R.drawable.official,
+        "wikia" to R.drawable.wikia,
+        "wikipedia" to R.drawable.wikipedia,
+        "facebook" to R.drawable.facebook,
+        "twitter" to R.drawable.twitter,
+        "twitch" to R.drawable.twitch,
+        "instagram" to R.drawable.instagram,
+        "youtube" to R.drawable.youtube,
+        "iphone" to R.drawable.apple,
+        "ipad" to R.drawable.apple,
+        "android" to R.drawable.android,
+        "steam" to R.drawable.steam,
+        "reddit" to R.drawable.reddit,
+        "itch" to R.drawable.itchio,
+        "epicgames" to R.drawable.epicgames,
+        "gog" to R.drawable.gog,
+        "discord" to R.drawable.discord
+    )
+
+    fun getLinkIcon(s : String): Int? {
+        return linkIconsMap[s]
     }
 }

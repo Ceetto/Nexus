@@ -60,7 +60,8 @@ fun NexusGameDetailRoute(
                             vM.setFavorite(vM.getFavoriteToggled())
                             vM.storeListEntry(vM.getListEntry())
                         },
-                        vM.getIcon()
+                        vM.getIcon(),
+                        { s : String -> vM.getLinkIcon(s)},
                     )
             } else {
                 if(vM.getGameFormOpen()){

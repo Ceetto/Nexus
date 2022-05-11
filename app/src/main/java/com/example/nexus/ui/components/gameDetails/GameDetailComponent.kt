@@ -43,7 +43,8 @@ fun GameDetailComponent(
     onGameFormOpenChanged: (Boolean) -> Unit,
     getEditOrAddGames: String,
     onFavourite: () -> Unit,
-    getIcon : ImageVector
+    getIcon : ImageVector,
+    getLinkIcon : (String) -> Int?
 ){
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = isRefreshing), onRefresh = onGetGameEvent ) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -231,14 +232,18 @@ fun GameDetailComponent(
                 }
             }
 
-            Column(Modifier.padding(5.dp)) {
-                Text(
-                    "Links:",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 10.dp)
-                )
+            Text(
+                "Links:",
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(top = 10.dp)
+            )
+            Row(
+                Modifier
+                    .padding(5.dp)
+                    .horizontalScroll(rememberScrollState())) {
                 for (website in game.websitesList) {
-                    LinkComponent(website)
+                    println("WEBSITE: ${website.category}")
+                    LinkComponent(website, getLinkIcon)
                 }
             }
             val relatedGames = emptyList<Game>().toMutableList()

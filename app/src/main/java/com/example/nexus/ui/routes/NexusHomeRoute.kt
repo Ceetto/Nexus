@@ -83,8 +83,6 @@ fun NexusHomeRoute(
                              "Trending", vM.isSearchingTrending())
 
                          //Recommended
-
-
                          if(vM.getFavouriteGames().isNotEmpty() || vM.isSearchingFavourite()){
                              HorizontalGamesListingComponent(vM.getRecommendedGames(), onOpenGameDetails, focusManager,
                                  "Recommended", vM.isSearchingFavourite() || isShuffling.value)
@@ -92,8 +90,6 @@ fun NexusHomeRoute(
                              Text("Recommended", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 5.dp))
                              Text("Favourite games to get recommendations", Modifier.padding(start = 5.dp))
                          }
-
-
 
                          //Upcomming
                          HorizontalGamesListingComponent(vM.getUpcomingGames(), onOpenGameDetails, focusManager,
@@ -106,8 +102,6 @@ fun NexusHomeRoute(
                          //Most Popular
                          HorizontalGamesListingComponent(vM.getPopularGames(), onOpenGameDetails, focusManager,
                              "Most Popular", vM.isSearchingPopular())
-
-
                      }
                  }
              } else {
@@ -151,17 +145,11 @@ fun NexusHomeRoute(
                                          CircularProgressIndicator()
                                      }
                                  }
-
-
                              }
-
                          }
-
                      }
                  }
              }
          }
      }
-
-
 }
