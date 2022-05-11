@@ -1,5 +1,6 @@
 package com.example.nexus.ui.components.gameDetails
 
+import android.nfc.Tag
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*

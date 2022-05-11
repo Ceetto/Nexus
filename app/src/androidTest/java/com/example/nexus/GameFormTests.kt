@@ -36,6 +36,7 @@ class GameFormTests {
 
         composeTestRule.onNodeWithText("save").performClick()
         composeTestRule.waitForIdle()
+
         Assert.assertEquals(inputInvalid.value, true)
     }
 

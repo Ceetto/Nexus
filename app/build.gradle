@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:20.0.4'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito.kotlin:mockito-kotlin:3.2.0'
+    testImplementation("org.mockito:mockito-inline:2.8.47")
     // For Robolectric tests.
     testImplementation("com.google.dagger:hilt-android-testing:2.38.1")
     // ...with Kotlin.
