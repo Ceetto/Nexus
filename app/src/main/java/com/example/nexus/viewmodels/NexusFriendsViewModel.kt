@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.nexus.data.repositories.FriendsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +19,7 @@ class NexusFriendsViewModel @Inject constructor(private val repo: FriendsReposit
     private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
 
 
-    fun getFriends(): Flow<List<String>> {
+    fun getFriends(): StateFlow<List<String>> {
         return repo.getFriends()
     }
 
@@ -41,6 +42,18 @@ class NexusFriendsViewModel @Inject constructor(private val repo: FriendsReposit
 
     fun getSearchTerm(): String {
         return searchTerm.value
+    }
+
+    suspend fun getFriendProfilePic(friendId: String) : String {
+        return repo.getFriendProfilePic(friendId)
+    }
+
+    suspend fun getFriendBackground(friendId: String) : String {
+        return repo.getFriendBackground(friendId)
+    }
+
+    suspend fun getFriendUsername(friendId: String) : String {
+        return repo.getFriendUsername(friendId)
     }
 
     fun setSearchTerm(term: String) = repo.setSearchTerm(term)

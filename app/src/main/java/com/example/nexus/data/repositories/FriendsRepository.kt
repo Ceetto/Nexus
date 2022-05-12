@@ -15,13 +15,25 @@ class FriendsRepository @Inject constructor(
     val searchTerm = mutableStateOf("")
     var searching: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
 
-    fun getFriends(): Flow<List<String>>{
+    fun getFriends(): StateFlow<List<String>>{
         return firebaseFriendsDao.getFriends()
     }
 
     fun storeFriend(f: String) = firebaseFriendsDao.storeFriend(f)
 
     fun updateUser() = firebaseFriendsDao.updateUser()
+
+    suspend fun getFriendProfilePic(friendId: String): String {
+        return firebaseFriendsDao.getFriendProfilePicture(friendId)
+    }
+
+    suspend fun getFriendBackground(friendId: String): String{
+        return firebaseFriendsDao.getFriendProfileBackground(friendId)
+    }
+
+    suspend fun getFriendUsername(friendId: String): String {
+        return firebaseFriendsDao.getFriendUsername(friendId)
+    }
 
     fun setSearchTerm(term: String){
         this.searchTerm.value = term

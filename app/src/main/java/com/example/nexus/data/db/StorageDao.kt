@@ -36,6 +36,6 @@ private val dataRepo: DataRepository
             }
             .addOnFailureListener { e ->
                 print(e.message)
-            } }
-
+            }
+    }
 }
