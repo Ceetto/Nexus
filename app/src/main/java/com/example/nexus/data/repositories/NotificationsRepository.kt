@@ -1,5 +1,6 @@
 package com.example.nexus.data.repositories
 
+
 import com.example.nexus.data.dataClasses.FriendRequest
 import com.example.nexus.data.dataClasses.ReleaseNotification
 import com.example.nexus.data.db.notifications.FirebaseFriendRequestDao
@@ -13,7 +14,7 @@ class NotificationsRepository @Inject constructor(
     private val friendRequestDao: FirebaseFriendRequestDao,
     private val notificationDao: ReleaseNotificationDao
 ) {
-    fun getReleaseNotifcations(): Flow<List<ReleaseNotification>>{
+    fun getReleaseNotifications(): Flow<List<ReleaseNotification>>{
         return notificationDao.getReleaseNotifications()
     }
 
