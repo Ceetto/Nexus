@@ -5,10 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.dataClasses.getUserId
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +22,9 @@ class FirebaseFriendsDao @Inject constructor(
 
     private val friends = MutableStateFlow(emptyList<String>())
 
-    private val friendsData = MutableStateFlow(emptyList<User>())
+    private val friendsData = MutableStateFlow(ArrayList<User>())
+
+    private var friendsReferences = ArrayList<DatabaseReference>()
 
     private val eventListener =
         object: ValueEventListener {
@@ -35,12 +34,35 @@ class FirebaseFriendsDao @Inject constructor(
 //                 whenever data at this location is updated.
 
             val newFriends = mutableListOf<String>()
+            friendsReferences = ArrayList()
+            friendsData.update { ArrayList() }
             for(child in snapshot.children){
                 newFriends.add(child.value as String)
+                val ref = database.getReference(("user/${child.value as String}"))
+                friendsReferences.add(ref)
+                ref.addValueEventListener(friendEventListener)
+
             }
                 friends.update{newFriends}
             }
 
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        }
+
+    private val friendEventListener =
+        object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+//                 This method is called once with the initial value and again
+//                 whenever data at this location is updated.
+                lateinit var newUser: User
+                newUser.email = snapshot.child("email").value as String
+                newUser.username = snapshot.child("username").value as String
+                newUser.profilePicture = snapshot.child("profilePicture").value as String
+                newUser.profileBackground = snapshot.child("profileBackground").value as String
+                friendsData.value.add(newUser)
+            }
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Failed to read value.", error.toException())
             }
