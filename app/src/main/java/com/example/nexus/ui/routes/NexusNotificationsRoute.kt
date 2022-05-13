@@ -49,9 +49,12 @@ fun NexusNotificationsRoute(
             val notifications by vM.getNotifications().collectAsState()
             for (notification in notifications) {
                 if (notification.notificationType == NotificationType.RELEASE_DATE.value) {
-                    ReleaseNotificationItem("Game Releasing!", "A game you where interested in is releasing soon.")
+                    ReleaseNotificationItem(
+                        notification = notification,
+                        removeNotification = { e -> vM.removeNotification(e) }
+                    )
                 } else {
-                    FriendNotificationItem("New friend request!", "User has sent you a new friend request." )
+                    FriendNotificationItem(notification)
                 }
             }
         }

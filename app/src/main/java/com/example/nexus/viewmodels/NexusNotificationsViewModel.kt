@@ -29,8 +29,11 @@ class NexusNotificationsViewModel @Inject constructor(
     fun storeNewNotifications(entries: List<ListEntry>) {
         for (entry in entries) {
             notificationRepo.storeNotification(Notification("", entry.gameId, entry.releaseDate,
-                System.currentTimeMillis(), false, NotificationType.RELEASE_DATE.value
+                System.currentTimeMillis(), false, "", entry.coverUrl, "", entry.title,
+                NotificationType.RELEASE_DATE.value
             ))
         }
     }
+
+    fun removeNotification(n: Notification) = notificationRepo.removeNotification(n)
 }

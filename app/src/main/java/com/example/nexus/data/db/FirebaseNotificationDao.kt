@@ -78,6 +78,14 @@ class FirebaseNotificationDao @Inject constructor(
         }
     }
 
+    fun removeNotification(notif: Notification){
+        if(notif.notificationType == NotificationType.FRIEND_REQUEST.value){
+            notificationRef.value.child(notif.userId).removeValue()
+        } else {
+            notificationRef.value.child(notif.gameId.toString()).removeValue()
+        }
+    }
+
     fun areAllNotificationsRead(): Boolean {
         return allNotificationsRead.value
     }

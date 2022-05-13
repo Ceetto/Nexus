@@ -23,7 +23,7 @@ class NotificationsRepository @Inject constructor(
     fun filterGames(): Flow<List<ListEntry>> {
         return firebaseListDao.getPlanned().map {
             it.filter {
-                    game -> (game.releaseDate - (currentTimeMillis() / 1000)) <= 259200
+                    game -> (game.releaseDate - (currentTimeMillis() / 1000)) <= 31556926
             } }
     }
 
@@ -36,4 +36,6 @@ class NotificationsRepository @Inject constructor(
     fun updateUser(){
         notificationDao.updateUser()
     }
+
+    fun removeNotification(n: Notification) = notificationDao.removeNotification(n)
 }
