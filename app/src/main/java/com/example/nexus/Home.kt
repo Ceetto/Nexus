@@ -21,11 +21,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
+import com.example.nexus.data.dataClasses.HomeNavigationItem
+import com.example.nexus.ui.components.notificationComponents.CustomBadgedBox
 import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
 import com.example.nexus.ui.theme.NexusBlackTransparent
 import com.example.nexus.ui.theme.NexusBlue
-import com.example.nexus.viewmodels.NexusBottomBarViewModel
 import com.example.nexus.viewmodels.NexusNotificationsViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -33,9 +34,13 @@ import com.example.nexus.viewmodels.NexusNotificationsViewModel
 @ExperimentalAnimationApi
 @Composable
 fun Home(
-    vM: NexusBottomBarViewModel
+    vM: NexusNotificationsViewModel
 ) {
     val navController = rememberNavController()
+
+    //store notifications on launch
+    val newNotifications by vM.getReleaseGames().collectAsState()
+    vM.storeNewNotifications(newNotifications)
 
     Scaffold(bottomBar = {
         val currentSelectedItem by navController.currentScreenAsState()
@@ -66,9 +71,9 @@ fun Home(
         Row(Modifier.fillMaxSize()) {
             NexusNavGraph(navController,
                 modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
-                .padding(0.dp, 0.dp, 0.dp, 65.dp))
+                    .fillMaxSize()
+                    .weight(1f)
+                    .padding(0.dp, 0.dp, 0.dp, 65.dp))
         }
     }
 }
@@ -96,14 +101,7 @@ fun BottomNavigationBar(
                 },
                 icon =  {
                     if (item.screen == Screen.Notifications && countNewNotifications() > 0) {
-                        BadgedBox(
-                            badge = { Badge { Text(countNewNotifications().toString()) } }) {
-                            Icon(
-                                imageVector = item.icon,
-                                item.screen.route,
-                                modifier = Modifier.fillMaxWidth(0.6f)
-                            )
-                        }
+                        CustomBadgedBox(item = item, text = countNewNotifications().toString())
                     } else {
                         Icon(
                             imageVector = item.icon,
@@ -118,11 +116,6 @@ fun BottomNavigationBar(
         }
     }
 }
-
-
-
-
-
 
 /**
  * Adds an [NavController.OnDestinationChangedListener] to this [NavController] and updates the
@@ -168,12 +161,6 @@ private fun NavController.currentScreenAsState(): State<Screen> {
 
     return selectedItem
 }
-
-private class HomeNavigationItem(
-    val screen: Screen,
-    val icon: ImageVector,
-    val label: String
-)
 
 private val HomeNavigationItems = listOf(
     HomeNavigationItem(Screen.Home, Icons.Default.Home, "Home"),

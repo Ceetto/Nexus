@@ -1,13 +1,10 @@
 package com.example.nexus.viewmodels
 
-import android.content.Context
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.*
 import com.example.nexus.data.db.FirebaseListDao
-import com.example.nexus.data.repositories.FriendsRepository
 import com.example.nexus.data.repositories.NotificationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -52,4 +49,6 @@ class NexusNotificationsViewModel @Inject constructor(
                 ))
         }
     }
+
+    fun countNewNotifications() = notificationRepo.countNewNotifications()
 }
