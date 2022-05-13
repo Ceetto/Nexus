@@ -7,7 +7,8 @@ data class ListEntry(val gameId: Long,
                      var status: String,
                      val coverUrl: String?,
                      var favorited: Boolean,
-                     val releaseDate: Long)
+                     val releaseDate: Long,
+                     val notificationGiven: Boolean = false)
 
 enum class SortOptions(val value: String){
     STATUS("Status"),
