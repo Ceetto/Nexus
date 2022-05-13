@@ -48,7 +48,6 @@ class FirebaseNotificationDao @Inject constructor(
                             child.child("notificationType").value as String,
                         )
                     )
-                    //if there's an unread notification, set allNotificationsRead to false
                     if (!(child.child("read").value as Boolean)) {
                         countNewNotifications.value += 1
                     }

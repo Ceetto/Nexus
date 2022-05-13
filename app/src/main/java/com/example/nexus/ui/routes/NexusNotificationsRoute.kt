@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -24,17 +23,12 @@ import com.example.nexus.viewmodels.NexusNotificationsViewModel
 @Composable
 fun NexusNotificationsRoute(
     vM: NexusNotificationsViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    onOpenGameDetails : (gameId: Long) -> Unit,
 ){
-    val context = LocalContext.current
-    val channelId = "Nexus"
-    val notificationId = 0
     val focusManager = LocalFocusManager.current
-    //val releaseNotifications by vM.getReleaseNotifications().collectAsState()
-    //val friendNotifications by vM.getFriendRequests().collectAsState()
-    val newNotifications by vM.getReleaseGames().collectAsState()
+
     val notifications by vM.getNotifications().collectAsState()
-    vM.storeNewNotifications(newNotifications)
     vM.readNotifications(notifications)
 
     Scaffold(
@@ -44,24 +38,18 @@ fun NexusNotificationsRoute(
             .padding(start = 4.dp)
             .verticalScroll(rememberScrollState())
         ) {
-            val notifications by vM.getNotifications().collectAsState()
-            for (notification in notifications) {
+            val notificationList by vM.getNotifications().collectAsState()
+            for (notification in notificationList) {
                 if (notification.notificationType == NotificationType.RELEASE_DATE.value) {
                     ReleaseNotificationItem(
                         notification = notification,
-                        removeNotification = { e -> vM.removeNotification(e) }
+                        removeNotification = { e -> vM.removeNotification(e) },
+                        onOpenGameDetails = { e -> onOpenGameDetails(e) }
                     )
                 } else {
                     FriendNotificationItem(notification)
                 }
             }
         }
-//        PushNotification(
-//            context = context,
-//            channelId = channelId,
-//            notificationId = notificationId,
-//            textTitle = "Nexus",
-//            textContent = "Test"
-//        )
     }
 }
