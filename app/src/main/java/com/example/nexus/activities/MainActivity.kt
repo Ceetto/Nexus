@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.nexus.ApplicationSwitcher
 import com.example.nexus.ui.theme.MyApplicationTheme
@@ -29,9 +31,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 ApplicationSwitcher(vM = hiltViewModel())
-//                CompositionLocalProvider(UserState provides userState) {
-//
-//                }
                 // A surface container using the 'background' color from the theme
             }
         }
