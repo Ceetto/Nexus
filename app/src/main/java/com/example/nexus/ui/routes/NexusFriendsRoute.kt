@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.R
+import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.getUserId
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.SearchBarComponent
@@ -35,6 +36,7 @@ fun NexusFriendsRoute(
     vM: NexusFriendsViewModel,
     navController: NavHostController
 ){
+    val friendsData by vM.getFriendsData().collectAsState()
     val friends by vM.getFriends().collectAsState()
     val focusManager = LocalFocusManager.current
 
@@ -55,12 +57,16 @@ fun NexusFriendsRoute(
             Column(modifier = Modifier.padding(5.dp)) {
                 Text(text = "Friends: ${friends.size}")
             }
-            vM.storeFriend("8qRFWZXfzlRxrbvrEikJxOEHdNr2")
 
+            vM.storeFriend("8qRFWZXfzlRxrbvrEikJxOEHdNr2")
             LazyColumn(
             ){
                 items(friends) {friend ->
-                    FriendItem(friend = friend, vM)
+                    for (f in friendsData){
+                        if (f.userId == friend){
+                            FriendItem(friend = f)
+                        }
+                    }
                 }
             }
         }
@@ -69,23 +75,20 @@ fun NexusFriendsRoute(
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun FriendItem(friend: String, vM: NexusFriendsViewModel) {
+fun FriendItem(friend : Friend) {
 
     Row(modifier = Modifier
         .height(30.dp)
         .fillMaxWidth()) {
 
-        println("profile pic in composable = ")
-
         Image(
-            painter = rememberAsyncImagePainter(""),
+            painter = rememberAsyncImagePainter(friend.profilePicture),
             contentDescription = "friend logo",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(25.dp)
         )
 
-        println("username in composable = ")
-        Text(text = "Username = ")
+        Text(text = "Username = ${friend.username}")
     }
 }

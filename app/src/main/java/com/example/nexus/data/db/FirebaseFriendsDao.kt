@@ -2,11 +2,10 @@ package com.example.nexus.data.db
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import com.example.nexus.data.dataClasses.User
+import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.getUserId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -22,7 +21,7 @@ class FirebaseFriendsDao @Inject constructor(
 
     private val friends = MutableStateFlow(emptyList<String>())
 
-    private val friendsData = MutableStateFlow(ArrayList<User>())
+    private val friendsData = MutableStateFlow(ArrayList<Friend>())
 
     private var friendsReferences = ArrayList<DatabaseReference>()
 
@@ -56,12 +55,14 @@ class FirebaseFriendsDao @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
-                lateinit var newUser: User
-                newUser.email = snapshot.child("email").value as String
-                newUser.username = snapshot.child("username").value as String
-                newUser.profilePicture = snapshot.child("profilePicture").value as String
-                newUser.profileBackground = snapshot.child("profileBackground").value as String
-                friendsData.value.add(newUser)
+                val newFriend = Friend("", "", "", "")
+                println("---------------------------- KEY ---------------------")
+                println(snapshot.key.toString())
+                newFriend.userId = snapshot.key.toString()
+                newFriend.username = snapshot.child("username").value as String
+                newFriend.profilePicture = snapshot.child("profilePicture").value as String
+                newFriend.profileBackground = snapshot.child("profileBackground").value as String
+                friendsData.value.add(newFriend)
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Failed to read value.", error.toException())
@@ -81,26 +82,8 @@ class FirebaseFriendsDao @Inject constructor(
         return friends
     }
 
-    suspend fun getFriendProfilePicture(friendId: String): String {
-        val tempuser = database.getReference("user/${friendId}")
-        val profilePic = CompletableDeferred("")
-        tempuser.child("profilePicture").get().addOnSuccessListener {
-            println("TESTESTESTESTESTSE PROFILE PICc")
-            profilePic.complete(it.value.toString())
-            profilePic.toString()
-            println("pic = $profilePic")
-
-        }
-        return profilePic.await()
-    }
-
-    suspend fun getFriendProfileBackground(friendId: String): String {
-        val tempuser = database.getReference("user/${friendId}")
-        val background = CompletableDeferred("")
-        tempuser.child("profileBackground").get().addOnSuccessListener {
-            background.complete(it.value.toString())
-        }
-        return background.await()
+    fun getFriendData() : StateFlow<List<Friend>>{
+        return friendsData
     }
 
 
@@ -108,12 +91,5 @@ class FirebaseFriendsDao @Inject constructor(
         friendsRef.value.child(id).setValue(id)
     }
 
-    suspend fun getFriendUsername(friendId: String): String {
-        val tempuser = database.getReference("user/${friendId}")
-        val friendUsername = CompletableDeferred("")
-        tempuser.child("username").get().addOnSuccessListener {
-            friendUsername.complete(it.value.toString())
-        }
-        return friendUsername.await()
-    }
+
 }

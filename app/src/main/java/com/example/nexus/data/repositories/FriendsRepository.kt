@@ -2,6 +2,8 @@ package com.example.nexus.data.repositories
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.example.nexus.data.dataClasses.Friend
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.db.FirebaseFriendsDao
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -23,17 +25,10 @@ class FriendsRepository @Inject constructor(
 
     fun updateUser() = firebaseFriendsDao.updateUser()
 
-    suspend fun getFriendProfilePic(friendId: String): String {
-        return firebaseFriendsDao.getFriendProfilePicture(friendId)
+    fun getFriendsData(): StateFlow<List<Friend>> {
+        return firebaseFriendsDao.getFriendData()
     }
 
-    suspend fun getFriendBackground(friendId: String): String{
-        return firebaseFriendsDao.getFriendProfileBackground(friendId)
-    }
-
-    suspend fun getFriendUsername(friendId: String): String {
-        return firebaseFriendsDao.getFriendUsername(friendId)
-    }
 
     fun setSearchTerm(term: String){
         this.searchTerm.value = term

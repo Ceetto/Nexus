@@ -3,6 +3,8 @@ package com.example.nexus.viewmodels
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.nexus.data.dataClasses.Friend
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.FriendsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -44,17 +46,10 @@ class NexusFriendsViewModel @Inject constructor(private val repo: FriendsReposit
         return searchTerm.value
     }
 
-    suspend fun getFriendProfilePic(friendId: String) : String {
-        return repo.getFriendProfilePic(friendId)
+    fun getFriendsData() : StateFlow<List<Friend>> {
+        return repo.getFriendsData()
     }
 
-    suspend fun getFriendBackground(friendId: String) : String {
-        return repo.getFriendBackground(friendId)
-    }
-
-    suspend fun getFriendUsername(friendId: String) : String {
-        return repo.getFriendUsername(friendId)
-    }
 
     fun setSearchTerm(term: String) = repo.setSearchTerm(term)
 }
