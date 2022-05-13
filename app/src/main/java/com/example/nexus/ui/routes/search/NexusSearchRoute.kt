@@ -43,13 +43,15 @@ fun NexusSearchRoute(
         Column (Modifier.fillMaxHeight()){
             Row{
                 val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
-                SearchBarComponent(onSearch = {
+                SearchBarComponent(
+                    "search games",
+                    onSearch = {
                         vM.setSearched(true); vM.onSearchEvent(); keyboardController?.hide()
                     },
                     vM.getSearchTerm(),
                     {s:String -> vM.setSearchTerm(s)},
                     {b: Boolean -> vM.setSearched(b)},
-                    {
+                    onCancel = {
                         vM.setSearched(false)
                         vM.setSearchTerm("")
                         vM.emptyList()

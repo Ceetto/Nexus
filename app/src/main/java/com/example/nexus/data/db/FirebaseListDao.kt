@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +32,7 @@ class FirebaseListDao @Inject constructor(
         override fun onDataChange(snapshot: DataSnapshot) {
             // This method is called once with the initial value and again
             // whenever data at this location is updated.
+
             val newList = mutableListOf<ListEntry>()
             for(child in snapshot.children ){
                 newList.add(

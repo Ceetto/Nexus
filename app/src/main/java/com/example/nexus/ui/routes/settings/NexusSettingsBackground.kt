@@ -8,6 +8,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -27,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.viewmodels.NexusProfileViewModel
 
@@ -42,6 +44,7 @@ fun NexusSettingsBackground(vM: NexusProfileViewModel, navController: NavHostCon
         mutableStateOf<Bitmap?>(null)
     }
     val focusManager = LocalFocusManager.current
+    val background = vM.getBackground()
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
@@ -51,13 +54,20 @@ fun NexusSettingsBackground(vM: NexusProfileViewModel, navController: NavHostCon
                 Text(text = "Current Background: ")
             }
 
-            if (false){
-                //TODO hier de image van profile halen
+            if (background != ""){
+                Image( painter = rememberAsyncImagePainter(background),
+                    contentDescription = "profile_picture",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(20.dp))
             } else {
                 Box(modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
-                    .padding(20.dp))
+                    .padding(20.dp).background(Color.LightGray)
+                )
             }
 
             Divider(color = Color.White, thickness = 1.dp)
@@ -81,7 +91,6 @@ fun NexusSettingsBackground(vM: NexusProfileViewModel, navController: NavHostCon
                 val source = ImageDecoder
                     .createSource(context.contentResolver, it)
                 bitmap.value = ImageDecoder.decodeBitmap(source)
-
                 bitmap.value?.let { btm ->
                     Image(
                         bitmap = btm.asImageBitmap(),
@@ -89,7 +98,7 @@ fun NexusSettingsBackground(vM: NexusProfileViewModel, navController: NavHostCon
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
+                            .height(200.dp).padding(20.dp)
                             .clip(RectangleShape)
                     )
                 }
@@ -100,7 +109,13 @@ fun NexusSettingsBackground(vM: NexusProfileViewModel, navController: NavHostCon
                 .padding(20.dp, 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center){
-                Button(onClick = {/* TODO */ }, ){
+                Button(onClick = {
+                    if (result.value != null)
+                        vM.storeBackground(result.value!!)
+                        focusManager.clearFocus()
+                        navController.navigateUp()
+                }
+                ){
                     Text(text = "Save")
                 }
             }
