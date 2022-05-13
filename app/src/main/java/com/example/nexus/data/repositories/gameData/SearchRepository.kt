@@ -41,7 +41,6 @@ class SearchRepository @Inject constructor()
                 searching.value.value = false
             }
         }
-
     }
 
     fun emptyList(){

@@ -15,8 +15,9 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import proto.Game
 
-@ExperimentalComposeUiApi
+//@ExperimentalComposeUiApi
 @Composable
 fun SearchBarComponent(
     onSearch: () -> Unit?,
