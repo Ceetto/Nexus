@@ -2,23 +2,35 @@ package com.example.nexus.data.repositories
 
 
 import com.example.nexus.data.dataClasses.FriendRequest
+import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.ReleaseNotification
+import com.example.nexus.data.dataClasses.SortOptions
+import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.db.notifications.FirebaseFriendRequestDao
 import com.example.nexus.data.db.notifications.ReleaseNotificationDao
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.*
+import java.lang.System.currentTimeMillis
 
 @Singleton
 class NotificationsRepository @Inject constructor(
     private val friendRequestDao: FirebaseFriendRequestDao,
-    private val notificationDao: ReleaseNotificationDao
+    private val notificationDao: ReleaseNotificationDao,
+    private val firebaseListDao: FirebaseListDao
 ) {
-    fun getReleaseNotifications(): Flow<List<ReleaseNotification>>{
+    fun filterGames(): Flow<List<ListEntry>> {
+        return firebaseListDao.getPlanned().map {
+            it.filter {
+                    game -> (game.releaseDate - (currentTimeMillis() / 1000)) <= 259200
+            } }
+    }
+
+    fun getReleaseNotifications(): Flow<List<ReleaseNotification>> {
         return notificationDao.getReleaseNotifications()
     }
 
-    fun getFriendRequests(): Flow<List<FriendRequest>>{
+    fun getFriendRequests(): Flow<List<FriendRequest>> {
         return friendRequestDao.getFriendRequests()
     }
 

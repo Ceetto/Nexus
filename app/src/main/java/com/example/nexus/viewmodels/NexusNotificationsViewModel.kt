@@ -17,6 +17,7 @@ import javax.inject.Inject
 class NexusNotificationsViewModel @Inject constructor(
     private val notificationRepo: NotificationsRepository,
 ) : ViewModel(){
+    val dailyReleaseGames = notificationRepo.filterGames().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun getReleaseNotifications(): StateFlow<List<ReleaseNotification>> {
         return notificationRepo.getReleaseNotifications().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
@@ -27,4 +28,6 @@ class NexusNotificationsViewModel @Inject constructor(
     }
 
     fun storeReleaseNotification(releaseNotification: ReleaseNotification) = notificationRepo.storeReleaseNotification(releaseNotification)
+
+    fun storeFriendRequest(friendRequest: FriendRequest) = notificationRepo.storeFriendRequest(friendRequest)
 }
