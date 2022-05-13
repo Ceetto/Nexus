@@ -55,6 +55,8 @@ fun NexusSettingsUsername(vM: NexusProfileViewModel, navController: NavHostContr
                 Button(onClick = {
                     if (vM.getUsername() != ""){
                         vM.storeUsername(vM.getNewUsername())
+                        focusManager.clearFocus()
+                        navController.navigateUp()
                     }
                 }){
                     Text(text = "Save")

@@ -1,29 +1,21 @@
 package com.example.nexus
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.nexus.data.repositories.gameData.SearchRepository
-import com.example.nexus.viewmodels.games.NexusSearchViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
-import okhttp3.internal.wait
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.*
+
 
 @ExperimentalCoroutinesApi
 class ApiTests {
-
-    private val testDispatcher = TestCoroutineDispatcher()
-
+    private val testDispatcher = StandardTestDispatcher()
     @Before
-    fun setup(){
+    fun setup() {
         Dispatchers.setMain(testDispatcher)
     }
-
     @After
-    fun tearDown(){
+    fun tearDown() {
         Dispatchers.resetMain()
     }
 
@@ -38,5 +30,18 @@ class ApiTests {
 //        vM.onSearchEvent()
 //        assert(vM.getGameList().isNotEmpty())
 //    }
+
+    @Test
+    fun searchGamesBySearchTermShouldFindGames() = runTest()
+//    = withContext(Dispatchers.Default)
+    {
+        withContext(Dispatchers.Default){
+            val searchRepo = SearchRepository()
+            searchRepo.setSearchTerm("pokemon")
+            searchRepo.getGames()
+            Assert.assertTrue(searchRepo.gameList.value.value.isNotEmpty())
+        }
+
+    }
 
 }

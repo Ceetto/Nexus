@@ -57,7 +57,9 @@ fun NexusHomeRoute(
              //search bar
              Row{
                  val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
-                 SearchBarComponent(onSearch = {
+                 SearchBarComponent(
+                     "Search games",
+                     onSearch = {
                      vM.setSearched(true); vM.onSearchEvent(); keyboardController?.hide()
                  },
                      vM.getSearchTerm(),
@@ -67,7 +69,8 @@ fun NexusHomeRoute(
                          vM.setSearched(false)
                          vM.setSearchTerm("")
                          vM.emptyList()
-                     }
+                     },
+
                  )
              }
 
