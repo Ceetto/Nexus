@@ -41,6 +41,10 @@ class FirebaseNotificationDao @Inject constructor(
                             child.child("releaseDate").value as Long,
                             child.child("notificationTime").value as Long,
                             child.child("read").value as Boolean,
+                            child.child("pfp").value as String?,
+                            child.child("gameCover").value as String?,
+                            child.child("username").value as String,
+                            child.child("gameName").value as String,
                             child.child("notificationType").value as String,
                         )
                     )

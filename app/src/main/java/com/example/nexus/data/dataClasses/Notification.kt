@@ -5,7 +5,11 @@ data class Notification(val userId: String = "",
                         val releaseDate: Long = 0,
                         val notificationTime: Long = 0,
                         val read: Boolean = false,
-                        val notificationType: String = NotificationType.FRIEND_REQUEST.value
+                        val pfp: String? = "",
+                        val gameCover: String? = "",
+                        val username: String = "",
+                        val gameName: String = "",
+                        val notificationType: String = NotificationType.FRIEND_REQUEST.value,
 )
 
 enum class NotificationType(val value: String){
