@@ -48,23 +48,27 @@ fun NexusGameDetailRoute(
             val game = vM.getGameList()[0]
             //checks if the game is already in your list
             val games by vM.allGames.collectAsState()
-
-            vM.prefillGame(game, games)
+            if(vM.getTotalGamesCount() >= vM.getOldTotalGameCount()){
+                vM.setTotalGamesCount(games.size)
+                vM.setOldTotalGameCount(games.size)
+            }
 
             if(!vM.getGameFormOpen() && !vM.ageVerifOpen()){
-                GameDetailComponent(game, vM.isPrefilledGame(), onOpenGameDetails, focusManager,
+                vM.prefillGame(game, games)
+                GameDetailComponent(game, {vM.isPrefilledGame()}, onOpenGameDetails, focusManager,
                         vM.isRefreshing(), {vM.onGetGameEvent()}, {b: Boolean -> vM.onGameFormOpenChanged(b)},
-                        vM.getEditOrAddGames(),
+                        {vM.getEditOrAddGames()},
                         onFavourite = {
                             vM.toggleIcon()
                             vM.setFavorite(vM.getFavoriteToggled())
                             vM.storeListEntry(vM.getListEntry())
                         },
                         vM.getIcon(),
-                        { s : String -> vM.getLinkIcon(s)},
+                        { s : String -> vM.getLinkIcon(s)}
                     )
             } else {
                 if(vM.getGameFormOpen()){
+                    vM.prefillGame(game, games)
                     GameFormComponent(
                         onGameFormOpenChanged = {b -> vM.onGameFormOpenChanged(b)},
                         getListEntry = {vM.getListEntry()},
@@ -85,7 +89,10 @@ fun NexusGameDetailRoute(
                         getShowErrorPopup = {vM.getShowErrorPopup()},
                         getShowDeleteWarning = {vM.getShowDeleteWarning()},
                         setEditOrAddGames = {e -> vM.setEditOrAddGames(e)},
-                        focusManager)
+                        focusManager = focusManager,
+                        setPrefilledGame = {b: Boolean -> vM.setPrefilledGame(b)},
+                        setJustDeletedGame = {vM.setJustDeletedGame()},
+                        incrementTotalGamesCount = {vM.incrementTotalGamesCount()})
                 } else{
                     AgeConfirmComponent({b : Boolean -> vM.onAgeVerifOpenChange(b)}, navController)
                 }

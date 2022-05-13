@@ -18,8 +18,10 @@ fun GameSaveButton(
     onShowErrorPopupChanged: (Boolean) -> Unit,
     setCurrentListEntryMinutes: (Int) -> Unit,
     storeListEntry: (ListEntry) -> Unit,
-    getListEntry : ListEntry,
+    getListEntry : () -> ListEntry,
     onGameFormOpenChanged : (Boolean) -> Unit,
+    incrementTotalGamesCount: () -> Unit,
+    getEditOrAddGames: () -> String
 ){
     Button(modifier = Modifier.padding(10.dp),
         onClick = {
@@ -29,7 +31,10 @@ fun GameSaveButton(
                 onShowErrorPopupChanged(true)
             } else{
                 setCurrentListEntryMinutes(getHours.toInt()*60+getMinutes.toInt())
-                storeListEntry(getListEntry)
+                if(getEditOrAddGames() == NexusGameDetailViewModel.GameFormButton.ADD.value){
+                    incrementTotalGamesCount()
+                }
+                storeListEntry(getListEntry())
                 onGameFormOpenChanged(false)
                 focusManager.clearFocus()
             }

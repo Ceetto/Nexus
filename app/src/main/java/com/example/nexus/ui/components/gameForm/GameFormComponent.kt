@@ -36,7 +36,10 @@ fun GameFormComponent(
     getShowErrorPopup: () -> Boolean,
     getShowDeleteWarning: () -> Boolean,
     setEditOrAddGames: (String) -> Unit,
-    focusManager: FocusManager
+    focusManager: FocusManager,
+    setPrefilledGame: (Boolean) -> Unit,
+    setJustDeletedGame: () -> Unit,
+    incrementTotalGamesCount: () -> Unit,
 ){
     val weight1 = 1.5f
     val weight2 = 3f
@@ -86,8 +89,10 @@ fun GameFormComponent(
                 {b:Boolean -> onShowErrorPopupChanged(b)},
                 {m:Int -> setCurrentListEntryMinutes(m)},
                 {l:ListEntry -> storeListEntry(l)},
-                getListEntry(),
-                {b:Boolean -> onGameFormOpenChanged(b)}
+                getListEntry,
+                {b:Boolean -> onGameFormOpenChanged(b)},
+                {incrementTotalGamesCount()},
+                {getEditOrAddGames()}
             )
 
             GameDeleteButton(getEditOrAddGames()) { b: Boolean -> onShowDeleteWarningChanged(b) }
@@ -110,10 +115,13 @@ fun GameFormComponent(
             confirmButton = {
                 TextButton(onClick = {
                     deleteListEntry(getListEntry())
+                    setJustDeletedGame()
                     setEditOrAddGames(NexusGameDetailViewModel.GameFormButton.ADD.value)
-                    onGameFormOpenChanged(false)
                     focusManager.clearFocus()
-                    onShowDeleteWarningChanged(false)}) {
+                    setPrefilledGame(false)
+                    onShowDeleteWarningChanged(false)
+                    onGameFormOpenChanged(false)
+                }) {
                     Text(text = "Confirm", color=MaterialTheme.colors.onBackground)
                 }
             },

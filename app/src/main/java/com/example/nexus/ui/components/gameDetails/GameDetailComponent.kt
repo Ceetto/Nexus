@@ -36,18 +36,18 @@ import kotlin.math.roundToInt
 @Composable
 fun GameDetailComponent(
     game: Game,
-    found: Boolean,
+    found: () -> Boolean,
     onOpenGameDetails: (gameId: Long) -> Unit,
     focusManager: FocusManager,
     isRefreshing: Boolean,
     onGetGameEvent: () -> Unit,
     onGameFormOpenChanged: (Boolean) -> Unit,
-    getEditOrAddGames: String,
+    getEditOrAddGames: () -> String,
     onFavourite: () -> Unit,
     getIcon : ImageVector,
-    getLinkIcon : (String) -> Int?
+    getLinkIcon : (String) -> Int?,
 ){
-    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = isRefreshing), onRefresh = onGetGameEvent ) {
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = isRefreshing), onRefresh = {onGetGameEvent} ) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
             Row() {
                 Column{
@@ -114,9 +114,9 @@ fun GameDetailComponent(
                     Row(modifier = Modifier.padding(10.dp),
                         horizontalArrangement = Arrangement.Center){
                         Button(onClick = { onGameFormOpenChanged(true) }) {
-                            Text(text = getEditOrAddGames)
+                            Text(text = getEditOrAddGames())
                         }
-                        if (found){
+                        if (found()){
                             IconButton(onClick = {
                                 onFavourite()
                             }, modifier = Modifier.padding(start = 5.dp)) {

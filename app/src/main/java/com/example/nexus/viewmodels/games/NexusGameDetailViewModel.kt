@@ -4,12 +4,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.compose.rememberAsyncImagePainter
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
@@ -26,7 +24,6 @@ import kotlinx.coroutines.launch
 import proto.AgeRatingCategoryEnum
 import proto.AgeRatingRatingEnum
 import proto.Game
-import proto.Website
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,8 +49,41 @@ class NexusGameDetailViewModel @Inject constructor(
     private val favoriteToggled = mutableStateOf(false)
     private val prefilledGame = mutableStateOf(false)
 
+    private val justDeletedGame = mutableStateOf(false)
+    private val oldTotalGamesCount = mutableStateOf(0)
+    private val totalGamesCount = mutableStateOf(0)
+
+    fun setTotalGamesCount(g: Int){
+        totalGamesCount.value = g
+    }
+
+    fun incrementTotalGamesCount(){
+        totalGamesCount.value++
+    }
+
+    fun getTotalGamesCount():Int{
+        return totalGamesCount.value
+    }
+
+    fun setOldTotalGameCount(g: Int){
+        oldTotalGamesCount.value = g
+    }
+
+    fun getOldTotalGameCount():Int{
+        return oldTotalGamesCount.value
+    }
+
+    fun setJustDeletedGame(){
+        justDeletedGame.value = true
+    }
+
+
     fun isPrefilledGame(): Boolean {
         return prefilledGame.value
+    }
+
+    fun setPrefilledGame(b: Boolean){
+        prefilledGame.value = b
     }
 
     fun onGetGameEvent(){
@@ -205,23 +235,46 @@ class NexusGameDetailViewModel @Inject constructor(
         return showDeleteWarning.value
     }
 
+    /**
+     * justDeletedGame: Boolean that gets initialized to false
+     * totalGamesCount: the total amount of games in the list after a delete request
+     * oldGamesCount: the total amount of games in the list before a delete request
+     * totalGameCount will always equal oldGamesCount as long as there were no delete requests.
+     *
+     * When a game gets deleted from your list, the delete request doesn't finish right away and this
+     * will cause issues with fetching all games to check whether or not the current game has to be
+     * prefilled. To fix this, the variables justDeleteGame, totalGamesCount and oldTotalGamesCount
+     * were introduced. When the delete request gets sent, justDeletedGame will be set to true,
+     * this will trigger the first if which will set the value back to false and decrement totalGamesCount.
+     * totalGamesCount will now be smaller than oldTotalGamesCount, which is the indicator that a game
+     * has just been deleted and in turn, it will not prefill the game. In order to make it prefill
+     * the game again when a game gets added, totalGamesCount will have to be incremented which
+     * happens in the GameSaveButton.
+     */
     fun prefillGame(game: Game, games: List<ListEntry>){
-        var i = 0
-        while (i < games.size && !prefilledGame.value){
-            if(games[i].gameId == game.id){
-                setListEntry(games[i])
-                setMinutes(getListEntry().minutesPlayed.mod(60).toString())
-                setHours(((getListEntry().minutesPlayed - getMinutes().toInt())/60).toString())
-                setEditOrAddGames(GameFormButton.EDIT.value)
-                if(games[i].favorited){
-                    setIcon(Icons.Outlined.Star)
-                } else {
-                    setIcon(Icons.Outlined.StarBorder)
+        if(justDeletedGame.value){
+            justDeletedGame.value = false
+            prefilledGame.value = false
+            totalGamesCount.value--
+        } else if(totalGamesCount.value >= oldTotalGamesCount.value) {
+            var i = 0
+            while (i < games.size && !prefilledGame.value){
+                if(games[i].gameId == game.id){
+                    setListEntry(games[i])
+                    setMinutes(getListEntry().minutesPlayed.mod(60).toString())
+                    setHours(((getListEntry().minutesPlayed - getMinutes().toInt())/60).toString())
+                    setEditOrAddGames(GameFormButton.EDIT.value)
+                    if(games[i].favorited){
+                        setIcon(Icons.Outlined.Star)
+                    } else {
+                        setIcon(Icons.Outlined.StarBorder)
+                    }
+                    prefilledGame.value = true
                 }
-                prefilledGame.value = true
+                i++
             }
-            i++
         }
+
 
         //fills in the current ListEntry in case the game was not found in your list
         if (!prefilledGame.value){
@@ -236,10 +289,6 @@ class NexusGameDetailViewModel @Inject constructor(
             setEditOrAddGames(GameFormButton.ADD.value)
         }
     }
-
-
-//    fun getCoverWithId(id: Long) = repo.getCoverWithId(id)
-//    fun getPlatforms(ids: MutableList<Platform>) = repo.getPlatforms(ids)
 
     fun storeListEntry(entry: ListEntry) = viewModelScope.launch { listRepository.storeListEntry(entry) }
 
