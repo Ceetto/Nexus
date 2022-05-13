@@ -36,7 +36,7 @@ fun ApplicationSwitcher(vM: NexusLoginViewModel) {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            Home()
+            Home(vM = hiltViewModel())
         }
     } else {
         ScreenMain()

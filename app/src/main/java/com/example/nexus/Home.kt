@@ -25,12 +25,16 @@ import com.example.nexus.ui.navigation.NexusNavGraph
 import com.example.nexus.ui.navigation.Screen
 import com.example.nexus.ui.theme.NexusBlackTransparent
 import com.example.nexus.ui.theme.NexusBlue
+import com.example.nexus.viewmodels.NexusBottomBarViewModel
+import com.example.nexus.viewmodels.NexusNotificationsViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
-fun Home() {
+fun Home(
+    vM: NexusBottomBarViewModel
+) {
     val navController = rememberNavController()
 
     Scaffold(bottomBar = {
@@ -55,7 +59,8 @@ fun Home() {
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(65.dp)
+                .height(65.dp),
+            { vM.countNewNotifications() }
         )
     },){
         Row(Modifier.fillMaxSize()) {
@@ -74,6 +79,7 @@ fun BottomNavigationBar(
     selectedNavigation: Screen,
     onNavigationSelected: (Screen) -> Unit,
     modifier: Modifier,
+    countNewNotifications: () -> Int
 ){
     BottomNavigation(
         elevation = 16.dp,
@@ -88,14 +94,31 @@ fun BottomNavigationBar(
                 onClick = {
                     onNavigationSelected(item.screen)
                 },
-                icon = { Icon(imageVector = item.icon, item.screen.route,
-                    modifier = Modifier.fillMaxSize(0.6f))},
+                icon =  {
+                    if (item.screen == Screen.Notifications && countNewNotifications() > 0) {
+                        BadgedBox(
+                            badge = { Badge { Text(countNewNotifications().toString()) } }) {
+                            Icon(
+                                imageVector = item.icon,
+                                item.screen.route,
+                                modifier = Modifier.fillMaxWidth(0.6f)
+                            )
+                        }
+                    } else {
+                        Icon(
+                            imageVector = item.icon,
+                            item.screen.route,
+                            modifier = Modifier.fillMaxSize(0.6f)
+                        )
+                    }
+                },
                 label = { Text(text= item.label, fontSize = 10.sp, overflow = TextOverflow.Visible)},
                 modifier = Modifier.fillMaxSize()
             )
         }
     }
 }
+
 
 
 

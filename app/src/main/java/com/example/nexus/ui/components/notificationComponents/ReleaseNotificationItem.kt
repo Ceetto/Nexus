@@ -37,31 +37,27 @@ fun ReleaseNotificationItem(
         Box(modifier = Modifier.padding(8.dp)) {
             Image(
                 painter = rememberAsyncImagePainter(notification.gameCover),
-                contentDescription = "profile_picture",
+                contentDescription = "game_cover",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(60.dp)
                     .clip(CircleShape)
             )
         }
-        Column {
+        Column(modifier = Modifier.fillMaxWidth(0.9f)) {
             Text(
                 text = notification.gameName,
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 fontSize = 18.sp,
             )
             Text(
-                text = notification.gameName + "Is releasing soon!",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                text = notification.gameName + " Is releasing soon!"
             )
         }
-        Spacer(modifier = Modifier.width(4.dp))
-        IconButton(onClick = { removeNotification(notification) }) {
+        IconButton(onClick = { removeNotification(notification) }, modifier = Modifier.size(22.dp)) {
             Icon(
                 imageVector = Icons.Filled.Clear,
-                contentDescription = "Remove notification",
-                modifier = Modifier.size(ButtonDefaults.IconSize)
+                contentDescription = "Remove notification"
             )
         }
     }

@@ -110,7 +110,7 @@ class FirebaseListDao @Inject constructor(
         return favorites
     }
 
-    suspend fun storeListEntry(entry: ListEntry){
+    fun storeListEntry(entry: ListEntry){
         listEntryRef.value.child(entry.gameId.toString()).setValue(entry)
     }
 

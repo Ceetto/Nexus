@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.data.dataClasses.Notification
 import com.example.nexus.data.dataClasses.NotificationType
-import com.example.nexus.data.dataClasses.ReleaseNotification
 import com.example.nexus.data.dataClasses.getUserId
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -22,7 +21,7 @@ class FirebaseNotificationDao @Inject constructor(
 ){
     private val notificationRef = mutableStateOf(database.getReference("user/${getUserId(auth.currentUser)}/notifications"))
 
-    private val allNotificationsRead = mutableStateOf(true)
+    private val countNewNotifications = mutableStateOf(0)
 
     private val notifications = MutableStateFlow(emptyList<Notification>())
 
@@ -33,6 +32,7 @@ class FirebaseNotificationDao @Inject constructor(
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
                 val newNotications = mutableListOf<Notification>()
+                countNewNotifications.value = 0
                 for(child in snapshot.children){
                     newNotications.add(
                         Notification(
@@ -49,7 +49,9 @@ class FirebaseNotificationDao @Inject constructor(
                         )
                     )
                     //if there's an unread notification, set allNotificationsRead to false
-                    allNotificationsRead.value = allNotificationsRead.value && child.child("read").value as Boolean
+                    if (!(child.child("read").value as Boolean)) {
+                        countNewNotifications.value += 1
+                    }
                 }
                 notifications.update{newNotications}
             }
@@ -86,8 +88,8 @@ class FirebaseNotificationDao @Inject constructor(
         }
     }
 
-    fun areAllNotificationsRead(): Boolean {
-        return allNotificationsRead.value
+    fun countNewNotifications(): Int {
+        return countNewNotifications.value
     }
 
     private val TAG = "NotificationDao"

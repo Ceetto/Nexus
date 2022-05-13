@@ -29,24 +29,24 @@ fun FriendNotificationItem(notification: Notification) {
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = rememberAsyncImagePainter(notification.pfp),
-            contentDescription = "profile_picture",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(100.dp)
-                .clip(CircleShape)
-        )
-        Column {
+        Box(modifier = Modifier.padding(8.dp)) {
+            Image(
+                painter = rememberAsyncImagePainter(notification.pfp),
+                contentDescription = "profile_picture",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(CircleShape)
+            )
+        }
+        Column(modifier = Modifier.fillMaxWidth(0.9f)) {
             Text(
                 text = notification.username,
                 style = TextStyle(fontWeight = FontWeight.Bold),
                 fontSize = 18.sp,
             )
             Text(
-                text = notification.username + "Has send you a friend request.",
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                text = notification.username + "Has send you a friend request."
             )
             Row(
                 modifier = Modifier
