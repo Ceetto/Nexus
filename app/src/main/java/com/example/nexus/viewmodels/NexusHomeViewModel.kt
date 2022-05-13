@@ -55,7 +55,7 @@ class NexusHomeViewModel  @Inject constructor(
                 searchingTrending.value = true
                 searchingUpcoming.value = true
                 searchingFavourite.value = true
-                repo.getGames()
+                repoFetchGames()
                 setRecommendedGames()
                 searchingFavourite.value = false
                 isRefreshing.value = false
@@ -64,6 +64,11 @@ class NexusHomeViewModel  @Inject constructor(
                 fetchGames()
             }
         }
+    }
+
+    suspend fun repoFetchGames() = withContext(Dispatchers.Default){
+        repo.getGames()
+        repo.getRecommendeds()
     }
 
     fun setRecommendedGames(){

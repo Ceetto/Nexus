@@ -3,18 +3,25 @@ package com.example.nexus.data.repositories.gameData
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.api.igdb.apicalypse.APICalypse
-import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
-import com.api.igdb.request.TwitchAuthenticator
 import com.api.igdb.request.games
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import proto.Game
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchRepository @Inject constructor()
+class SearchRepository
+@Inject constructor
+    (
+//    private val fetchGames : (APICalypse) -> List<Game>
+)
 {
+
     var gameList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList())}
     val searchTerm = mutableStateOf("")
     var searching: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false)}
@@ -32,7 +39,8 @@ class SearchRepository @Inject constructor()
                 ).limit(toLoad.value.value)
 //            gameList.value.value = kotlin.collections.emptyList()
             try{
-                gameList.value.value = IGDBWrapper.games(apicalypse)
+//                gameList.value.value = IGDBWrapper.games(apicalypse)
+                gameList.value.value = fetchGames(apicalypse)
                 searching.value.value = false
             } catch(e: RequestException) {
                 print("NEXUS API FETCH ERROR: ")
@@ -57,5 +65,31 @@ class SearchRepository @Inject constructor()
 
     fun loadMore(){
         toLoad.value.value += 10
+    }
+
+    //for testing
+    private var fetchGames : (APICalypse) -> List<Game> = { a : APICalypse -> IGDBWrapper.games(a)}
+    fun setFetchGames(f : (APICalypse) -> List<Game>){
+        fetchGames = f
+    }
+}
+
+
+abstract class GameFetcher {
+    companion object{
+        fun getInstance(): (APICalypse) -> List<Game> {
+            return {a : APICalypse -> IGDBWrapper.games(a)}
+        }
+    }
+}
+
+@InstallIn(SingletonComponent::class)
+@Module
+class FetchGamesFunctionModule {
+
+    @Singleton
+    @Provides
+    fun provideGameFetcher(): (APICalypse) -> List<Game>{
+        return GameFetcher.getInstance()
     }
 }

@@ -1,10 +1,21 @@
 package com.example.nexus
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.api.igdb.apicalypse.APICalypse
+import com.example.nexus.data.db.FirebaseListDao
+import com.example.nexus.data.repositories.HomeRepository
+import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.data.repositories.gameData.SearchRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
-import org.junit.*
+import kotlinx.coroutines.withContext
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+import org.mockito.kotlin.mock
+import proto.Game
 
 
 @ExperimentalCoroutinesApi
@@ -19,29 +30,54 @@ class ApiTests {
         Dispatchers.resetMain()
     }
 
-//    @Test
-//    fun searchGamesByName() = runBlockingTest{
-//        val vM = NexusSearchViewModel(SearchRepository(), testDispatcher)
-//        vM.setSearchTerm("kiseki")
-////        launch{
-////            vM.fetchGames()
-////        }
-////        vM.fetchGames()
-//        vM.onSearchEvent()
-//        assert(vM.getGameList().isNotEmpty())
-//    }
-
     @Test
-    fun searchGamesBySearchTermShouldFindGames() = runTest()
-//    = withContext(Dispatchers.Default)
+    fun searchGamesBySearchTermShouldExecuteAPIFunctionToFindGames() = runTest()
     {
-        withContext(Dispatchers.Default){
-            val searchRepo = SearchRepository()
-            searchRepo.setSearchTerm("pokemon")
-            searchRepo.getGames()
-            Assert.assertTrue(searchRepo.gameList.value.value.isNotEmpty())
+
+        fun fetchGames(a : APICalypse): List<Game>{
+            return arrayListOf(Game.getDefaultInstance(), Game.getDefaultInstance(), Game.getDefaultInstance())
         }
 
+        val searchRepo = SearchRepository()
+        searchRepo.setSearchTerm("potato")
+        searchRepo.setFetchGames { a : APICalypse ->  fetchGames(a) }
+        withContext(Dispatchers.Default){
+            searchRepo.getGames()
+        }
+        advanceUntilIdle()
+        Assert.assertTrue(searchRepo.gameList.value.value.isNotEmpty())
+    }
+
+    @Test
+    fun searchGameByIdShouldExecuteAPICallFunctionToFindGameWithThatId() = runTest(){
+        fun fetchGames(a : APICalypse): List<Game>{
+            return arrayListOf(Game.getDefaultInstance())
+        }
+
+        val gameRepo = GameDetailRepository()
+        gameRepo.setFetchGames { a : APICalypse ->  fetchGames(a) }
+        withContext(Dispatchers.Default){
+            gameRepo.getGameById(Game.getDefaultInstance().id)
+        }
+        advanceUntilIdle()
+        Assert.assertTrue(gameRepo.gameList.value.value.isNotEmpty())
+    }
+
+    @Test
+    fun searchGamesForHomePageShouldExecuteAll() = runTest()
+    {
+
+        fun fetchGames(a : APICalypse): List<Game>{
+            return arrayListOf(Game.getDefaultInstance(), Game.getDefaultInstance(), Game.getDefaultInstance())
+        }
+
+        val homeRepo = HomeRepository(mock())
+        homeRepo.setFetchGames { a : APICalypse ->  fetchGames(a) }
+        withContext(Dispatchers.Default){
+            homeRepo.getGames()
+        }
+        advanceUntilIdle()
+        Assert.assertTrue(homeRepo.popularList.value.value.isNotEmpty())
     }
 
 }
