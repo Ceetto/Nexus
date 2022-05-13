@@ -66,7 +66,7 @@ class ListRepository @Inject constructor(
         }
     }
 
-    private fun sortGames(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+    fun sortGames(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
         val sortedGames = when(sortOption.value){
             SortOptions.ALPHABETICALLY.value -> setDescAsc(entries.map { it.sortedBy { game -> game.title } })
             SortOptions.SCORE.value -> setDescAsc(entries.map { it.sortedBy { game -> game.score } })

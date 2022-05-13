@@ -16,10 +16,4 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
-
-    @Test
-    fun test(){
-        val repo = mock<ListRepository>()
-        assertEquals(4, 2 + 2)
-    }
 }
