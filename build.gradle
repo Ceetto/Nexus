@@ -9,6 +9,9 @@ buildscript {
 
     ext {
         compose_version = '1.0.1'
+        coreTestingVersion = '2.1.0'
+        espressoVersion = '3.4.0'
+        kotlinVersion = '1.6.10'
 
         dependencies {
             classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'

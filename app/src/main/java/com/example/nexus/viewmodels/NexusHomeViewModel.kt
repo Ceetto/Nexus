@@ -1,22 +1,28 @@
 package com.example.nexus.viewmodels
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.repositories.*
+import com.example.nexus.data.repositories.gameData.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import proto.Game
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusHomeViewModel  @Inject constructor(
     private val repo: HomeRepository,
+    private val searchRepo: SearchRepository,
     private val listRepo: ListRepository,
     private val profileRepo: ProfileRepository,
     private val notificationsRepo: NotificationsRepository,
     private val friendsRepo: FriendsRepository
 ) : ViewModel(){
+    //home
     private val popularList = repo.popularList.value
     private val searchingPopular = repo.searchingPopular.value
     private val bestList = repo.bestList.value
@@ -28,6 +34,8 @@ class NexusHomeViewModel  @Inject constructor(
     private val favouriteList = repo.favouriteList.value
     private val searchingFavourite = repo.searchingFavourite.value
     private val isRefreshing = mutableStateOf(false)
+
+
 
     private var recommendedGames = mutableListOf<Game>()
 
@@ -140,5 +148,72 @@ class NexusHomeViewModel  @Inject constructor(
         profileRepo.updateUser()
         friendsRepo.updateUser()
         notificationsRepo.updateUser()
+    }
+
+
+    //search
+    private val gameList = searchRepo.gameList.value
+    private val searchTerm = searchRepo.searchTerm
+    private val searching = searchRepo.searching.value
+    private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
+    private val isRefreshingSearch = mutableStateOf(false)
+    private val toLoad = searchRepo.toLoad.value
+
+    fun onSearchEvent(){
+        viewModelScope.launch {
+            try{
+                setToLoad(10)
+                isRefreshingSearch.value = true
+                fetchGamesSearch()
+                isRefreshingSearch.value = false
+            } catch(e: Exception){
+
+            }
+        }
+    }
+
+    fun onLoadMoreEvent(){
+        viewModelScope.launch {
+            fetchGamesSearch()
+        }
+    }
+
+    suspend fun fetchGamesSearch() = withContext(Dispatchers.Default){
+        searchRepo.getGames()
+    }
+
+    fun getSearchTerm(): String {
+        return searchTerm.value
+    }
+
+    fun setSearchTerm(term: String) = searchRepo.setSearchTerm(term)
+
+    fun getGameList(): List<Game> {
+        return gameList.value
+    }
+
+    fun isSearching(): Boolean{
+        return searching.value
+    }
+
+    fun setSearched(b: Boolean){
+        searched.value.value = b
+    }
+
+    fun hasSearched(): Boolean {
+        return searched.value.value
+    }
+
+    fun emptyList() = searchRepo.emptyList()
+
+    fun isRefreshingSearch(): Boolean{
+        return isRefreshingSearch.value
+    }
+
+    fun setToLoad(v : Int) = searchRepo.setToLoad(v)
+
+    fun loadMore() {
+        searchRepo.loadMore()
+        onLoadMoreEvent()
     }
 }

@@ -27,16 +27,16 @@ class ApiTests {
         Dispatchers.resetMain()
     }
 
-    @Test
-    fun searchGamesByName() = runBlockingTest{
-        val vM = NexusSearchViewModel(SearchRepository(), testDispatcher)
-        vM.setSearchTerm("kiseki")
-//        launch{
-//            vM.fetchGames()
-//        }
-//        vM.fetchGames()
-        vM.onSearchEvent()
-        assert(vM.getGameList().isNotEmpty())
-    }
+//    @Test
+//    fun searchGamesByName() = runBlockingTest{
+//        val vM = NexusSearchViewModel(SearchRepository(), testDispatcher)
+//        vM.setSearchTerm("kiseki")
+////        launch{
+////            vM.fetchGames()
+////        }
+////        vM.fetchGames()
+//        vM.onSearchEvent()
+//        assert(vM.getGameList().isNotEmpty())
+//    }
 
 }
