@@ -2,25 +2,27 @@ package com.example.nexus.ui.routes
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.OutlinedButton
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.nexus.data.dataClasses.ReleaseNotification
+import com.example.nexus.data.dataClasses.NotificationType
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.ui.components.PushNotification
+import com.example.nexus.ui.components.notificationComponents.FriendNotificationItem
+import com.example.nexus.ui.components.notificationComponents.ReleaseNotificationItem
 import com.example.nexus.viewmodels.NexusNotificationsViewModel
-import kotlinx.coroutines.flow.stateIn
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "StateFlowValueCalledInComposition")
 @Composable
@@ -32,19 +34,30 @@ fun NexusNotificationsRoute(
     val channelId = "Nexus"
     val notificationId = 0
     val focusManager = LocalFocusManager.current
+    //val releaseNotifications by vM.getReleaseNotifications().collectAsState()
+    //val friendNotifications by vM.getFriendRequests().collectAsState()
+    val newNotifications by vM.getReleaseGames().collectAsState()
+    vM.storeNewNotifications(newNotifications)
 
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
     ) {
-        Column {
-            ReleaseNotificationItem("Game release!", "A game you where interested in is about to release.")
-            FriendNotificationItem("New friend request!", "User has sent you a new friend Request.")
+        Column(modifier = Modifier
+            .padding(start = 4.dp)
+            .verticalScroll(rememberScrollState())
+        ) {
+            val notifications by vM.getNotifications().collectAsState()
+            for (notification in notifications) {
+                if (notification.notificationType == NotificationType.RELEASE_DATE.value) {
+                    ReleaseNotificationItem(
+                        notification = notification,
+                        removeNotification = { e -> vM.removeNotification(e) }
+                    )
+                } else {
+                    FriendNotificationItem(notification)
+                }
+            }
         }
-        vM.storeReleaseNotification(ReleaseNotification(1, 1, 1))
-        println(vM.getReleaseNotifications().value)
-//        for (notification in vM.getReleaseNotifications().value) {
-//            NotificationItem("Game releasing soon!", "test")
-//        }
 //        PushNotification(
 //            context = context,
 //            channelId = channelId,
@@ -52,66 +65,5 @@ fun NexusNotificationsRoute(
 //            textTitle = "Nexus",
 //            textContent = "Test"
 //        )
-    }
-}
-
-@Composable
-fun ReleaseNotificationItem(type: String, detail: String) {
-    Row( // 1
-        modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.padding(start = 8.dp)) { // 3
-            Text(
-                text = type,
-                style = TextStyle(fontWeight = FontWeight.Bold),
-                fontSize = 18.sp,
-            )
-
-            Text(
-                text = detail,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-    }
-}
-
-@Composable
-fun FriendNotificationItem(type: String, detail: String) {
-    Row( // 1
-        modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 8.dp)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.padding(start = 8.dp)) { // 3
-            Text(
-                text = type,
-                style = TextStyle(fontWeight = FontWeight.Bold),
-                fontSize = 18.sp,
-            )
-
-            Text(
-                text = detail,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedButton(onClick = { /*TODO*/ },
-                    content = { Text(text = "Accept") }
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                OutlinedButton(onClick = { /*TODO*/ },
-                    content = { Text(text = "Decline") }
-                )
-            }
-        }
     }
 }

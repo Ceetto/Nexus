@@ -44,7 +44,8 @@ class FirebaseListDao @Inject constructor(
                         child.child("status").value as String,
                         child.child("coverUrl").value as String?,
                         child.child("favorited").value as Boolean,
-                        child.child("releaseDate").value as Long
+                        child.child("releaseDate").value as Long,
+                        child.child("notificationGiven").value as Boolean
                     )
                 )
             }
