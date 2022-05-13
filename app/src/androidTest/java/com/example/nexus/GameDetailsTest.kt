@@ -25,13 +25,13 @@ class GameDetailsTest {
         composeTestRule.setContent { 
             GameDetailComponent(
                 game = Game.getDefaultInstance(),
-                found = false,
+                found = { false },
                 onOpenGameDetails = {},
                 focusManager = LocalFocusManager.current,
                 isRefreshing = false,
                 onGetGameEvent = { /*TODO*/ },
                 onGameFormOpenChanged = {},
-                getEditOrAddGames = "",
+                getEditOrAddGames = { "" },
                 onFavourite = { /*TODO*/ },
                 getIcon = Icons.Default.Star,
                 getLinkIcon = {0}
@@ -48,13 +48,13 @@ class GameDetailsTest {
         composeTestRule.setContent {
             GameDetailComponent(
                 game = Game.getDefaultInstance(),
-                found = true,
+                found = { true },
                 onOpenGameDetails = {},
                 focusManager = LocalFocusManager.current,
                 isRefreshing = false,
                 onGetGameEvent = { /*TODO*/ },
                 onGameFormOpenChanged = {},
-                getEditOrAddGames = "",
+                getEditOrAddGames = { "" },
                 onFavourite = { favorited.value = !favorited.value
                                 if (favorited.value){
                                     favoriteIcon.value = Icons.Outlined.Star

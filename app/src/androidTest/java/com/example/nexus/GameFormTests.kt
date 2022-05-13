@@ -29,8 +29,10 @@ class GameFormTests {
                 onShowErrorPopupChanged = {b: Boolean -> inputInvalid.value = b},
                 setCurrentListEntryMinutes = {},
                 storeListEntry = {},
-                getListEntry = entry,
-                onGameFormOpenChanged = {}
+                getListEntry = { entry },
+                onGameFormOpenChanged = {},
+                getEditOrAddGames = {""},
+                incrementTotalGamesCount = {}
             )
         }
 
@@ -53,8 +55,10 @@ class GameFormTests {
                 onShowErrorPopupChanged = {b: Boolean -> inputInvalid.value = b},
                 setCurrentListEntryMinutes = {},
                 storeListEntry = {},
-                getListEntry = entry,
-                onGameFormOpenChanged = {}
+                getListEntry = { entry },
+                onGameFormOpenChanged = {} ,
+                getEditOrAddGames = {""},
+                incrementTotalGamesCount = {}
             )
         }
 
@@ -76,8 +80,10 @@ class GameFormTests {
                 onShowErrorPopupChanged = {b: Boolean -> inputInvalid.value = b},
                 setCurrentListEntryMinutes = {},
                 storeListEntry = {},
-                getListEntry = entry,
-                onGameFormOpenChanged = {}
+                getListEntry = { entry },
+                onGameFormOpenChanged = {},
+                getEditOrAddGames = {""},
+                incrementTotalGamesCount = {}
             )
         }
 
@@ -99,8 +105,10 @@ class GameFormTests {
                 onShowErrorPopupChanged = {b: Boolean -> inputInvalid.value = b},
                 setCurrentListEntryMinutes = {},
                 storeListEntry = {},
-                getListEntry = entry,
-                onGameFormOpenChanged = {}
+                getListEntry = { entry },
+                onGameFormOpenChanged = {},
+                getEditOrAddGames = {""},
+                incrementTotalGamesCount = {}
             )
         }
 
@@ -123,8 +131,10 @@ class GameFormTests {
                 onShowErrorPopupChanged = {b: Boolean -> inputInvalid.value = b},
                 setCurrentListEntryMinutes = {},
                 storeListEntry = {},
-                getListEntry = entry,
-                onGameFormOpenChanged = {b: Boolean -> gameFormOpened.value = b}
+                getListEntry = { entry },
+                onGameFormOpenChanged = {b: Boolean -> gameFormOpened.value = b},
+                getEditOrAddGames = {""},
+                incrementTotalGamesCount = {}
             )
         }
 
