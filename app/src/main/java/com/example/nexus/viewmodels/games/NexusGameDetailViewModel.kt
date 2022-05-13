@@ -19,10 +19,12 @@ import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.ui.routes.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import proto.AgeRatingCategoryEnum
 import proto.AgeRatingRatingEnum
 import proto.Game
@@ -64,7 +66,8 @@ class NexusGameDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try{
                 isRefreshing.value = true
-                repo.getGameById(gameId)
+//                repo.getGameById(gameId)
+                fetchGame()
                 isRefreshing.value = false
                 if(isAdult()){
                     onAgeVerifOpenChange(true)
@@ -73,6 +76,10 @@ class NexusGameDetailViewModel @Inject constructor(
 
             }
         }
+    }
+
+    suspend fun fetchGame() = withContext(Dispatchers.Default){
+        repo.getGameById(gameId)
     }
 
     fun isRefreshing(): Boolean{

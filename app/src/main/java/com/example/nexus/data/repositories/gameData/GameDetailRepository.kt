@@ -16,11 +16,14 @@ import javax.inject.Singleton
 class GameDetailRepository @Inject constructor() {
     var gameList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList())}
 
+
+
+
     init {
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
     }
 
-    suspend fun getGameById(gameId : Long) = withContext(Dispatchers.Default){
+    fun getGameById(gameId : Long){
         val apicalypse = APICalypse().fields("platforms.abbreviation,cover.image_id," +
                 "screenshots.image_id,screenshots.width,screenshots.height," +
                 "websites.url,websites.category," +
@@ -34,11 +37,17 @@ class GameDetailRepository @Inject constructor() {
                 "name,rating,rating_count,summary,storyline").where("id = $gameId")
 
         try{
-            val gameRes: List<Game> = IGDBWrapper.games(apicalypse)
+            val gameRes: List<Game> = fetchGames(apicalypse)
             gameList.value.value = gameRes
         } catch(e: RequestException) {
             print("NEXUS API FETCH ERROR:")
             println(e.result)
         }
+    }
+
+    //for testing
+    private var fetchGames : (APICalypse) -> List<Game> = { a : APICalypse -> IGDBWrapper.games(a)}
+    fun setFetchGames(f : (APICalypse) -> List<Game>){
+        fetchGames = f
     }
 }
