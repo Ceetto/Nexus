@@ -13,10 +13,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.nexus.data.dataClasses.Notification
 
 @Composable
 fun ReleaseNotificationItem(type: String, detail: String) {
-    Row( // 1
+    Row(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth(),
