@@ -20,6 +20,7 @@ import proto.Game
 //@ExperimentalComposeUiApi
 @Composable
 fun SearchBarComponent(
+    placeholder: String,
     onSearch: () -> Unit?,
     getSearchTerm: String,
     setSearchTerm: (String) -> Unit,
@@ -41,7 +42,7 @@ fun SearchBarComponent(
         modifier = Modifier
             .fillMaxWidth()
         ,
-        placeholder = { Text("search games") },
+        placeholder = { Text(placeholder) },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done

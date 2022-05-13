@@ -1,5 +1,6 @@
 package com.example.nexus.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.FriendRequest
@@ -17,11 +18,13 @@ class NexusNotificationsViewModel @Inject constructor(
     private val notificationRepo: NotificationsRepository,
 ) : ViewModel(){
 
-    fun getReleaseNotifcations(): StateFlow<List<ReleaseNotification>> {
-        return notificationRepo.getReleaseNotifcations().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    fun getReleaseNotifications(): StateFlow<List<ReleaseNotification>> {
+        return notificationRepo.getReleaseNotifications().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     fun getFriendRequests(): StateFlow<List<FriendRequest>> {
         return notificationRepo.getFriendRequests().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
+
+    fun storeReleaseNotification(releaseNotification: ReleaseNotification) = notificationRepo.storeReleaseNotification(releaseNotification)
 }

@@ -36,7 +36,7 @@ fun RegisterButton(
         .height(40.dp)
         .width(225.dp)
         , shape = RoundedCornerShape(50)
-        , colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xff84b2b7))
+        , colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xffa5dee5))
         , border = BorderStroke(1.dp, Color(0xff84b2b7))
     )
 }

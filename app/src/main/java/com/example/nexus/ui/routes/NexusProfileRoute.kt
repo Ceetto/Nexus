@@ -64,16 +64,28 @@ fun InitProfile(vM: NexusProfileViewModel,
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(vM: NexusProfileViewModel, onOpenGameDetails: (gameId: Long) -> Unit){
+    val background = vM.getUser().profileBackground
     Scaffold( ) {
         Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Column(
-                //TODO dit veranderen voor profile background uit user data
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(RectangleShape)
-                    .background(Color.Red)
+            Column(modifier = Modifier.fillMaxWidth().height(200.dp)
+
             ) {
+                if (background != "") {
+                    Image(
+                        painter = rememberAsyncImagePainter(background),
+                        contentDescription = "profile-background",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.height(200.dp).fillMaxWidth()
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .clip(RectangleShape)
+                            .background(Color.LightGray)
+                    )
+                }
             }
             ProfilePicture(vM, onOpenGameDetails)
 
@@ -91,17 +103,14 @@ fun ProfileStats(vM: NexusProfileViewModel) {
     val planned by vM.getCategoryByName(ListCategory.PLANNED.value).collectAsState()
     var minutes = 0.0
     var tempScore = 0;
-    println(total.size)
     total.forEach {minutes += it.minutesPlayed.toDouble()}
 
     val totalWithScore : List<ListEntry> = total.filter { it.score != 0 }
     totalWithScore.forEach {tempScore += it.score}
 
-    println(tempScore)
-    println(totalWithScore.size)
-    var meanScore : Double = 0.0;
+    var meanScore = 0.0;
     if (totalWithScore.isNotEmpty()) {
-        meanScore = ((tempScore / totalWithScore.size) * 10.0).roundToLong() / 10.0
+        meanScore = ((tempScore.toDouble() / totalWithScore.size) * 100.0).roundToLong() / 100.0
     }
 
     val hours : Double = ((minutes / 60) * 10.0).roundToLong() /10.0
@@ -238,19 +247,31 @@ fun ProfileStats(vM: NexusProfileViewModel) {
 
 @Composable
 fun ProfilePicture(vM: NexusProfileViewModel, onOpenGameDetails: (gameId: Long) -> Unit){
+    val profilePic = vM.getUser().profilePicture
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 150.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
-        //TODO image halen uit user data
+            if (profilePic != ""){
             Image(
-                painter = rememberAsyncImagePainter(R.drawable.test),
+                painter = rememberAsyncImagePainter(profilePic),
                 contentDescription = "profile_picture",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
             )
+            }else {
+                Image(
+                    painter = rememberAsyncImagePainter(R.mipmap.ic_launcher_round),
+                    contentDescription = "profile_picture",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                )
+
+            }
 
             Text(text = vM.getUsername(), modifier = Modifier.padding(10.dp))
 

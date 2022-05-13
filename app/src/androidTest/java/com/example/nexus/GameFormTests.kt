@@ -37,7 +37,7 @@ class GameFormTests {
         composeTestRule.onNodeWithText("save").performClick()
         composeTestRule.waitForIdle()
 
-        Assert.assertEquals(inputInvalid.value, true)
+        Assert.assertTrue(inputInvalid.value)
     }
 
     @Test
@@ -60,7 +60,7 @@ class GameFormTests {
 
         composeTestRule.onNodeWithText("save").performClick()
         composeTestRule.waitForIdle()
-        Assert.assertEquals(inputInvalid.value, true)
+        Assert.assertTrue(inputInvalid.value)
     }
 
     @Test
@@ -83,7 +83,7 @@ class GameFormTests {
 
         composeTestRule.onNodeWithText("save").performClick()
         composeTestRule.waitForIdle()
-        Assert.assertEquals(inputInvalid.value, true)
+        Assert.assertTrue(inputInvalid.value)
     }
 
     @Test
@@ -106,7 +106,7 @@ class GameFormTests {
 
         composeTestRule.onNodeWithText("save").performClick()
         composeTestRule.waitForIdle()
-        Assert.assertEquals(inputInvalid.value, true)
+        Assert.assertTrue(inputInvalid.value)
     }
 
     @Test
@@ -130,7 +130,7 @@ class GameFormTests {
 
         composeTestRule.onNodeWithText("save").performClick()
         composeTestRule.waitForIdle()
-        Assert.assertEquals(inputInvalid.value, false)
-        Assert.assertEquals(gameFormOpened.value, false)
+        Assert.assertFalse(inputInvalid.value)
+        Assert.assertFalse(gameFormOpened.value)
     }
 }

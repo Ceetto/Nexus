@@ -1,50 +1,54 @@
 package com.example.nexus.data.repositories
 
+import android.net.Uri
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.db.FirebaseUserDao
+import com.example.nexus.data.db.StorageDao
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ProfileRepository @Inject constructor(
-    private val fireBaseUserDao: FirebaseUserDao
+    private val fireBaseUserDao: FirebaseUserDao,
+    private val storageDao : StorageDao
 ) {
     fun getUser(): User {
         return fireBaseUserDao.getUser()
     }
 
-    fun updateUsername(username : String) {
+    fun updateUsername(username: String) {
         fireBaseUserDao.changeUsername(username)
     }
 
-    fun updateEmail(username : String) {
+    fun updateEmail(username: String) {
         //update
     }
 
-    fun addFriend(email : String) {
+    fun addFriend(email: String) {
         //update
     }
 
-    fun removeFriend(email: String){
+    fun removeFriend(email: String) {
 
     }
 
-    fun removeFriendRequest(email : String){
+    fun removeFriendRequest(email: String) {
 
     }
-    fun addFriendRequest(email : String) {
+
+    fun addFriendRequest(email: String) {
         //update
     }
 
-    fun updateProfilePicture(picture : String) {
-        //update
+    fun updateProfilePicture(picture: Uri) {
+        storageDao.addPicture(picture, true)
     }
 
-    fun updateBackground(background : String) {
-        //update
+    fun updateBackground(background: Uri) {
+        storageDao.addPicture(background, false)
     }
 
-    fun updateNotifification(new : Long){
+    fun updateNotifification(new: Long) {
         //update
     }
 
@@ -56,4 +60,11 @@ class ProfileRepository @Inject constructor(
 
     fun getUsername() = fireBaseUserDao.getUser().username
 
+    fun getProfilePicture(): String {
+        return fireBaseUserDao.getProfilePicture()
+    }
+
+    fun getBackground(): String {
+        return fireBaseUserDao.getBackground()
+    }
 }
