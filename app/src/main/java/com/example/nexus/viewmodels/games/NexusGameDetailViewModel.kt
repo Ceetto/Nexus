@@ -278,7 +278,11 @@ class NexusGameDetailViewModel @Inject constructor(
 
         //fills in the current ListEntry in case the game was not found in your list
         if (!prefilledGame.value){
-            setListEntry(ListEntry(game.id, game.name, 0, 0, ListCategory.PLAYING.value,
+            var category = ListCategory.PLAYING.value
+            if(System.currentTimeMillis()/1000 < game.firstReleaseDate.seconds){
+                category = ListCategory.PLANNED.value
+            }
+            setListEntry(ListEntry(game.id, game.name, 0, 0, category,
                 game.cover?.let {
                     imageBuilder(
                         it.imageId,
