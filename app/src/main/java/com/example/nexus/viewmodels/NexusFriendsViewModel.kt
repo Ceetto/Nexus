@@ -6,13 +6,17 @@ import androidx.lifecycle.ViewModel
 import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.FriendsRepository
+import com.example.nexus.data.repositories.NotificationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class NexusFriendsViewModel @Inject constructor(private val repo: FriendsRepository) : ViewModel(){
+class NexusFriendsViewModel @Inject constructor(
+    private val repo: FriendsRepository,
+    private val notifRepo: NotificationsRepository
+    ) : ViewModel(){
 
     private val searchTerm = repo.searchTerm //current search term in balk
     private val searching = repo.searching.value //kunt ge gebruiken om een loading circelte te tonen
@@ -25,8 +29,11 @@ class NexusFriendsViewModel @Inject constructor(private val repo: FriendsReposit
         return repo.getFriends()
     }
 
-    fun storeFriend(f: String) = repo.storeFriend(f)
+    fun sendFriendRequest(f: Friend){
+        notifRepo.sendFriendRequest(f)
+    }
 
+    fun storeFriend(f: String) = repo.storeFriend(f)
 
     fun isSearching(): Boolean{
         return searching.value

@@ -215,7 +215,7 @@ fun searchUserItem(user: Friend, vM: NexusFriendsViewModel){
                 .weight(1f)
                 .fillMaxHeight()) // height and background only for demonstration
 
-        IconButton(onClick = { TODO() }) {
+        IconButton(onClick = {vM.sendFriendRequest(user)}) {
             Icon(Icons.Rounded.Add, "add friend", Modifier.size(25.dp))
         }
     }

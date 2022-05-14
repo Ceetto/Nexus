@@ -2,6 +2,7 @@ package com.example.nexus.data.db
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.Notification
 import com.example.nexus.data.dataClasses.NotificationType
 import com.example.nexus.data.dataClasses.getUserId
@@ -13,6 +14,7 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import java.lang.System.currentTimeMillis
 import javax.inject.Inject
 
 class FirebaseNotificationDao @Inject constructor(
@@ -85,6 +87,20 @@ class FirebaseNotificationDao @Inject constructor(
         } else {
             notificationRef.value.child(notif.gameId.toString()).removeValue()
         }
+    }
+
+    fun sendFriendRequest(friend: Friend){
+        val friendRef = database.getReference("user/${friend.userId}/notifications")
+        val notif = Notification(friend.userId,
+            0,
+            0,
+            currentTimeMillis(),
+            false,friend.profilePicture,
+            "",
+        friend.username,
+        "",
+        NotificationType.FRIEND_REQUEST.value)
+        friendRef.child(notif.userId).setValue(notif)
     }
 
     fun countNewNotifications(): Int {

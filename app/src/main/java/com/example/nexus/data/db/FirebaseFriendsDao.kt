@@ -123,7 +123,11 @@ class FirebaseFriendsDao @Inject constructor(
 
     fun storeFriend(id: String){
         friendsRef.value.child(id).setValue(id)
-        friendsRef.value.child(id).removeValue()
+    }
+    
+    fun storeYourself(id:String){
+        val otherRef = database.getReference("user/$id/friends")
+        otherRef.child(getUserId(auth.currentUser)).setValue(getUserId(auth.currentUser))
     }
 
     fun removeFriend(f: Friend) {

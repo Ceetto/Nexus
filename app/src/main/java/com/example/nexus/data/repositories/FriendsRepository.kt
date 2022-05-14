@@ -43,6 +43,10 @@ class FriendsRepository @Inject constructor(
         return firebaseFriendsDao.getSearchResult()
     }
 
+    fun storeYourself(id:String){
+        firebaseFriendsDao.storeYourself(id)
+    }
+
     fun eventTrigger(){
         firebaseFriendsDao.doneFetching.value = false
         firebaseFriendsDao.eventTrigger()
