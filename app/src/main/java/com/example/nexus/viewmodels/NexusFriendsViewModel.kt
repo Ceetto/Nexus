@@ -4,12 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.nexus.data.dataClasses.Friend
-import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.FriendsRepository
 import com.example.nexus.data.repositories.NotificationsRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
@@ -77,7 +75,7 @@ class NexusFriendsViewModel @Inject constructor(
     }
 
     fun setUserid(id: String){
-        profileRepo.setUserid(id)
+        profileRepo.setFriendId(id)
     }
     fun emptyList() = repo.emptyList()
 }

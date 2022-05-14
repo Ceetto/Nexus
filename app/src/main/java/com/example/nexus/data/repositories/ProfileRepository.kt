@@ -49,7 +49,7 @@ class ProfileRepository @Inject constructor(
         return fireBaseUserDao.getBackground()
     }
 
-    fun setUserid(id: String) {
-        fireBaseUserDao.setUserid(id)
+    fun setFriendId(id: String) {
+        fireBaseUserDao.setFriendId(id)
     }
 }

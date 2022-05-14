@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.nexus.ui.routes.*
 import com.example.nexus.ui.routes.NexusListRoute
+import com.example.nexus.ui.routes.profiles.NexusFriendProfileRoute
+import com.example.nexus.ui.routes.profiles.NexusProfileRoute
 import com.example.nexus.ui.routes.search.NexusGameDetailRoute
 import com.example.nexus.ui.routes.search.NexusSearchRoute
 import com.example.nexus.ui.routes.settings.NexusSettingsBackground
@@ -353,7 +355,7 @@ private fun NavGraphBuilder.addFriendProfileScreen(
             navArgument("userId"){type = NavType.StringType}
         )
     ) {
-        InitProfile(vM = hiltViewModel(), navController = navController, onOpenGameDetails = {
+        NexusFriendProfileRoute(vM = hiltViewModel(), navController = navController, onOpenGameDetails = {
                 gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
             }
         )

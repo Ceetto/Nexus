@@ -1,11 +1,12 @@
-package com.example.nexus.ui.routes
+package com.example.nexus.ui.components.profileStats
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,49 +20,15 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
-import coil.compose.rememberAsyncImagePainter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.nexus.R;
+import coil.compose.rememberAsyncImagePainter
+import com.example.nexus.R
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.ui.components.profileStats.ProfileStats
-import com.example.nexus.viewmodels.profile.NexusProfileViewModel
 import kotlinx.coroutines.flow.StateFlow
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun NexusProfileRoute(
-    vM: NexusProfileViewModel,
-    navController: NavHostController,
-    onOpenGameDetails: (gameId: Long) -> Unit
-){
-    vM.setUserid("")
-    ProfileScreen({vM.getUser()},
-        onOpenGameDetails = onOpenGameDetails,
-        navController = navController,
-        getCategoryByName = {s: String -> vM.getCategoryByName(s)},
-        getFavourites = {vM.getFavourites()}
-    )
-}
-
-//@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-//@Composable
-//fun InitProfile(vM: NexusProfileViewModel,
-//                navController: NavHostController,
-//                onOpenGameDetails: (gameId: Long) -> Unit){
-//    val focusManager = LocalFocusManager.current
-//
-//    Scaffold(
-//        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
-//    ) {
-//        ProfileScreen(
-//            vM, onOpenGameDetails
-//        )
-//    }
-//}
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -105,7 +72,6 @@ fun ProfileScreen(
 
 }
 
-
 @Composable
 fun ProfilePicture(
 //    vM: NexusProfileViewModel,
@@ -119,7 +85,7 @@ fun ProfilePicture(
         .fillMaxWidth()
         .padding(top = 150.dp),
         horizontalAlignment = Alignment.CenterHorizontally) {
-            if (profilePic != ""){
+        if (profilePic != ""){
             Image(
                 painter = rememberAsyncImagePainter(profilePic),
                 contentDescription = "profile_picture",
@@ -128,21 +94,21 @@ fun ProfilePicture(
                     .size(100.dp)
                     .clip(CircleShape)
             )
-            } else {
-                Image(
-                    painter = rememberAsyncImagePainter(R.mipmap.ic_launcher_round),
-                    contentDescription = "profile_picture",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape)
-                )
+        } else {
+            Image(
+                painter = rememberAsyncImagePainter(R.mipmap.ic_launcher_round),
+                contentDescription = "profile_picture",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
+            )
 
-            }
+        }
 
-            Text(text = getUser().username, modifier = Modifier.padding(10.dp))
+        Text(text = getUser().username, modifier = Modifier.padding(10.dp))
 
-            ProfileStats(getCategoryByName)
+        ProfileStats(getCategoryByName)
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 25.dp),
@@ -162,12 +128,12 @@ fun FavoriteList(
         Modifier.padding(start = 5.dp, top = 5.dp, bottom = 10.dp)
     ){
         Text("Favourites:", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Row(Modifier.horizontalScroll(rememberScrollState())){
-                favorites.forEach { entry -> Row{
-                    FavoriteListComponent(entry, onOpenGameDetails, LocalFocusManager.current)
-                    }
-                }
+        Row(Modifier.horizontalScroll(rememberScrollState())){
+            favorites.forEach { entry -> Row{
+                FavoriteListComponent(entry, onOpenGameDetails, LocalFocusManager.current)
             }
+            }
+        }
     }
 }
 

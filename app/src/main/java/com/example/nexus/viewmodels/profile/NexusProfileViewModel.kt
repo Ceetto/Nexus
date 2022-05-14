@@ -10,7 +10,6 @@ import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -22,7 +21,7 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
                                                 private val loginRepo: LoginRepository) : ViewModel(){
 
     private val username = mutableStateOf("")
-    val favorites = listRepo.favorites.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    private val favorites = listRepo.favorites.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
         return listRepo.getCategoryByName(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
@@ -68,7 +67,7 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
 
     fun logOut() = loginRepo.signOut()
 
-    fun setUserid(id: String){
-        profileRepo.setUserid(id)
-    }
+//    fun setUserid(id: String){
+//        profileRepo.setFriendId(id)
+//    }
 }
