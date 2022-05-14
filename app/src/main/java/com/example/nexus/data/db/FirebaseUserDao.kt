@@ -57,7 +57,7 @@ class FirebaseUserDao @Inject constructor(
             override fun onDataChange(snapshot: DataSnapshot) {
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
-                if (snapshot.children.count() >= 4 ) {
+                if (snapshot.children.count() >= 4 && snapshot.child("email").value != null ) {
                     newFriend.value.email = snapshot.child("email").value as String
                     newFriend.value.username = snapshot.child("username").value as String
                     newFriend.value.profilePicture = snapshot.child("profilePicture").value as String

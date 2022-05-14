@@ -29,8 +29,8 @@ class NexusFriendsViewModel @Inject constructor(
         return repo.getFriends()
     }
 
-    fun sendFriendRequest(f: Friend){
-        notifRepo.sendFriendRequest(f)
+    fun sendFriendRequest(f: Friend, user: User){
+        notifRepo.sendFriendRequest(f, user)
     }
 
     fun storeFriend(f: String) = repo.storeFriend(f)
@@ -76,6 +76,10 @@ class NexusFriendsViewModel @Inject constructor(
 
     fun setUserid(id: String){
         profileRepo.setFriendId(id)
+    }
+
+    fun getUser():User{
+        return profileRepo.getUser()
     }
     fun emptyList() = repo.emptyList()
 }
