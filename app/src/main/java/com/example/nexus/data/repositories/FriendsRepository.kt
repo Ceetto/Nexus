@@ -32,5 +32,27 @@ class FriendsRepository @Inject constructor(
 
     fun setSearchTerm(term: String){
         this.searchTerm.value = term
+        firebaseFriendsDao.searchTerm.value = term
+    }
+
+    fun removeFriend(f: Friend) {
+        firebaseFriendsDao.removeFriend(f)
+    }
+
+    fun getUserMatches() : StateFlow<List<Friend>> {
+        return firebaseFriendsDao.getSearchResult()
+    }
+
+    fun eventTrigger(){
+        firebaseFriendsDao.doneFetching.value = false
+        firebaseFriendsDao.eventTrigger()
+    }
+
+    fun doneFetching() : MutableState<Boolean> {
+        return firebaseFriendsDao.doneFetching
+    }
+
+    fun emptyList() {
+        firebaseFriendsDao.emptyList()
     }
 }

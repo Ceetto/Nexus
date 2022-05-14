@@ -31,11 +31,15 @@ class FirebaseUserDao @Inject constructor(
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
             if (snapshot.children.count() >= 4 && getUserId(auth.currentUser) != "" && snapshot.child("email").value != null) {
+                println("in de if statement")
                 newUser.value.email = snapshot.child("email").value as String
                 newUser.value.username = snapshot.child("username").value as String
                 newUser.value.profilePicture = snapshot.child("profilePicture").value as String
                 newUser.value.profileBackground = snapshot.child("profileBackground").value as String
             }
+            println("current user id = ${getUserId(auth.currentUser)}")
+            println("newuser emial = " + newUser.value.email)
+            println("newuser username = " + newUser.value.username)
 
         }
 

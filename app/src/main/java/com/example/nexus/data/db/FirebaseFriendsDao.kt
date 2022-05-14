@@ -19,11 +19,16 @@ class FirebaseFriendsDao @Inject constructor(
 ){
     private val friendsRef = mutableStateOf(database.getReference("user/${getUserId(auth.currentUser)}/friends"))
 
+    private val allMatchesRef  = mutableStateOf(database.getReference("user"))
+
+    private val allMatches = MutableStateFlow(ArrayList<Friend>())
+
     private val friends = MutableStateFlow(emptyList<String>())
 
     private val friendsData = MutableStateFlow(ArrayList<Friend>())
 
     private var friendsReferences = ArrayList<DatabaseReference>()
+
 
     private val eventListener =
         object: ValueEventListener {
@@ -56,8 +61,6 @@ class FirebaseFriendsDao @Inject constructor(
 //                 This method is called once with the initial value and again
 //                 whenever data at this location is updated.
                 val newFriend = Friend("", "", "", "")
-                println("---------------------------- KEY ---------------------")
-                println(snapshot.key.toString())
                 newFriend.userId = snapshot.key.toString()
                 newFriend.username = snapshot.child("username").value as String
                 newFriend.profilePicture = snapshot.child("profilePicture").value as String
@@ -69,11 +72,42 @@ class FirebaseFriendsDao @Inject constructor(
             }
         }
 
+
+    private val allUserEventListener =
+        object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                allMatches.value = ArrayList()
+
+                for (child in snapshot.children){
+                    val newUser = Friend("", "", "", "")
+
+                    println("search term = " + searchTerm.value)
+                    println("child key = " + child.key.toString())
+
+                    if (Regex(".*${searchTerm.value.lowercase()}.*").matches(child.child("username").value.toString().lowercase())  && searchTerm.value != "") {
+                        newUser.userId = child.key.toString()
+                        newUser.username = child.child("username").value as String
+                        newUser.profilePicture = child.child("profilePicture").value as String
+                        newUser.profileBackground = child.child("profileBackground").value as String
+                        println("picture = " + newUser.profilePicture)
+                        allMatches.value.add(newUser)
+                    }
+                }
+                doneFetching.value = true
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        }
+
     private val realtimeFriends = mutableStateOf(friendsRef.value.addValueEventListener(eventListener))
+    var doneFetching = mutableStateOf(false)
+    var searchTerm = mutableStateOf("")
 
     fun updateUser(){
         friendsRef.value = database.getReference("user/${getUserId(auth.currentUser)}/friends")
         realtimeFriends.value = friendsRef.value.addValueEventListener(eventListener)
+        allMatchesRef.value.addValueEventListener(allUserEventListener)
     }
 
     private val TAG = "UserRepository"
@@ -89,7 +123,23 @@ class FirebaseFriendsDao @Inject constructor(
 
     fun storeFriend(id: String){
         friendsRef.value.child(id).setValue(id)
+        friendsRef.value.child(id).removeValue()
     }
 
+    fun removeFriend(f: Friend) {
+        friendsRef.value.child(f.userId).removeValue()
+    }
+
+    fun eventTrigger(){
+        allMatchesRef.value.addValueEventListener(allUserEventListener)
+    }
+
+    fun getSearchResult() : StateFlow<List<Friend>> {
+        return allMatches
+    }
+
+    fun emptyList() {
+        allMatches.value = ArrayList()
+    }
 
 }
