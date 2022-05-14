@@ -28,8 +28,6 @@ class NexusFriendsViewModel @Inject constructor(private val repo: FriendsReposit
     fun storeFriend(f: String) = repo.storeFriend(f)
 
 
-
-    //search bar stuff
     fun isSearching(): Boolean{
         return searching.value
     }
@@ -52,4 +50,22 @@ class NexusFriendsViewModel @Inject constructor(private val repo: FriendsReposit
 
 
     fun setSearchTerm(term: String) = repo.setSearchTerm(term)
+
+    fun removeFriend(f: Friend) {
+        repo.removeFriend(f)
+    }
+
+    fun getSearchResults() : StateFlow<List<Friend>> {
+        return repo.getUserMatches()
+    }
+
+    fun searchEvent(){
+        repo.eventTrigger()
+    }
+
+    fun doneFetching() : MutableState<Boolean> {
+        return repo.doneFetching()
+    }
+
+    fun emptyList() = repo.emptyList()
 }
