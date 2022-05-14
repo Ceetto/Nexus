@@ -208,7 +208,8 @@ fun searchUserItem(
                 .weight(1f)
                 .fillMaxHeight()) // height and background only for demonstration
 
-        IconButton(onClick = {vM.sendFriendRequest(user)}) {
+
+        IconButton(onClick = {vM.sendFriendRequest(user, vM.getUser())}) {
             Icon(Icons.Rounded.Add, "add friend", Modifier.size(25.dp))
         }
     }

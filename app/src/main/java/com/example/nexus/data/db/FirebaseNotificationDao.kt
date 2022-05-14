@@ -2,10 +2,7 @@ package com.example.nexus.data.db
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import com.example.nexus.data.dataClasses.Friend
-import com.example.nexus.data.dataClasses.Notification
-import com.example.nexus.data.dataClasses.NotificationType
-import com.example.nexus.data.dataClasses.getUserId
+import com.example.nexus.data.dataClasses.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -89,20 +86,22 @@ class FirebaseNotificationDao @Inject constructor(
         }
     }
 
-    fun sendFriendRequest(friend: Friend){
+    fun sendFriendRequest(friend: Friend, user: User){
         val friendRef = database.getReference("user/${friend.userId}/notifications")
-        val notif = Notification(friend.userId,
+        val notif = Notification(
+            getUserId(auth.currentUser),
             0,
             0,
             currentTimeMillis(),
-            false,friend.profilePicture,
+            false,
+            user.profilePicture,
             "",
-        friend.username,
-        "",
-        NotificationType.FRIEND_REQUEST.value)
+            user.username,
+            "",
+            NotificationType.FRIEND_REQUEST.value
+        )
         friendRef.child(notif.userId).setValue(notif)
     }
-
     fun countNewNotifications(): Int {
         return countNewNotifications.value
     }
