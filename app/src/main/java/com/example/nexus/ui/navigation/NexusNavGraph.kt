@@ -41,7 +41,7 @@ sealed class LeafScreen(
         }
     }
 
-    object FriendScreen : LeafScreen("profile/{userid}"){
+    object FriendScreen : LeafScreen("profile/{userId}"){
         fun createRoute(root: Screen, userId: String) : String {
             return "${root.route}/profile/$userId"
         }
@@ -371,7 +371,6 @@ private fun NavGraphBuilder.addFriendsScreen(
     ){
         NexusFriendsRoute(vM = hiltViewModel(), navController, onFriendProfile = {
                 userId -> navController.navigate(LeafScreen.FriendScreen.createRoute(root, userId))
-                println("CALLED FUNCTION SOMEHOW IDFK")
         }
         )
     }

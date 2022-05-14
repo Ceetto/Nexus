@@ -52,7 +52,6 @@ fun NexusFriendsRoute(
                 .fillMaxHeight()
                 .border(1.dp, Color.Red)) {
             val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
-
             SearchBarComponent(
                 placeholder = "Add New Friends",
                 onSearch = {
@@ -129,7 +128,10 @@ fun FriendItem(friend : Friend, vM: NexusFriendsViewModel, onFriendProfile: (use
                 .fillMaxWidth()
                 .padding(10.dp)
                 .border(1.dp, Color.Green)
-                .clickable { vM.setUserid(friend.userId); onFriendProfile(friend.userId)  },
+                .clickable {
+                    vM.setUserid(friend.userId);
+                    onFriendProfile(friend.userId)
+                           },
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (friend.profilePicture != "") {
