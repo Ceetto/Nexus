@@ -43,8 +43,6 @@ class NexusNotificationsViewModel @Inject constructor(
 
     fun storeYourself(id: String) = friendsRepo.storeYourself(id)
 
-    fun storeNewNotification(n: Notification) = notificationRepo.storeNotification(n)
-
     fun removeNotification(n: Notification) = notificationRepo.removeNotification(n)
 
     fun readNotifications(entries: List<Notification>) {

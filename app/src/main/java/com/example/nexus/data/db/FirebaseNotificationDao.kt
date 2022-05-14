@@ -91,15 +91,18 @@ class FirebaseNotificationDao @Inject constructor(
 
     fun sendFriendRequest(friend: Friend){
         val friendRef = database.getReference("user/${friend.userId}/notifications")
-        val notif = Notification(friend.userId,
+        val notif = Notification(
+            getUserId(auth.currentUser),
             0,
             0,
             currentTimeMillis(),
-            false,friend.profilePicture,
+            false,
+            friend.profilePicture,
             "",
-        friend.username,
-        "",
-        NotificationType.FRIEND_REQUEST.value)
+            friend.username,
+            "",
+            NotificationType.FRIEND_REQUEST.value
+        )
         friendRef.child(notif.userId).setValue(notif)
     }
 
