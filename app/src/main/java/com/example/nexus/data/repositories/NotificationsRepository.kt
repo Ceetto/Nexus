@@ -4,6 +4,7 @@ package com.example.nexus.data.repositories
 import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.Notification
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.db.FirebaseNotificationDao
 import javax.inject.Inject
@@ -30,8 +31,8 @@ class NotificationsRepository @Inject constructor(
 
     fun countNewNotifications() = notificationDao.countNewNotifications()
 
-    fun sendFriendRequest(f: Friend){
-        notificationDao.sendFriendRequest(f)
+    fun sendFriendRequest(f: Friend, user: User){
+        notificationDao.sendFriendRequest(f, user)
     }
 
     fun updateUser(){

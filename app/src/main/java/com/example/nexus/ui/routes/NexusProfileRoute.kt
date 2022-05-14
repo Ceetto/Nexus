@@ -28,6 +28,7 @@ import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.example.nexus.R;
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.dataClasses.getUserId
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.profileStats.ProfileStats
 import com.example.nexus.ui.theme.Playing
@@ -44,6 +45,7 @@ fun NexusProfileRoute(
     navController: NavHostController,
     onOpenGameDetails: (gameId: Long) -> Unit
 ){
+    vM.setUserid("")
    InitProfile(vM = vM, navController = navController, onOpenGameDetails = onOpenGameDetails)
 }
 
@@ -53,6 +55,8 @@ fun InitProfile(vM: NexusProfileViewModel,
                     navController: NavHostController,
                     onOpenGameDetails: (gameId: Long) -> Unit){
     val focusManager = LocalFocusManager.current
+    println("////////////////////////////////////////////profile route")
+
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {

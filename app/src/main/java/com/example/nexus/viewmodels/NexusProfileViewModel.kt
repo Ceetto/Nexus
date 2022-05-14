@@ -64,5 +64,7 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
 
     fun logOut() = loginRepo.signOut()
 
-
+    fun setUserid(id: String){
+        profileRepo.setUserid(id)
+    }
 }

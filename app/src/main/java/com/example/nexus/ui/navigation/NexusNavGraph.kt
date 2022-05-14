@@ -41,6 +41,11 @@ sealed class LeafScreen(
         }
     }
 
+    object FriendScreen : LeafScreen("profile/{userId}"){
+        fun createRoute(root: Screen, userId: String) : String {
+            return "${root.route}/profile/$userId"
+        }
+    }
 
 //    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
 //        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
@@ -62,6 +67,7 @@ sealed class LeafScreen(
     object Search : LeafScreen("search")
     object Home : LeafScreen("home")
     object List : LeafScreen("list")
+    object Friends : LeafScreen("friends")
 }
 
 @ExperimentalComposeUiApi
@@ -80,11 +86,12 @@ fun NexusNavGraph(
         addLoginScreenTopLevel(navController)
         addNotificationsTopLevel(navController)
         addListScreenTopLevel(navController)
-        addFriendsScreen(navController)
+        addFriendsScreenTopLevel(navController)
         addProfileScreenTopLevel(navController)
         addSearchScreenTopLevel(navController)
         addSettingsScreenTopLevel(navController)
         addHomeScreenTopLevel(navController)
+
     }
 }
 
@@ -322,14 +329,50 @@ private fun NavGraphBuilder.addListScreen(
     }
 }
 
+
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addFriendsScreenTopLevel(
+    navController: NavHostController
+){
+    navigation(
+        route = Screen.Friends.route,
+        startDestination = LeafScreen.Friends.createRoute(Screen.Friends)
+    ) {
+        addFriendsScreen(navController, Screen.Friends)
+        addFriendProfileScreen(navController, Screen.Friends)
+    }
+}
+@ExperimentalComposeUiApi
+private fun NavGraphBuilder.addFriendProfileScreen(
+    navController: NavHostController,
+    root: Screen
+) {
+    composable(
+        route = LeafScreen.FriendScreen.createRoute(root),
+        arguments = listOf(
+            navArgument("userId"){type = NavType.StringType}
+        )
+    ) {
+        InitProfile(vM = hiltViewModel(), navController = navController, onOpenGameDetails = {
+                gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+            }
+        )
+    }
+}
+
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addFriendsScreen(
     navController: NavHostController,
+    root: Screen
 ){
+
     composable(
-        route = Screen.Friends.route,
+        route = LeafScreen.Friends.createRoute(root),
     ){
-        NexusFriendsRoute(vM = hiltViewModel(), navController)
+        NexusFriendsRoute(vM = hiltViewModel(), navController, onFriendProfile = {
+                userId -> navController.navigate(LeafScreen.FriendScreen.createRoute(root, userId))
+        }
+        )
     }
 }
 

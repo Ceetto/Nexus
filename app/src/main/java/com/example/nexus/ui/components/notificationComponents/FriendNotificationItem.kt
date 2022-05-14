@@ -35,14 +35,25 @@ fun FriendNotificationItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(modifier = Modifier.padding(8.dp)) {
-            Image(
-                painter = rememberAsyncImagePainter(notification.pfp),
-                contentDescription = "profile_picture",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-            )
+            if (notification.pfp == "") {
+                Image(
+                    painter = rememberAsyncImagePainter(R.mipmap.ic_launcher_round),
+                    contentDescription = "profile_picture",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                )
+            } else {
+                Image(
+                    painter = rememberAsyncImagePainter(notification.pfp),
+                    contentDescription = "profile_picture",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                )
+            }
         }
         Column(modifier = Modifier.fillMaxWidth(0.9f)) {
             Text(
