@@ -8,14 +8,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -25,20 +22,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import coil.transform.CircleCropTransformation
 import com.example.nexus.R
 import com.example.nexus.data.dataClasses.Friend
-import com.example.nexus.data.dataClasses.getUserId
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.SearchBarComponent
 import com.example.nexus.viewmodels.NexusFriendsViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
 @ExperimentalComposeUiApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
@@ -51,8 +42,6 @@ fun NexusFriendsRoute(
     val friendsData by vM.getFriendsData().collectAsState()
     val friends by vM.getFriends().collectAsState()
     val focusManager = LocalFocusManager.current
-
-    println("======================================================== friend route")
 
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
@@ -93,7 +82,7 @@ fun NexusFriendsRoute(
                     items(friends) { friend ->
                         for (f in friendsData) {
                             if (f.userId == friend) {
-                                FriendItem(friend = f, vM)
+                                FriendItem(friend = f, vM, onFriendProfile)
                                 break
                             }
                         }
@@ -117,12 +106,7 @@ fun NexusFriendsRoute(
                                 .border(1.dp, Color.Blue)
                         ) {
                             items(matches) { user ->
-                                println("user id = " + user.userId)
-                                println("username = " + user.username)
-                                println("user profile = " + user.profilePicture)
-                                println("user background = " + user.profileBackground)
-
-                                searchUserItem(user, vM)
+                                searchUserItem(user, vM, onFriendProfile)
                             }
                         }
                     } else {
@@ -138,14 +122,14 @@ fun NexusFriendsRoute(
 }
 
 @Composable
-fun FriendItem(friend : Friend, vM: NexusFriendsViewModel) {
+fun FriendItem(friend : Friend, vM: NexusFriendsViewModel, onFriendProfile: (userId: String) -> Unit) {
         Row(
             modifier = Modifier
                 .height(100.dp)
                 .fillMaxWidth()
                 .padding(10.dp)
                 .border(1.dp, Color.Green)
-                .clickable { vM.setUserid(friend.userId);  },
+                .clickable { vM.setUserid(friend.userId); onFriendProfile(friend.userId)  },
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (friend.profilePicture != "") {
@@ -182,13 +166,17 @@ fun FriendItem(friend : Friend, vM: NexusFriendsViewModel) {
 }
 
 @Composable
-fun searchUserItem(user: Friend, vM: NexusFriendsViewModel){
+fun searchUserItem(
+    user: Friend,
+    vM: NexusFriendsViewModel,
+    onFriendProfile: (userId: String) -> Unit
+){
     Row(
         modifier = Modifier
             .height(100.dp)
             .fillMaxWidth()
             .padding(10.dp)
-            .border(1.dp, Color.Green),
+            .border(1.dp, Color.Green).clickable{vM.setUserid(user.userId); onFriendProfile(user.userId)},
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (user.profilePicture != "") {
