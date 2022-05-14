@@ -19,16 +19,20 @@ import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Dropped
 import com.example.nexus.ui.theme.Planned
 import com.example.nexus.ui.theme.Playing
-import com.example.nexus.viewmodels.NexusProfileViewModel
+import com.example.nexus.viewmodels.profile.NexusProfileViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.roundToLong
 
 @Composable
-fun ProfileStats(vM: NexusProfileViewModel) {
-    val total by vM.getCategoryByName(ListCategory.ALL.value).collectAsState();
-    val playing by vM.getCategoryByName(ListCategory.PLAYING.value).collectAsState();
-    val completed by vM.getCategoryByName(ListCategory.COMPLETED.value).collectAsState()
-    val dropped by vM.getCategoryByName(ListCategory.DROPPED.value).collectAsState()
-    val planned by vM.getCategoryByName(ListCategory.PLANNED.value).collectAsState()
+fun ProfileStats(
+//    vM: NexusProfileViewModel,
+    getCategoryByName : (String) -> StateFlow<List<ListEntry>>
+) {
+    val total by getCategoryByName(ListCategory.ALL.value).collectAsState();
+    val playing by getCategoryByName(ListCategory.PLAYING.value).collectAsState();
+    val completed by getCategoryByName(ListCategory.COMPLETED.value).collectAsState()
+    val dropped by getCategoryByName(ListCategory.DROPPED.value).collectAsState()
+    val planned by getCategoryByName(ListCategory.PLANNED.value).collectAsState()
     var minutes = 0.0
     var tempScore = 0;
     total.forEach {minutes += it.minutesPlayed.toDouble()}
