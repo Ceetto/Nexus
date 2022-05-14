@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.*
 import com.example.nexus.data.db.FirebaseListDao
+import com.example.nexus.data.repositories.FriendsRepository
 import com.example.nexus.data.repositories.NotificationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NexusNotificationsViewModel @Inject constructor(
     private val notificationRepo: NotificationsRepository,
-    private val firebaseListDao: FirebaseListDao
+    private val firebaseListDao: FirebaseListDao,
+    private val friendsRepo: FriendsRepository
 ) : ViewModel(){
     private val releaseGames = notificationRepo.filterGames().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
@@ -36,6 +38,10 @@ class NexusNotificationsViewModel @Inject constructor(
                     entry.coverUrl, entry.favorited, entry.releaseDate, true))
         }
     }
+
+    fun storeFriend(id: String) = friendsRepo.storeFriend(id)
+
+    fun storeYourself(id: String) = friendsRepo.storeYourself(id)
 
     fun storeNewNotification(n: Notification) = notificationRepo.storeNotification(n)
 

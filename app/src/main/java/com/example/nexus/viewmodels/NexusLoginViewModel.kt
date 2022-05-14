@@ -20,7 +20,7 @@ class NexusLoginViewModel  @Inject constructor(
     private var isUsernameValidTest = mutableStateOf(true)
     private val isPasswordValid = mutableStateOf(repo.getPassword().length > 7)
     private val isEmailValid = mutableStateOf(Patterns.EMAIL_ADDRESS.matcher(repo.getEmail()).matches())
-    private val isUsernameValid = mutableStateOf(repo.getUsername().length > 4)
+    private val isUsernameValid = mutableStateOf(repo.getUsername().length > 1)
 
     fun getIsPasswordValid(): Boolean {
         return isPasswordValid.value

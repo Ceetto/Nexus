@@ -22,7 +22,12 @@ import com.example.nexus.R
 import com.example.nexus.data.dataClasses.Notification
 
 @Composable
-fun FriendNotificationItem(notification: Notification) {
+fun FriendNotificationItem(
+    notification: Notification,
+    storeFriend: (id: String) -> Unit,
+    storeYourself: (id: String) -> Unit,
+    removeNotification: (n: Notification) -> Unit
+) {
     Row(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 8.dp)
@@ -46,19 +51,23 @@ fun FriendNotificationItem(notification: Notification) {
                 fontSize = 18.sp,
             )
             Text(
-                text = notification.username + "Has send you a friend request."
+                text = notification.username + " has sent you a friend request."
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                OutlinedButton(onClick = { /*TODO*/ },
+                OutlinedButton(onClick = {
+                    storeFriend(notification.userId)
+                    storeYourself(notification.userId)
+                    removeNotification(notification)
+                                         },
                     content = { Text(text = "Accept") },
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xff2ECC71))
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                OutlinedButton(onClick = { /*TODO*/ },
+                OutlinedButton(onClick = { removeNotification(notification) },
                     content = { Text(text = "Decline") },
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xffED4245))
                 )

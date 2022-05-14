@@ -47,7 +47,12 @@ fun NexusNotificationsRoute(
                         onOpenGameDetails = { e -> onOpenGameDetails(e) }
                     )
                 } else {
-                    FriendNotificationItem(notification)
+                    FriendNotificationItem(
+                        notification,
+                        { e -> vM.storeFriend(e) },
+                        { e -> vM.storeYourself(e) },
+                        { e -> vM.removeNotification(e) }
+                    )
                 }
             }
         }
