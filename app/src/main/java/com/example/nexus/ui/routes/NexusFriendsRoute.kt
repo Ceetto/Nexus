@@ -45,12 +45,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun NexusFriendsRoute(
     vM: NexusFriendsViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    onFriendProfile: (userId: String) -> Unit
 ){
     val friendsData by vM.getFriendsData().collectAsState()
     val friends by vM.getFriends().collectAsState()
     val focusManager = LocalFocusManager.current
 
+    println("======================================================== friend route")
 
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
@@ -142,7 +144,8 @@ fun FriendItem(friend : Friend, vM: NexusFriendsViewModel) {
                 .height(100.dp)
                 .fillMaxWidth()
                 .padding(10.dp)
-                .border(1.dp, Color.Green),
+                .border(1.dp, Color.Green)
+                .clickable { vM.setUserid(friend.userId);  },
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (friend.profilePicture != "") {

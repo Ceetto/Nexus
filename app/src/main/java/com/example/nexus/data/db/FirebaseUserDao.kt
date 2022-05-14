@@ -16,8 +16,11 @@ import javax.inject.Singleton
 class FirebaseUserDao @Inject constructor(
     private val database: FirebaseDatabase,
     private val auth: FirebaseAuth
+
 ){
-    private val userRef = mutableStateOf(database.getReference("user/${getUserId(auth.currentUser)}"))
+    private val userId = mutableStateOf(getUserId(auth.currentUser))
+
+    private val userRef = mutableStateOf(database.getReference("user/${userId.value}"))
 
     private val newUser = mutableStateOf(User("",
         "NewUser",
@@ -52,8 +55,17 @@ class FirebaseUserDao @Inject constructor(
 
     private val realtimeEntries = mutableStateOf(userRef.value.addValueEventListener(eventListener))
 
+    fun setUserid(id: String) {
+        if (id == "") {
+            userId.value = getUserId(auth.currentUser)
+        } else {
+            userId.value = id
+        }
+        updateUser()
+    }
+
     fun updateUser(){
-        userRef.value = database.getReference("user/${getUserId(auth.currentUser)}")
+        userRef.value = database.getReference("user/${userId.value}")
         realtimeEntries.value = userRef.value.addValueEventListener(eventListener)
     }
 

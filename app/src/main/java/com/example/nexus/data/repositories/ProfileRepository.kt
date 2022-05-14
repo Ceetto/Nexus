@@ -67,4 +67,8 @@ class ProfileRepository @Inject constructor(
     fun getBackground(): String {
         return fireBaseUserDao.getBackground()
     }
+
+    fun setUserid(id: String) {
+        fireBaseUserDao.setUserid(id)
+    }
 }
