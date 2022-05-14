@@ -371,6 +371,7 @@ private fun NavGraphBuilder.addFriendsScreen(
     ){
         NexusFriendsRoute(vM = hiltViewModel(), navController, onFriendProfile = {
                 userId -> navController.navigate(LeafScreen.FriendScreen.createRoute(root, userId))
+                println("CALLED FUNCTION SOMEHOW IDFK")
         }
         )
     }
@@ -381,7 +382,7 @@ private fun NavGraphBuilder.addProfileScreenTopLevel(
     navController: NavHostController
 ){
     navigation(
-        route = Screen.Friends.route,
+        route = Screen.Profile.route,
         startDestination = LeafScreen.Profile.createRoute(Screen.Profile)
     ){
         addProfileScreen(navController, Screen.Profile)
