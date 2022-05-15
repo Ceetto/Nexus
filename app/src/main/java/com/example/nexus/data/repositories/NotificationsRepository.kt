@@ -5,7 +5,7 @@ import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.Notification
 import com.example.nexus.data.dataClasses.User
-import com.example.nexus.data.db.FirebaseListDao
+import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.db.FirebaseNotificationDao
 import javax.inject.Inject
 import javax.inject.Singleton

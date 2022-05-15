@@ -1,7 +1,7 @@
 package com.example.nexus
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
-import com.example.nexus.data.db.FirebaseListDao
+import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.ui.routes.ListCategory
 import kotlinx.coroutines.Dispatchers
