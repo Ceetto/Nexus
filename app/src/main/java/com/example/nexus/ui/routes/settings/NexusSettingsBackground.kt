@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.viewmodels.NexusProfileViewModel
+import com.example.nexus.viewmodels.profile.NexusProfileViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

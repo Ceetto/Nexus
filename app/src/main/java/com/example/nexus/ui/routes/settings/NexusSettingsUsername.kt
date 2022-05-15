@@ -17,10 +17,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.viewmodels.NexusProfileViewModel
+import com.example.nexus.viewmodels.profile.NexusProfileViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

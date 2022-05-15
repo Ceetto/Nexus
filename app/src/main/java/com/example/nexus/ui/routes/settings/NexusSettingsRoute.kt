@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
-import com.example.nexus.viewmodels.NexusProfileViewModel
+import com.example.nexus.viewmodels.profile.NexusProfileViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

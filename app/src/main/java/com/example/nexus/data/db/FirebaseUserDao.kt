@@ -78,7 +78,7 @@ class FirebaseUserDao @Inject constructor(
 
     private val realtimeEntries = mutableStateOf(userRef.value.addValueEventListener(eventListener))
 
-    fun setUserid(id: String) {
+    fun setFriendId(id: String) {
         friendId.value = id
         updateFriend()
     }
