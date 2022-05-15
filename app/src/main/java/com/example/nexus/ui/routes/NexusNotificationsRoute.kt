@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import com.example.nexus.data.dataClasses.NotificationType
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.notificationComponents.FriendNotificationItem
+import com.example.nexus.ui.components.notificationComponents.NoNotifications
 import com.example.nexus.ui.components.notificationComponents.ReleaseNotificationItem
 import com.example.nexus.viewmodels.NexusNotificationsViewModel
 
@@ -39,20 +40,24 @@ fun NexusNotificationsRoute(
             .verticalScroll(rememberScrollState())
         ) {
             val notificationList by vM.getNotifications().collectAsState()
-            for (notification in notificationList) {
-                if (notification.notificationType == NotificationType.RELEASE_DATE.value) {
-                    ReleaseNotificationItem(
-                        notification = notification,
-                        removeNotification = { e -> vM.removeNotification(e) },
-                        onOpenGameDetails = { e -> onOpenGameDetails(e) }
-                    )
-                } else {
-                    FriendNotificationItem(
-                        notification,
-                        { e -> vM.storeFriend(e) },
-                        { e -> vM.storeYourself(e) },
-                        { e -> vM.removeNotification(e) }
-                    )
+            if (notificationList.isEmpty()) {
+                NoNotifications()
+            } else {
+                for (notification in notificationList) {
+                    if (notification.notificationType == NotificationType.RELEASE_DATE.value) {
+                        ReleaseNotificationItem(
+                            notification = notification,
+                            removeNotification = { e -> vM.removeNotification(e) },
+                            onOpenGameDetails = { e -> onOpenGameDetails(e) }
+                        )
+                    } else {
+                        FriendNotificationItem(
+                            notification,
+                            { e -> vM.storeFriend(e) },
+                            { e -> vM.storeYourself(e) },
+                            { e -> vM.removeNotification(e) }
+                        )
+                    }
                 }
             }
         }
