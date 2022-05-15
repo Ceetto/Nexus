@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
-import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -46,6 +46,9 @@ class NexusFriendListViewModel @Inject constructor(
         return games
     }
 
-    fun setFriendId(s: String) = repo.setFriendId(s)
+    fun onGetListEvent(){
+        setFriendId()
+    }
+    fun setFriendId() = repo.setFriendId(friendId)
 
 }

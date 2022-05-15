@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.ui.routes.ListCategory
-import com.example.nexus.ui.routes.ListCategoryColors
+import com.example.nexus.ui.routes.lists.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategoryColors
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable

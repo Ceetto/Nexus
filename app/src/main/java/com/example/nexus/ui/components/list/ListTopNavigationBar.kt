@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.nexus.ui.routes.ListCategory
-import com.example.nexus.ui.routes.getAllListCategories
+import com.example.nexus.ui.routes.lists.ListCategory
+import com.example.nexus.ui.routes.lists.getAllListCategories
 import com.example.nexus.ui.theme.NexusBlue
 import com.example.nexus.ui.theme.NexusGray
 

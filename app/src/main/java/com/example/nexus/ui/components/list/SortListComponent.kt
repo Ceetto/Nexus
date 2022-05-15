@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
 import com.example.nexus.data.dataClasses.SortOptionsList
-import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategory
 
 
 @Composable

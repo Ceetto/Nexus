@@ -10,7 +10,8 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.nexus.ui.routes.*
-import com.example.nexus.ui.routes.NexusListRoute
+import com.example.nexus.ui.routes.lists.NexusFriendListRoute
+import com.example.nexus.ui.routes.lists.NexusListRoute
 import com.example.nexus.ui.routes.profiles.NexusFriendProfileRoute
 import com.example.nexus.ui.routes.profiles.NexusProfileRoute
 import com.example.nexus.ui.routes.search.NexusGameDetailRoute
@@ -82,8 +83,7 @@ sealed class LeafScreen(
 
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
-@Composable
-fun NexusNavGraph(
+@Composable fun NexusNavGraph(
     navController: NavHostController,
     startDestination: String = Screen.Home.route,
     modifier: Modifier
@@ -339,7 +339,26 @@ private fun NavGraphBuilder.addListScreen(
     }
 }
 
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addFriendListScreen(
+    navController: NavHostController,
+    root : Screen
+) {
 
+    composable(
+        route = LeafScreen.ListScreen.createRoute(root),
+        arguments = listOf(
+            navArgument("userId"){type = NavType.StringType}
+        )
+    ){
+        NexusFriendListRoute(vM = hiltViewModel(), navController,
+            onOpenGameDetails = {
+                    gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
+            })
+    }
+}
+
+@ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addFriendsScreenTopLevel(
     navController: NavHostController
@@ -350,6 +369,7 @@ private fun NavGraphBuilder.addFriendsScreenTopLevel(
     ) {
         addFriendsScreen(navController, Screen.Friends)
         addFriendProfileScreen(navController, Screen.Friends)
+        addFriendListScreen(navController, Screen.Friends)
     }
 }
 @ExperimentalComposeUiApi
@@ -409,7 +429,7 @@ private fun NavGraphBuilder.addProfileScreen(
     ){
         NexusProfileRoute(vM = hiltViewModel(), navController, onOpenGameDetails = {
                 gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
-        }, onOpenList = {_ -> navController.navigate(LeafScreen.List.createRoute(Screen.List))})
+        }, onOpenList = {_ -> navController.navigate(Screen.List.route)})
     }
 }
 
