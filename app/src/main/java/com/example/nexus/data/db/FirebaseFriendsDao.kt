@@ -38,8 +38,9 @@ class FirebaseFriendsDao @Inject constructor(
 //                 whenever data at this location is updated.
 
             val newFriends = mutableListOf<String>()
+            clearListeners()
             friendsReferences = ArrayList()
-            friendsData.update { ArrayList() }
+            friendsData.value =  ArrayList()
             for(child in snapshot.children){
                 newFriends.add(child.value as String)
                 val ref = database.getReference(("user/${child.value as String}"))
@@ -54,6 +55,13 @@ class FirebaseFriendsDao @Inject constructor(
                 Log.w(TAG, "Failed to read value.", error.toException())
             }
         }
+
+    private fun clearListeners() {
+        for (ref in friendsReferences){
+            ref.removeEventListener(friendEventListener)
+        }
+    }
+
 
     private val friendEventListener =
         object: ValueEventListener {
@@ -81,15 +89,15 @@ class FirebaseFriendsDao @Inject constructor(
                 for (child in snapshot.children){
                     val newUser = Friend("", "", "", "")
 
-                    println("search term = " + searchTerm.value)
-                    println("child key = " + child.key.toString())
-
-                    if (Regex(".*${searchTerm.value.lowercase()}.*").matches(child.child("username").value.toString().lowercase())  && searchTerm.value != "") {
+                    if (Regex(".*${searchTerm.value.lowercase()}.*").matches(child.child("username").value.toString().lowercase())
+                        && searchTerm.value != ""
+                        && child.key.toString() != getUserId(auth.currentUser)
+                        && !friends.value.contains(child.key.toString())
+                        ) {
                         newUser.userId = child.key.toString()
                         newUser.username = child.child("username").value as String
                         newUser.profilePicture = child.child("profilePicture").value as String
                         newUser.profileBackground = child.child("profileBackground").value as String
-                        println("picture = " + newUser.profilePicture)
                         allMatches.value.add(newUser)
                     }
                 }
@@ -131,7 +139,11 @@ class FirebaseFriendsDao @Inject constructor(
     }
 
     fun removeFriend(f: Friend) {
+        //remove friend from list
         friendsRef.value.child(f.userId).removeValue()
+        //remove yourself from other
+        val yourref = database.getReference("user/${f.userId}/friends")
+        yourref.child(getUserId(auth.currentUser)).removeValue()
     }
 
     fun eventTrigger(){

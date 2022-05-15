@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.nexus.data.dataClasses.Friend
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.FriendsRepository
 import com.example.nexus.data.repositories.NotificationsRepository
 import com.example.nexus.data.repositories.ProfileRepository
