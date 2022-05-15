@@ -1,19 +1,12 @@
 package com.example.nexus
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.currentRecomposeScope
-import androidx.compose.runtime.getValue
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
-import com.example.nexus.data.db.FirebaseListDao
+import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.ui.routes.ListCategory
-import com.example.nexus.viewmodels.NexusListViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.test.*
 import org.junit.After
@@ -22,7 +15,6 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
 import org.mockito.kotlin.mock
-import kotlin.coroutines.coroutineContext
 
 class ListRepositoryTests {
 

@@ -1,9 +1,7 @@
 package com.example.nexus
 
 import com.api.igdb.apicalypse.APICalypse
-import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.repositories.HomeRepository
-import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.data.repositories.gameData.SearchRepository
 import kotlinx.coroutines.Dispatchers

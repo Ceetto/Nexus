@@ -9,10 +9,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -50,7 +49,7 @@ fun NexusFriendsRoute(
             Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .border(1.dp, Color.Red)) {
+               ) {
             val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
             SearchBarComponent(
                 placeholder = "Add New Friends",
@@ -76,7 +75,6 @@ fun NexusFriendsRoute(
                     Modifier
                         .fillMaxHeight()
                         .fillMaxWidth()
-                        .border(1.dp, Color.Blue)
                 ) {
                     items(friends) { friend ->
                         for (f in friendsData) {
@@ -88,28 +86,22 @@ fun NexusFriendsRoute(
                     }
                 }
             } else {
-                println("in this if statement")
                 if (!vM.hasSearched()){
-                    println("test")
                 } else {
-                    println("test2")
                     val doneFetching by vM.doneFetching()
                     if (doneFetching) {
-                        println("done fetching")
                         val matches by vM.getSearchResults().collectAsState()
                         println(matches.size)
                         LazyColumn(
                             Modifier
                                 .fillMaxHeight()
                                 .fillMaxWidth()
-                                .border(1.dp, Color.Blue)
                         ) {
                             items(matches) { user ->
                                 searchUserItem(user, vM, onFriendProfile)
                             }
                         }
                     } else {
-                        println("not done fetching")
 
                         CircularProgressIndicator()
                     }
@@ -127,7 +119,6 @@ fun FriendItem(friend : Friend, vM: NexusFriendsViewModel, onFriendProfile: (use
                 .height(100.dp)
                 .fillMaxWidth()
                 .padding(10.dp)
-                .border(1.dp, Color.Green)
                 .clickable {
                     vM.setUserid(friend.userId);
                     onFriendProfile(friend.userId)
@@ -159,7 +150,7 @@ fun FriendItem(friend : Friend, vM: NexusFriendsViewModel, onFriendProfile: (use
             Spacer(
                 Modifier
                     .weight(1f)
-                    .fillMaxHeight()) // height and background only for demonstration
+                    .fillMaxHeight())
 
             IconButton(onClick = { vM.removeFriend(friend) }) {
                 Icon(Icons.Rounded.Close, "removeFriend", Modifier.size(25.dp))
@@ -178,7 +169,10 @@ fun searchUserItem(
             .height(100.dp)
             .fillMaxWidth()
             .padding(10.dp)
-            .border(1.dp, Color.Green).clickable{vM.setUserid(user.userId); onFriendProfile(user.userId)},
+            .clickable{
+                vM.setUserid(user.userId);
+                onFriendProfile(user.userId)
+                      },
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (user.profilePicture != "") {
@@ -203,14 +197,16 @@ fun searchUserItem(
 
         Text(text = user.username, Modifier.padding(10.dp))
 
-        Spacer(
-            Modifier
-                .weight(1f)
-                .fillMaxHeight()) // height and background only for demonstration
+        Spacer(Modifier.weight(1f).fillMaxHeight())
 
+        var sent by remember {mutableStateOf(false)}
+        IconButton(onClick = {if (!sent) {vM.sendFriendRequest(user, vM.getUser())}; sent = true}) {
 
-        IconButton(onClick = {vM.sendFriendRequest(user, vM.getUser())}) {
-            Icon(Icons.Rounded.Add, "add friend", Modifier.size(25.dp))
+            if (sent) {
+                Icon(Icons.Rounded.Check, "added friend", Modifier.size(25.dp))
+            } else {
+                Icon(Icons.Rounded.Add, "add friend", Modifier.size(25.dp))
+            }
         }
     }
 

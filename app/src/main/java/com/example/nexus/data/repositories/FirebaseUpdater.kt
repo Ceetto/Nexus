@@ -1,9 +1,9 @@
 package com.example.nexus.data.repositories
 
 import com.example.nexus.data.db.FirebaseFriendsDao
-import com.example.nexus.data.db.FirebaseListDao
 import com.example.nexus.data.db.FirebaseNotificationDao
 import com.example.nexus.data.db.FirebaseUserDao
+import com.example.nexus.data.db.list.FirebaseListDao
 import javax.inject.Inject
 import javax.inject.Singleton
 

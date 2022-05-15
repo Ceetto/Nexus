@@ -1,4 +1,4 @@
-package com.example.nexus.data.db
+package com.example.nexus.data.db.list
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -69,8 +69,6 @@ class FirebaseListDao @Inject constructor(
         listEntryRef.value = database.getReference("user/${getUserId(auth.currentUser)}/list")
         realtimeEntries.value = listEntryRef.value.addValueEventListener(eventListener)
     }
-
-
 
     var doneFetching = mutableStateOf(false)
 

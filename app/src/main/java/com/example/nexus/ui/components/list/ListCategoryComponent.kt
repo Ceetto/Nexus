@@ -26,11 +26,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.ui.routes.ListCategoryColors
-import com.example.nexus.ui.theme.Completed
-import com.example.nexus.ui.theme.Dropped
-import com.example.nexus.ui.theme.Planned
-import com.example.nexus.ui.theme.Playing
-import com.example.nexus.viewmodels.NexusListViewModel
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable

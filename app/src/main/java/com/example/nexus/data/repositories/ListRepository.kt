@@ -1,9 +1,10 @@
 package com.example.nexus.data.repositories
 
 import androidx.compose.runtime.mutableStateOf
-import com.example.nexus.data.db.FirebaseListDao
+import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
+import com.example.nexus.data.db.list.FirebaseFriendListDao
 import com.example.nexus.ui.routes.ListCategory
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -11,8 +12,11 @@ import javax.inject.Singleton
 
 @Singleton
 class ListRepository @Inject constructor(
-    private val firebaseListDao: FirebaseListDao
+    private val firebaseListDao: FirebaseListDao,
+    private val firebaseFriendListDao: FirebaseFriendListDao
 ) {
+
+    fun getFriendGames(): Flow<List<ListEntry>> = firebaseFriendListDao.getAll()
 
     suspend fun storeListEntry(entry: ListEntry) = firebaseListDao.storeListEntry(entry)
 
@@ -77,7 +81,7 @@ class ListRepository @Inject constructor(
         return sortedGames
     }
 
-    private fun removeStatusSortOption(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+    fun removeStatusSortOption(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
         if(sortOption.value == SortOptions.STATUS.value){
             sortOption.value = SortOptions.ALPHABETICALLY.value
         }
@@ -106,5 +110,7 @@ class ListRepository @Inject constructor(
     suspend fun getAllGamesAsState() = firebaseListDao.getAllGamesAsState()
 
     fun updateUser() = firebaseListDao.updateUser()
+
+    fun setFriendId(s: String) = firebaseFriendListDao.setFriendId(s)
 
 }
