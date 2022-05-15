@@ -40,7 +40,7 @@ class NexusFriendListViewModel @Inject constructor(
                 ListCategory.COMPLETED.value -> repo.removeStatusSortOption(repo.getFriendGames().map { it.filter { entry: ListEntry -> entry.status == ListCategory.COMPLETED.value } }).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
                 ListCategory.PLANNED.value -> repo.removeStatusSortOption(repo.getFriendGames().map { it.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
                 ListCategory.DROPPED.value -> repo.removeStatusSortOption(repo.getFriendGames().map { it.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-                else -> {repo.sortGames(repo.getFriendGames()).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())}
+                else -> {repo.setDescAsc(repo.getFriendGames()).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())}
             }
         }
         return games

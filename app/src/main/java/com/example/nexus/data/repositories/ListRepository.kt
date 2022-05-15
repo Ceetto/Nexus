@@ -90,7 +90,7 @@ class ListRepository @Inject constructor(
         return descending.value
     }
 
-    private fun setDescAsc(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+    fun setDescAsc(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
         return if(descending.value){
             entries.map { it.reversed() }
         } else {
