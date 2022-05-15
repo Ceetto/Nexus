@@ -10,9 +10,11 @@ import javax.inject.Singleton
 @Singleton
 class ProfileRepository @Inject constructor(
     private val fireBaseUserDao: FirebaseUserDao,
-    private val storageDao : StorageDao
+    private val storageDao : StorageDao,
+    private val firebaseUpdater : FirebaseUpdater
 ) {
     fun getUser(): User {
+        firebaseUpdater.updateFirebaseData()
         return fireBaseUserDao.getUser()
     }
 

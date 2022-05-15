@@ -15,7 +15,8 @@ import java.lang.System.currentTimeMillis
 @Singleton
 class NotificationsRepository @Inject constructor(
     private val notificationDao: FirebaseNotificationDao,
-    private val firebaseListDao: FirebaseListDao
+    private val firebaseListDao: FirebaseListDao,
+    private val firebaseUpdater : FirebaseUpdater
 ) {
     fun filterGames(): Flow<List<ListEntry>> {
         return firebaseListDao.getPlanned().map {
@@ -27,7 +28,10 @@ class NotificationsRepository @Inject constructor(
 
     fun storeNotification(n: Notification) = notificationDao.storeNotification(n)
 
-    fun getNotifications() = notificationDao.getNotifications()
+    fun getNotifications(): Flow<List<Notification>> {
+        firebaseUpdater.updateFirebaseData()
+        return notificationDao.getNotifications()
+    }
 
     fun countNewNotifications() = notificationDao.countNewNotifications()
 

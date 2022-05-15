@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class FirebaseNotificationDao @Inject constructor(
     private val database: FirebaseDatabase,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
 ){
     private val notificationRef = mutableStateOf(database.getReference("user/${getUserId(auth.currentUser)}/notifications"))
 
@@ -62,6 +62,7 @@ class FirebaseNotificationDao @Inject constructor(
     private val realtimeNotifications = mutableStateOf(notificationRef.value.addValueEventListener(eventListener))
 
     fun updateUser(){
+        println("NOTIF DAO UPDATE USER")
         notificationRef.value = database.getReference("user/${getUserId(auth.currentUser)}/notifications")
         realtimeNotifications.value = notificationRef.value.addValueEventListener(eventListener)
     }
@@ -101,6 +102,7 @@ class FirebaseNotificationDao @Inject constructor(
             NotificationType.FRIEND_REQUEST.value
         )
         friendRef.child(notif.userId).setValue(notif)
+        updateUser()
     }
 
     fun countNewNotifications(): Int {

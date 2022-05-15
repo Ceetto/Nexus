@@ -81,15 +81,15 @@ class FirebaseFriendsDao @Inject constructor(
                 for (child in snapshot.children){
                     val newUser = Friend("", "", "", "")
 
-                    println("search term = " + searchTerm.value)
-                    println("child key = " + child.key.toString())
+//                    println("search term = " + searchTerm.value)
+//                    println("child key = " + child.key.toString())
 
                     if (Regex(".*${searchTerm.value.lowercase()}.*").matches(child.child("username").value.toString().lowercase())  && searchTerm.value != "") {
                         newUser.userId = child.key.toString()
                         newUser.username = child.child("username").value as String
                         newUser.profilePicture = child.child("profilePicture").value as String
                         newUser.profileBackground = child.child("profileBackground").value as String
-                        println("picture = " + newUser.profilePicture)
+//                        println("picture = " + newUser.profilePicture)
                         allMatches.value.add(newUser)
                     }
                 }
@@ -105,6 +105,7 @@ class FirebaseFriendsDao @Inject constructor(
     var searchTerm = mutableStateOf("")
 
     fun updateUser(){
+        println("FRIENDS DAO UPDATE USER")
         friendsRef.value = database.getReference("user/${getUserId(auth.currentUser)}/friends")
         realtimeFriends.value = friendsRef.value.addValueEventListener(eventListener)
         allMatchesRef.value.addValueEventListener(allUserEventListener)
@@ -123,6 +124,7 @@ class FirebaseFriendsDao @Inject constructor(
 
     fun storeFriend(id: String){
         friendsRef.value.child(id).setValue(id)
+        updateUser()
     }
     
     fun storeYourself(id:String){

@@ -43,6 +43,7 @@ fun NexusHomeRoute(
     isShuffling: MutableState<Boolean> = mutableStateOf(false)
 ) {
      LaunchedEffect(Unit){
+         println("LAUNCHED EFFECT CALLED")
          vM.updateUser()
      }
      val focusManager = LocalFocusManager.current

@@ -43,7 +43,7 @@ class NexusLoginViewModel  @Inject constructor(
     }
 
     fun checkUsername() {
-        isUsernameValidTest.value = repo.getUsername().length > 4
+        isUsernameValidTest.value = repo.getUsername().length >= 2
     }
 
     fun getIsPasswordValidTest(): Boolean {
@@ -54,7 +54,7 @@ class NexusLoginViewModel  @Inject constructor(
 
     fun setUsername(username: String) {
         repo.setUsername(username)
-        isUsernameValid.value = repo.getUsername().length > 4
+        isUsernameValid.value = repo.getUsername().length >= 2
     }
 
     fun checkEmail() {
