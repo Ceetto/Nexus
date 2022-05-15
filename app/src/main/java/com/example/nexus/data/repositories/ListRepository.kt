@@ -111,4 +111,6 @@ class ListRepository @Inject constructor(
 
     fun updateUser() = firebaseListDao.updateUser()
 
+    fun setFriendId(s: String) = firebaseFriendListDao.setFriendId(s)
+
 }

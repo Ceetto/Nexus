@@ -31,7 +31,7 @@ class NexusFriendListViewModel @Inject constructor(
     fun getSortOption() = repo.getSortOption()
 
     fun onSelectedCategoryChanged(category: ListCategory) = listVM.onSelectedCategoryChanged(category)
-    
+
     fun getSelectedCategory() = listVM.getSelectedCategory()
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
@@ -46,5 +46,7 @@ class NexusFriendListViewModel @Inject constructor(
         }
         return games
     }
+
+    fun setFriendId(s: String) = repo.setFriendId(s)
 
 }
