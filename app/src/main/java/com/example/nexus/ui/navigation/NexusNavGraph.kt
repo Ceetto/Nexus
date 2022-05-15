@@ -56,6 +56,7 @@ sealed class LeafScreen(
         }
     }
 
+
 //    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
 //        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
 //            return "${root.route}/game/$gameId/$gameName"
@@ -364,7 +365,7 @@ private fun NavGraphBuilder.addFriendProfileScreen(
     ) {
         NexusFriendProfileRoute(vM = hiltViewModel(), navController = navController, onOpenGameDetails = {
                 gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
-            }
+            }, onOpenList = {userId ->  navController.navigate(LeafScreen.ListScreen.createRoute(root, userId))}
         )
     }
 }
@@ -385,7 +386,7 @@ private fun NavGraphBuilder.addFriendsScreen(
     }
 }
 
-@ExperimentalComposeUiApi
+@ExperimentalAnimationApi
 private fun NavGraphBuilder.addProfileScreenTopLevel(
     navController: NavHostController
 ){
@@ -395,6 +396,7 @@ private fun NavGraphBuilder.addProfileScreenTopLevel(
     ){
         addProfileScreen(navController, Screen.Profile)
         addGameDetails(navController, Screen.Profile)
+        addListScreen(navController, Screen.Profile)
     }
 }
 
@@ -407,7 +409,7 @@ private fun NavGraphBuilder.addProfileScreen(
     ){
         NexusProfileRoute(vM = hiltViewModel(), navController, onOpenGameDetails = {
                 gameId -> navController.navigate(LeafScreen.GameDetail.createRoute(root, gameId))
-        })
+        }, onOpenList = {_ -> navController.navigate(LeafScreen.List.createRoute(Screen.List))})
     }
 }
 

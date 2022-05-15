@@ -126,4 +126,8 @@ class FirebaseUserDao @Inject constructor(
     fun getBackground(): String {
         return newUser.value.profileBackground
     }
+
+    fun getUserId(): String {
+        return getUserId(auth.currentUser)
+    }
 }

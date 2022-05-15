@@ -11,13 +11,16 @@ import com.example.nexus.viewmodels.profile.NexusProfileViewModel
 fun NexusProfileRoute(
     vM: NexusProfileViewModel,
     navController: NavHostController,
-    onOpenGameDetails: (gameId: Long) -> Unit
+    onOpenGameDetails: (gameId: Long) -> Unit,
+    onOpenList : (userId: String) -> Unit
 ){
     ProfileScreen(
         getUser = {vM.getUser()},
         onOpenGameDetails = onOpenGameDetails,
         navController = navController,
         getCategoryByName = {s: String -> vM.getCategoryByName(s)},
-        getFavourites = {vM.getFavourites()}
+        getFavourites = {vM.getFavourites()},
+        onOpenList = onOpenList,
+        getUserId = vM.getUserId()
     )
 }

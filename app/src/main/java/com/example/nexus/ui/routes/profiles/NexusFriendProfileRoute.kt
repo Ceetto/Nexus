@@ -12,17 +12,19 @@ import com.example.nexus.viewmodels.profile.NexusFriendProfileViewModel
 fun NexusFriendProfileRoute(
     vM: NexusFriendProfileViewModel,
     navController: NavHostController,
-    onOpenGameDetails: (gameId: Long) -> Unit
+    onOpenGameDetails: (gameId: Long) -> Unit,
+    onOpenList : (userId: String) -> Unit
 ){
     LaunchedEffect(Unit){
         vM.onGetFriendEvent()
     }
-
     ProfileScreen(
         getUser = {vM.getUser()},
         onOpenGameDetails = onOpenGameDetails,
         navController = navController,
         getCategoryByName = {s: String -> vM.getCategoryByName(s)},
-        getFavourites = {vM.getFavourites()}
+        getFavourites = {vM.getFavourites()},
+        onOpenList = onOpenList,
+        getUserId = vM.getUserId()
     )
 }

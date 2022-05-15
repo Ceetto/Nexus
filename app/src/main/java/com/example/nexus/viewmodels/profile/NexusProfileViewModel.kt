@@ -36,6 +36,9 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
     fun getNewUsername() : String {
         return username.value
     }
+    fun getUserId() : String{
+        return profileRepo.getUserId()
+    }
 
     fun setUsername(username : String){
         this.username.value = username

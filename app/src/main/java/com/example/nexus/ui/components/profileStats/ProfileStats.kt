@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.nexus.data.dataClasses.ListEntry
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Dropped
@@ -27,7 +28,9 @@ import kotlin.math.roundToLong
 @Composable
 fun ProfileStats(
 //    vM: NexusProfileViewModel,
-    getCategoryByName : (String) -> StateFlow<List<ListEntry>>
+    getCategoryByName : (String) -> StateFlow<List<ListEntry>>,
+    onOpenList: (userId: String) -> Unit,
+    getUserId: String
 ) {
     val total by getCategoryByName(ListCategory.ALL.value).collectAsState();
     val playing by getCategoryByName(ListCategory.PLAYING.value).collectAsState();
@@ -53,7 +56,7 @@ fun ProfileStats(
         .padding(25.dp)
         .fillMaxWidth()) {
         
-        Button(onClick = { }){
+        Button(onClick = {onOpenList(getUserId);}){
             Text(text = "List")
         }
 
