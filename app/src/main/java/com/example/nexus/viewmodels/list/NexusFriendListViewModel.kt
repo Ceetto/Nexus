@@ -16,23 +16,22 @@ import javax.inject.Inject
 @HiltViewModel
 class NexusFriendListViewModel @Inject constructor(
     private val repo: ListRepository,
-    private val listVM: NexusListViewModel,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel(){
 
     private val friendId: String = savedStateHandle["userId"]!!
 
-    fun toggleDescendingOrAscendingIcon() = listVM.toggleDescendingOrAscendingIcon()
+    fun toggleDescendingOrAscendingIcon() = repo.toggleDescendingOrAscendingIcon()
 
-    fun getDescendingOrAscendingIcon() = listVM.getDescendingOrAscendingIcon()
+    fun getDescendingOrAscendingIcon() = repo.getDescendingOrAscendingIcon()
 
     fun setSortOption(option : String) = repo.setSortOption(option)
 
     fun getSortOption() = repo.getSortOption()
 
-    fun onSelectedCategoryChanged(category: ListCategory) = listVM.onSelectedCategoryChanged(category)
+    fun onSelectedCategoryChanged(category: ListCategory) = repo.onSelectedCategoryChanged(category)
 
-    fun getSelectedCategory() = listVM.getSelectedCategory()
+    fun getSelectedCategory() = repo.getSelectedCategory()
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
         val games: StateFlow<List<ListEntry>> by lazy {

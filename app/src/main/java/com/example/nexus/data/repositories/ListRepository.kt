@@ -1,6 +1,10 @@
 package com.example.nexus.data.repositories
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
@@ -15,6 +19,30 @@ class ListRepository @Inject constructor(
     private val firebaseListDao: FirebaseListDao,
     private val firebaseFriendListDao: FirebaseFriendListDao
 ) {
+    private val descendingOrAscendingIcon = mutableStateOf(Icons.Default.ArrowDropUp)
+    private val selectedCategory = mutableStateOf(ListCategory.ALL)
+
+    fun onSelectedCategoryChanged(category: ListCategory){
+        selectedCategory.value = category
+    }
+
+    fun getSelectedCategory(): ListCategory {
+        return selectedCategory.value
+    }
+
+    fun toggleDescendingOrAscendingIcon(){
+        if(isDescending()){
+            setDescending(false)
+            descendingOrAscendingIcon.value = Icons.Default.ArrowDropUp
+        } else {
+            setDescending(true)
+            descendingOrAscendingIcon.value = Icons.Default.ArrowDropDown
+        }
+    }
+
+    fun getDescendingOrAscendingIcon(): ImageVector {
+        return descendingOrAscendingIcon.value
+    }
 
     fun getFriendGames(): Flow<List<ListEntry>> = firebaseFriendListDao.getAll()
 
