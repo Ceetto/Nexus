@@ -19,36 +19,17 @@ import javax.inject.Inject
 @HiltViewModel
 class NexusListViewModel  @Inject constructor(private val repo: ListRepository) : ViewModel(){
 
-    private val selectedCategory = mutableStateOf(ListCategory.ALL)
+    fun toggleDescendingOrAscendingIcon() = repo.toggleDescendingOrAscendingIcon()
 
-    private val descendingOrAscendingIcon = mutableStateOf(Icons.Default.ArrowDropUp)
-
-
-    fun toggleDescendingOrAscendingIcon(){
-        if(repo.isDescending()){
-            repo.setDescending(false)
-            descendingOrAscendingIcon.value = Icons.Default.ArrowDropUp
-        } else {
-            repo.setDescending(true)
-            descendingOrAscendingIcon.value = Icons.Default.ArrowDropDown
-        }
-    }
-
-    fun getDescendingOrAscendingIcon(): ImageVector {
-        return descendingOrAscendingIcon.value
-    }
+    fun getDescendingOrAscendingIcon() = repo.getDescendingOrAscendingIcon()
 
     fun setSortOption(option : String) = repo.setSortOption(option)
 
     fun getSortOption() = repo.getSortOption()
 
-    fun onSelectedCategoryChanged(category: ListCategory){
-        selectedCategory.value = category
-    }
+    fun onSelectedCategoryChanged(category: ListCategory) = repo.onSelectedCategoryChanged(category)
 
-    fun getSelectedCategory(): ListCategory {
-        return selectedCategory.value
-    }
+    fun getSelectedCategory() = repo.getSelectedCategory()
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
         val games: StateFlow<List<ListEntry>> by lazy {
