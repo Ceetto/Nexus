@@ -2,17 +2,9 @@ package com.example.nexus.ui.routes
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.nexus.viewmodels.NexusListViewModel
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.selection.toggleable
+import com.example.nexus.viewmodels.list.NexusListViewModel
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
