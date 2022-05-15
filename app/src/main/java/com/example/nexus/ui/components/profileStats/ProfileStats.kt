@@ -3,6 +3,7 @@ package com.example.nexus.ui.components.profileStats
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -47,10 +48,14 @@ fun ProfileStats(
 
     val hours : Double = ((minutes / 60) * 10.0).roundToLong() /10.0
     val days : Double = ((hours / 24) * 10.0).roundToLong() /10.0
-    //TODO add mean score
+
     Column(modifier = Modifier
         .padding(25.dp)
         .fillMaxWidth()) {
+        
+        Button(onClick = { }){
+            Text(text = "List")
+        }
 
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -172,7 +177,6 @@ fun ProfileStats(
                 modifier = Modifier
                     .weight(1f, true)
                     .padding(10.dp))
-
         }
     }
 }

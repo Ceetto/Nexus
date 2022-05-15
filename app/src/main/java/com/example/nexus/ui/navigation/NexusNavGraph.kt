@@ -49,6 +49,13 @@ sealed class LeafScreen(
         }
     }
 
+
+    object ListScreen : LeafScreen("list/{userId}"){
+        fun createRoute(root: Screen, userId: String) : String {
+            return "${root.route}/list/$userId"
+        }
+    }
+
 //    object GameForm : LeafScreen("game/{gameId}/{gameName}"){
 //        fun createRoute(root: Screen, gameId : Long, gameName: String) : String{
 //            return "${root.route}/game/$gameId/$gameName"

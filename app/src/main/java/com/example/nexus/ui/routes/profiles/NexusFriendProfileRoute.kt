@@ -17,6 +17,7 @@ fun NexusFriendProfileRoute(
     LaunchedEffect(Unit){
         vM.onGetFriendEvent()
     }
+
     ProfileScreen(
         getUser = {vM.getUser()},
         onOpenGameDetails = onOpenGameDetails,

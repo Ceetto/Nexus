@@ -71,11 +71,6 @@ class FirebaseUserDao @Inject constructor(
         }
 
 
-
-
-
-
-
     private val realtimeEntries = mutableStateOf(userRef.value.addValueEventListener(eventListener))
 
     fun setFriendId(id: String) {
@@ -98,6 +93,7 @@ class FirebaseUserDao @Inject constructor(
     fun getUser() : User{
         return newUser.value
     }
+
 
     fun getFriend() : User {
         return newFriend.value
