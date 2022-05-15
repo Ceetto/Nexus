@@ -60,6 +60,8 @@ class FirebaseFriendListDao @Inject constructor(
         }
     }
 
+    private val realtimeEntries = mutableStateOf(friendRef.value.addValueEventListener(eventListener))
+
     fun getAll(): Flow<List<ListEntry>> {
         return allGames
     }

@@ -1,6 +1,7 @@
 package com.example.nexus
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
+import com.example.nexus.data.db.list.FirebaseFriendListDao
 import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.ui.routes.ListCategory
@@ -20,6 +21,7 @@ class ListRepositoryTests {
 
     lateinit var games : MutableStateFlow<List<ListEntry>>
     lateinit var dao: FirebaseListDao
+    lateinit var friendDao: FirebaseFriendListDao
     lateinit var repo: ListRepository
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -33,7 +35,8 @@ class ListRepositoryTests {
             ListEntry(0, "c", 10, 42, ListCategory.PLANNED.value, "", false, 312),
             ListEntry(0, "a", 4, 69, ListCategory.PLAYING.value, "", false, 777),))
         dao = mock()
-        repo = ListRepository(dao)
+        friendDao = mock()
+        repo = ListRepository(dao, friendDao)
         Dispatchers.setMain(testDispatcher)
     }
 
