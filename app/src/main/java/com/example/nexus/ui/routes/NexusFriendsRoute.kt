@@ -11,12 +11,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.User
@@ -46,7 +48,7 @@ fun NexusFriendsRoute(
         Column(){
             val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
             SearchBarComponent(
-                placeholder = "Add New Friends",
+                placeholder = "Add new friends",
                 onSearch = {
                     vM.setSearched(true);
                     vM.onSearchEvent();
@@ -105,7 +107,9 @@ fun NexusFriendsRoute(
                             val matches by vM.getSearchResults().collectAsState()
                             if(matches.isEmpty()){
                                 if(vM.hasSearched()){
-                                    Text("no results")
+                                    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally){
+                                        Text("no results", fontSize = 20.sp)
+                                    }
                                 }
                             } else {
                                 Column(
@@ -126,7 +130,6 @@ fun NexusFriendsRoute(
 
                         }
                     }
-
                 }
             }
         }
