@@ -31,7 +31,7 @@ import com.example.nexus.viewmodels.NexusNotificationsViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalComposeUiApi
-@ExperimentalAnimationApi
+
 @Composable
 fun Home(
     vM: NexusNotificationsViewModel

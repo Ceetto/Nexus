@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun NoNotifications() {
@@ -17,6 +18,8 @@ fun NoNotifications() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Text(text = "No notifications")
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally){
+            Text("No new notifications", fontSize = 20.sp)
+        }
     }
 }

@@ -4,28 +4,21 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.nexus.ApplicationSwitcher
 import com.example.nexus.ui.theme.MyApplicationTheme
-import com.example.nexus.viewmodels.NexusLoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    val TAG = MainActivity::class.java.name
+    private val TAG = MainActivity::class.java.name
 //    private val userState by viewModels<NexusLoginViewModel>()
     companion object {
         val TAG : String = MainActivity::class.java.simpleName
     }
 
-    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

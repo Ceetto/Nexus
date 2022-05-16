@@ -2,14 +2,7 @@ package com.example.nexus.data.db
 
 import android.net.Uri
 import com.example.nexus.data.repositories.DataRepository
-import com.example.nexus.data.repositories.LoginRepository
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
-import kotlinx.coroutines.tasks.await
 import java.util.*
 import javax.inject.Inject
 

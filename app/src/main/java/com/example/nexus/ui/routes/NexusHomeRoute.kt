@@ -31,7 +31,6 @@ import com.example.nexus.ui.components.SearchResultComponent
 import com.example.nexus.viewmodels.NexusHomeViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import proto.Game
 
 
  @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

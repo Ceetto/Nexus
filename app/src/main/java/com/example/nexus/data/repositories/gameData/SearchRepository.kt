@@ -15,12 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchRepository
-@Inject constructor
-    (
-//    private val fetchGames : (APICalypse) -> List<Game>
-)
-{
+class SearchRepository @Inject constructor() {
 
     var gameList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList())}
     val searchTerm = mutableStateOf("")

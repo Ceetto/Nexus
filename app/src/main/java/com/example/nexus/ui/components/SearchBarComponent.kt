@@ -11,13 +11,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import proto.Game
 
-//@ExperimentalComposeUiApi
 @Composable
 fun SearchBarComponent(
     placeholder: String,
@@ -31,7 +28,7 @@ fun SearchBarComponent(
         value = getSearchTerm,
         onValueChange = {
             if(!it.contains("\n")){
-                setSearchTerm(it);
+                setSearchTerm(it)
                 if(it.isEmpty()){
                     setSearched(false)
                 }

@@ -2,7 +2,6 @@ package com.example.nexus.data.db
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.dataClasses.getUserId
 import com.google.firebase.auth.FirebaseAuth

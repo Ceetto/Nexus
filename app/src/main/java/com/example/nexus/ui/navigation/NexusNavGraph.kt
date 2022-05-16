@@ -82,7 +82,7 @@ sealed class LeafScreen(
 }
 
 @ExperimentalComposeUiApi
-@ExperimentalAnimationApi
+
 @Composable fun NexusNavGraph(
     navController: NavHostController,
     startDestination: String = Screen.Home.route,
@@ -231,7 +231,7 @@ private fun NavGraphBuilder.addSearchScreenTopLevel(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addListScreenTopLevel(
     navController: NavHostController
@@ -324,7 +324,7 @@ private fun NavGraphBuilder.addNotificationsScreen(
     }
 }
 
-@ExperimentalAnimationApi
+
 private fun NavGraphBuilder.addListScreen(
     navController: NavHostController,
     root : Screen
@@ -339,7 +339,7 @@ private fun NavGraphBuilder.addListScreen(
     }
 }
 
-@ExperimentalAnimationApi
+
 private fun NavGraphBuilder.addFriendListScreen(
     navController: NavHostController,
     root : Screen
@@ -358,7 +358,6 @@ private fun NavGraphBuilder.addFriendListScreen(
     }
 }
 
-@ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 private fun NavGraphBuilder.addFriendsScreenTopLevel(
     navController: NavHostController
@@ -407,7 +406,7 @@ private fun NavGraphBuilder.addFriendsScreen(
     }
 }
 
-@ExperimentalAnimationApi
+
 private fun NavGraphBuilder.addProfileScreenTopLevel(
     navController: NavHostController
 ){

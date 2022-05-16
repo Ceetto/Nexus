@@ -3,12 +3,9 @@ package com.example.nexus.data.repositories
 
 import android.util.Log
 import android.util.Patterns
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.example.nexus.activities.MainActivity
 import com.example.nexus.data.dataClasses.User
-import com.example.nexus.data.dataClasses.getUserId
 import com.example.nexus.data.db.FirebaseUserDao
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth

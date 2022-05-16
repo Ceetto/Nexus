@@ -1,4 +1,4 @@
-package com.example.nexus.ui.routes.settings;
+package com.example.nexus.ui.routes.settings
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*

@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -19,10 +16,6 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.api.igdb.utils.ImageSize
-import com.api.igdb.utils.ImageType
-import com.api.igdb.utils.imageBuilder
-import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.ui.components.AgeConfirmComponent
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.gameDetails.GameDetailComponent

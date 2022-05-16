@@ -1,19 +1,21 @@
 package com.example.nexus.ui.routes.lists
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import com.example.nexus.viewmodels.list.NexusListViewModel
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.list.ListCategoryComponent
 import com.example.nexus.ui.components.list.ListTopNavigationBar
-import com.example.nexus.ui.theme.*
+import com.example.nexus.ui.theme.Completed
+import com.example.nexus.ui.theme.Dropped
+import com.example.nexus.ui.theme.Planned
+import com.example.nexus.ui.theme.Playing
+import com.example.nexus.viewmodels.list.NexusListViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@ExperimentalAnimationApi
+
 @Composable
 fun NexusListRoute(
     vM: NexusListViewModel,

@@ -35,8 +35,7 @@ fun SortListComponent(
         IconButton(onClick = { expanded = !expanded }) {
             Icon(Icons.Default.Sort, contentDescription = "sort")
         }
-        var entry = ""
-        entry = if (games.size == 1){
+        val entry = if (games.size == 1){
             "entry"
         } else {
             "entries"

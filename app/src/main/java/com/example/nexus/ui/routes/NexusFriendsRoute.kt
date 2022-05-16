@@ -2,8 +2,6 @@ package com.example.nexus.ui.routes
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
@@ -20,8 +18,6 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.nexus.data.dataClasses.Friend
-import com.example.nexus.data.dataClasses.User
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.SearchBarComponent
 import com.example.nexus.ui.components.friends.FriendItem
@@ -50,9 +46,9 @@ fun NexusFriendsRoute(
             SearchBarComponent(
                 placeholder = "Add new friends",
                 onSearch = {
-                    vM.setSearched(true);
-                    vM.onSearchEvent();
-                    keyboardController?.hide();
+                    vM.setSearched(true)
+                    vM.onSearchEvent()
+                    keyboardController?.hide()
                 },
                 getSearchTerm = vM.getSearchTerm(),
                 setSearchTerm = { s -> vM.setSearchTerm(s) },
@@ -79,7 +75,6 @@ fun NexusFriendsRoute(
                                 FriendItem(
                                     friend = f,
                                     setUserId = {s:String -> vM.setUserid(s)},
-                                    removeFriend = {fr:Friend -> vM.removeFriend(fr)},
                                     onFriendProfile = onFriendProfile
                                 )
                                 break
@@ -119,8 +114,6 @@ fun NexusFriendsRoute(
                                     matches.forEach() { friend ->
                                         SearchUserItem(
                                             friend = friend,
-                                            getUser = {vM.getUser()},
-                                            sendFriendRequest = {f:Friend, u:User -> vM.sendFriendRequest(f, u)},
                                             setUserId = {s:String -> vM.setUserid(s)},
                                             onFriendProfile = onFriendProfile
                                         )
