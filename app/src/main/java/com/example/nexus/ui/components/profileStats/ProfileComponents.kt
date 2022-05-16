@@ -49,7 +49,11 @@ fun ProfileScreen(
     getFriend : () -> Friend,
     getNewFriend : () -> Friend,
     onOpenList: (userId: String) -> Unit,
-    getUserId: String
+    getUserId: String,
+    getShowRemoveFriendPopup: () -> Boolean,
+    setShowRemoveFriendPopup : (Boolean) -> Unit,
+    getShowAddFriendPopup: () -> Boolean,
+    setShowAddFriendPopup : (Boolean) -> Unit
 ){
     val background = getUser().profileBackground
     val focusManager = LocalFocusManager.current
@@ -90,10 +94,7 @@ fun ProfileScreen(
                         .padding(10.dp), horizontalAlignment = Alignment.End) {
                     if (isFriend()) {
                         IconButton(onClick = {
-                            val f : Friend = getFriend()
-                            if(f.username.isNotEmpty())
-                                removeFriend(getFriend())
-                            removed = true
+                            setShowRemoveFriendPopup(true)
                         }) {
                             Box(
                                 modifier = Modifier
@@ -116,7 +117,7 @@ fun ProfileScreen(
                         }
                     } else {
                         if(!added){
-                            IconButton(onClick = { addFriend(getNewFriend(), getCurrentUser()); added = true }) {
+                            IconButton(onClick = { setShowAddFriendPopup(true) }) {
                                 Box(
                                     modifier = Modifier
                                         .size(60.dp)
@@ -144,7 +145,54 @@ fun ProfileScreen(
                         }
                     }
                 }
+
+
+                if (getShowRemoveFriendPopup()){
+                    AlertDialog(
+                        onDismissRequest = { setShowRemoveFriendPopup(false)},
+                        confirmButton = {
+                            TextButton(onClick = {
+                                setShowRemoveFriendPopup(false)
+                                val f : Friend = getFriend()
+                                if(f.username.isNotEmpty())
+                                    removeFriend(getFriend())
+                                removed = true
+                            })
+                            { Text(text = "Yes", color=MaterialTheme.colors.onBackground) }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                setShowRemoveFriendPopup(false) }) {
+                                Text(text = "Cancel", color=MaterialTheme.colors.onBackground)
+                            }},
+                        title = { Text(text = "Remove friend") },
+                        text = { Text(text = "Are you sure you want to remove this friend?") }
+                    )
+                }
+
+                if (getShowAddFriendPopup()){
+                    AlertDialog(
+                        onDismissRequest = { setShowAddFriendPopup(false)},
+                        confirmButton = {
+                            TextButton(onClick = {
+                                setShowAddFriendPopup(false)
+                                addFriend(getNewFriend(), getCurrentUser())
+                                added = true
+                            })
+                            { Text(text = "Yes", color=MaterialTheme.colors.onBackground) }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = {
+                                setShowAddFriendPopup(false) }) {
+                                Text(text = "Cancel", color=MaterialTheme.colors.onBackground)
+                            }},
+                        title = { Text(text = "Send friend request") },
+                        text = { Text(text = "Send a friend request to this user?") }
+                    )
+                }
             }
+
+
 
             ProfilePicture(onOpenGameDetails, getUser, getCategoryByName, getFavourites, onOpenList, getUserId, canBeFriend)
 

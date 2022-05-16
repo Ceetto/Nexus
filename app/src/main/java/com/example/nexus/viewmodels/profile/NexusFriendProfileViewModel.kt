@@ -1,5 +1,6 @@
 package com.example.nexus.viewmodels.profile
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,26 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
 ) : ViewModel(){
 
     private val friendId: String = savedStateHandle["userId"]!!
+    
+    private val showRemoveFriendPopup = mutableStateOf(false)
+
+    fun getShowRemoveFriendPopup(): Boolean {
+        return showRemoveFriendPopup.value
+    }
+
+    fun setShowRemoveFriendPopup(b: Boolean){
+        showRemoveFriendPopup.value = b
+    }
+
+    private val showAddFriendPopup = mutableStateOf(false)
+
+    fun getShowAddFriendPopup(): Boolean {
+        return showAddFriendPopup.value
+    }
+
+    fun setShowAddFriendPopup(b: Boolean){
+        showAddFriendPopup.value = b
+    }
 
     fun getUser() : User {
         return profileRepo.getFriend()

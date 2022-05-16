@@ -30,6 +30,10 @@ fun NexusFriendProfileRoute(
         getFriend = {vM.getFriend()},
         getNewFriend = {vM.getNewFriend()},
         onOpenList = onOpenList,
-        getUserId = vM.getUserId()
+        getUserId = vM.getUserId(),
+        getShowRemoveFriendPopup = {vM.getShowRemoveFriendPopup()},
+        setShowRemoveFriendPopup = {b: Boolean -> vM.setShowRemoveFriendPopup(b)},
+        getShowAddFriendPopup = {vM.getShowAddFriendPopup()},
+        setShowAddFriendPopup = {b: Boolean -> vM.setShowAddFriendPopup(b)},
     )
 }
