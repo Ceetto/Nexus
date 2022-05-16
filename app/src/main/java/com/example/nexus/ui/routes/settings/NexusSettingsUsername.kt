@@ -28,20 +28,19 @@ fun NexusSettingsUsername(vM: NexusProfileViewModel, navController: NavHostContr
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
-        Column(){
+        Column(modifier = Modifier.padding(5.dp)){
             Row(modifier = Modifier.padding(5.dp)){
-                Text(text = "Current Username: " + vM.getUsername())
+                Text(text = "Current username: " + vM.getUsername())
             }
 
             Row(modifier = Modifier.padding(5.dp)){
-                Text(text = "New Username: ")
+                Text(text = "New username: ")
                 TextField(
                     value = vM.getNewUsername(),
                     onValueChange = { value ->
                         vM.setUsername(value)
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
-                        keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(onDone = {
@@ -57,7 +56,7 @@ fun NexusSettingsUsername(vM: NexusProfileViewModel, navController: NavHostContr
                         focusManager.clearFocus()
                         navController.navigateUp()
                     }
-                }){
+                }, modifier = Modifier.padding(5.dp)){
                     Text(text = "Save")
                 }
             }

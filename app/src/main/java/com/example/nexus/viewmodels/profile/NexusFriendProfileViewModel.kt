@@ -89,7 +89,6 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
     }
 
 
-
     fun sendFriendRequest(f: Friend, user: User){
         println("sent friend request")
         println("to: ${f.username}")
