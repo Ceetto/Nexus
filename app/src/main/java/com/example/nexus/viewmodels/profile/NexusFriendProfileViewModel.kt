@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.User
-import com.example.nexus.data.db.list.FirebaseFriendListDao
-import com.example.nexus.data.repositories.list.FriendListRepository
+import com.example.nexus.data.repositories.FriendsRepository
+import com.example.nexus.data.repositories.NotificationsRepository
 import com.example.nexus.data.repositories.ProfileRepository
-import com.example.nexus.data.repositories.*
+import com.example.nexus.data.repositories.list.FriendListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,16 +26,8 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
 
     private val friendId: String = savedStateHandle["userId"]!!
 
-    fun onGetFriendEvent(){
-        setFriend()
-    }
-
     fun getUser() : User {
         return profileRepo.getFriend()
-    }
-
-    private fun setFriend(){
-        profileRepo.setFriendId(friendId)
     }
 
     fun getUserId():String{

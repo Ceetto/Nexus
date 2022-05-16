@@ -217,14 +217,17 @@ fun FavoriteList(
 ){
     val favorites by getFavourites().collectAsState()
     Column(
-        Modifier.padding(start = 5.dp, top = 5.dp, bottom = 10.dp)
+        Modifier.padding(start = 10.dp, top = 5.dp, bottom = 10.dp)
     ){
-        Text("Favourites:", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text("Favourites", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         Row(Modifier.horizontalScroll(rememberScrollState())){
             favorites.forEach { entry -> Row{
-                FavoriteListComponent(entry, onOpenGameDetails, LocalFocusManager.current)
+                    FavoriteListComponent(entry, onOpenGameDetails, LocalFocusManager.current)
+                }
             }
-            }
+        }
+        if(favorites.isEmpty()){
+            Text("no favourites", fontSize = 12.sp)
         }
     }
 }

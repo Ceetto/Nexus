@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -30,7 +31,6 @@ import com.example.nexus.ui.components.SearchResultComponent
 import com.example.nexus.viewmodels.NexusHomeViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import proto.Game
 
 
  @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -115,7 +115,7 @@ fun NexusHomeRoute(
                      Column(
                          modifier = Modifier
                              .verticalScroll(rememberScrollState())
-                             .fillMaxHeight()
+                             .fillMaxSize()
                      ) {
                          if (vM.isRefreshingSearch()) {
                              Row(
@@ -131,7 +131,9 @@ fun NexusHomeRoute(
                          } else {
                              if (vM.getGameList().isEmpty()) {
                                  if (vM.hasSearched()) {
-                                     Text("no results")
+                                     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally){
+                                         Text("no results", fontSize = 20.sp)
+                                     }
                                  }
                              } else {
                                  vM.getGameList().forEach { game ->

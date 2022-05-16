@@ -1,9 +1,9 @@
 package com.example.nexus.ui.routes.lists
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavHostController
 import com.example.nexus.ui.components.NexusTopBar
@@ -12,7 +12,6 @@ import com.example.nexus.ui.components.list.ListTopNavigationBar
 import com.example.nexus.viewmodels.list.NexusFriendListViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@ExperimentalAnimationApi
 @Composable
 fun NexusFriendListRoute(
     vM: NexusFriendListViewModel,

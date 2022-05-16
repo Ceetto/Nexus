@@ -135,7 +135,7 @@ fun NexusSettingsPicture(vM: NexusProfileViewModel, navController: NavHostContro
                         }
                     }
                 }){
-                    Text("Save");
+                    Text("Save")
                 }
 
 

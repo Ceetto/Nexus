@@ -3,7 +3,6 @@ package com.example.nexus.ui.components.profileStats
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,28 +19,26 @@ import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Dropped
 import com.example.nexus.ui.theme.Planned
 import com.example.nexus.ui.theme.Playing
-import com.example.nexus.viewmodels.profile.NexusProfileViewModel
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.roundToLong
 
 @Composable
 fun ProfileStats(
-//    vM: NexusProfileViewModel,
     getCategoryByName : (String) -> StateFlow<List<ListEntry>>
 ) {
-    val total by getCategoryByName(ListCategory.ALL.value).collectAsState();
-    val playing by getCategoryByName(ListCategory.PLAYING.value).collectAsState();
+    val total by getCategoryByName(ListCategory.ALL.value).collectAsState()
+    val playing by getCategoryByName(ListCategory.PLAYING.value).collectAsState()
     val completed by getCategoryByName(ListCategory.COMPLETED.value).collectAsState()
     val dropped by getCategoryByName(ListCategory.DROPPED.value).collectAsState()
     val planned by getCategoryByName(ListCategory.PLANNED.value).collectAsState()
     var minutes = 0.0
-    var tempScore = 0;
+    var tempScore = 0
     total.forEach {minutes += it.minutesPlayed.toDouble()}
 
     val totalWithScore : List<ListEntry> = total.filter { it.score != 0 }
     totalWithScore.forEach {tempScore += it.score}
 
-    var meanScore = 0.0;
+    var meanScore = 0.0
     if (totalWithScore.isNotEmpty()) {
         meanScore = ((tempScore.toDouble() / totalWithScore.size) * 100.0).roundToLong() / 100.0
     }
@@ -52,8 +49,6 @@ fun ProfileStats(
     Column(modifier = Modifier
         .padding(25.dp)
         .fillMaxWidth()) {
-        
-
 
         Row(modifier = Modifier
             .fillMaxWidth()

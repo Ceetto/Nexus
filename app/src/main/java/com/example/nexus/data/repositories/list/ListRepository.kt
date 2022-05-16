@@ -5,12 +5,12 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
-import com.example.nexus.data.db.list.FirebaseFriendListDao
+import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.ui.routes.lists.ListCategory
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,9 +21,9 @@ class ListRepository @Inject constructor(
     private val descendingOrAscendingIcon = mutableStateOf(Icons.Default.ArrowDropUp)
     private val selectedCategory = mutableStateOf(ListCategory.ALL)
 
-    suspend fun storeListEntry(entry: ListEntry) = firebaseListDao.storeListEntry(entry)
+    fun storeListEntry(entry: ListEntry) = firebaseListDao.storeListEntry(entry)
 
-    suspend fun deleteListEntry(entry: ListEntry) = firebaseListDao.deleteListEntry(entry)
+    fun deleteListEntry(entry: ListEntry) = firebaseListDao.deleteListEntry(entry)
 
     private val descending = mutableStateOf(false)
 

@@ -2,18 +2,16 @@ package com.example.nexus.viewmodels
 
 
 import android.util.Patterns
-import androidx.compose.runtime.*
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.nexus.data.repositories.LoginRepository
-import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusLoginViewModel  @Inject constructor(
     private val repo: LoginRepository,
-    private val profileRepo : ProfileRepository
-    ) : ViewModel() {
+) : ViewModel() {
     private var isPasswordVisible = mutableStateOf(false)
     private var isEmailValidTest = mutableStateOf(true)
     private var isPasswordValidTest = mutableStateOf(true)

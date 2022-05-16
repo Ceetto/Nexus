@@ -1,6 +1,5 @@
 package com.example.nexus.ui.components.gameDetails
 
-import android.nfc.Tag
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -47,7 +46,7 @@ fun GameDetailComponent(
     getIcon : ImageVector,
     getLinkIcon : (String) -> Int?,
 ){
-    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = isRefreshing), onRefresh = {onGetGameEvent} ) {
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = isRefreshing), onRefresh = {onGetGameEvent()} ) {
         Column(Modifier.verticalScroll(rememberScrollState())) {
             Row() {
                 Column{

@@ -5,18 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.repositories.gameData.SearchRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import proto.Game
 import javax.inject.Inject
-import javax.inject.Qualifier
 
 @HiltViewModel
 class NexusSearchViewModel @Inject constructor(private val searchRepo: SearchRepository,
@@ -26,7 +20,6 @@ class NexusSearchViewModel @Inject constructor(private val searchRepo: SearchRep
     private val searching = searchRepo.searching.value
     private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
     private val isRefreshing = mutableStateOf(false)
-    private val toLoad = searchRepo.toLoad.value
 
     fun onSearchEvent(){
         viewModelScope.launch {

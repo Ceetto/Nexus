@@ -4,9 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.nexus.data.dataClasses.Friend
-import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.repositories.FriendsRepository
-import com.example.nexus.data.repositories.NotificationsRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class NexusFriendsViewModel @Inject constructor(
     private val repo: FriendsRepository,
-    private val notifRepo: NotificationsRepository,
     private val profileRepo: ProfileRepository
     ) : ViewModel(){
 
@@ -41,16 +38,6 @@ class NexusFriendsViewModel @Inject constructor(
         return repo.getFriends()
     }
 
-    fun sendFriendRequest(f: Friend, user: User){
-        notifRepo.sendFriendRequest(f, user)
-    }
-
-    fun storeFriend(f: String) = repo.storeFriend(f)
-
-    fun isSearching(): Boolean{
-        return searching.value
-    }
-
     fun setSearched(b: Boolean){
         searched.value.value = b
     }
@@ -70,27 +57,14 @@ class NexusFriendsViewModel @Inject constructor(
 
     fun setSearchTerm(term: String) = repo.setSearchTerm(term)
 
-    fun removeFriend(f: Friend) {
-        repo.removeFriend(f)
-    }
-
     fun getSearchResults() : StateFlow<List<Friend>> {
         return repo.getUserMatches()
-    }
-
-
-
-    fun doneFetching() : MutableState<Boolean> {
-        return repo.doneFetching()
     }
 
     fun setUserid(id: String){
         profileRepo.setFriendId(id)
     }
 
-    fun getUser():User{
-        return profileRepo.getUser()
-    }
     fun emptyList() = repo.emptyList()
 
     fun isRefreshing(): Boolean{

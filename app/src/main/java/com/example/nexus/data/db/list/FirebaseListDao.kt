@@ -110,7 +110,7 @@ class FirebaseListDao @Inject constructor(
         listEntryRef.value.child(entry.gameId.toString()).setValue(entry)
     }
 
-    suspend fun deleteListEntry(entry: ListEntry){
+    fun deleteListEntry(entry: ListEntry){
         listEntryRef.value.child(entry.gameId.toString()).removeValue()
     }
 

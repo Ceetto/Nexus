@@ -22,7 +22,6 @@ class NexusHomeViewModel  @Inject constructor(
     private val profileRepo: ProfileRepository,
     private val notificationsRepo: NotificationsRepository,
     private val friendsRepo: FriendsRepository,
-    private val firebaseUpdater : FirebaseUpdater
 ) : ViewModel(){
     //home
     private val popularList = repo.popularList.value
@@ -146,10 +145,6 @@ class NexusHomeViewModel  @Inject constructor(
         return isRefreshing.value
     }
 
-    fun getGotIds(): List<Long> {
-        return gotIds.value
-    }
-
     fun updateUser(){
         listRepo.updateUser()
         profileRepo.updateUser()
@@ -165,7 +160,6 @@ class NexusHomeViewModel  @Inject constructor(
     private val searching = searchRepo.searching.value
     private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
     private val isRefreshingSearch = mutableStateOf(false)
-    private val toLoad = searchRepo.toLoad.value
 
     fun onSearchEvent(){
         viewModelScope.launch {

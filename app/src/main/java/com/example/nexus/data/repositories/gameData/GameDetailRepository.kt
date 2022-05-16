@@ -6,8 +6,6 @@ import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.games
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import proto.Game
 import javax.inject.Inject
 import javax.inject.Singleton
