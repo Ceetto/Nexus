@@ -131,6 +131,7 @@ class FirebaseFriendsDao @Inject constructor(
 
     fun storeFriend(id: String){
         friendsRef.value.child(id).setValue(id)
+        updateUser()
     }
     
     fun storeYourself(id:String){

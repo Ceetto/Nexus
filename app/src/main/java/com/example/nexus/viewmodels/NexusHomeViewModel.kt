@@ -21,7 +21,8 @@ class NexusHomeViewModel  @Inject constructor(
     private val listRepo: ListRepository,
     private val profileRepo: ProfileRepository,
     private val notificationsRepo: NotificationsRepository,
-    private val friendsRepo: FriendsRepository
+    private val friendsRepo: FriendsRepository,
+    private val firebaseUpdater : FirebaseUpdater
 ) : ViewModel(){
     //home
     private val popularList = repo.popularList.value
@@ -154,6 +155,7 @@ class NexusHomeViewModel  @Inject constructor(
         profileRepo.updateUser()
         friendsRepo.updateUser()
         notificationsRepo.updateUser()
+//        firebaseUpdater.updateFirebaseData()
     }
 
 

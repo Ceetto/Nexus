@@ -43,6 +43,7 @@ fun NexusHomeRoute(
     isShuffling: MutableState<Boolean> = mutableStateOf(false)
 ) {
      LaunchedEffect(Unit){
+         println("LAUNCHED EFFECT CALLED")
          vM.updateUser()
      }
      val focusManager = LocalFocusManager.current
@@ -75,8 +76,9 @@ fun NexusHomeRoute(
              }
 
 
-             //Home page
+
              if(vM.getSearchTerm().isEmpty()){
+                 //Home page
                  SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.fetchGames() }) {
                      Column(
                          Modifier.verticalScroll(rememberScrollState())

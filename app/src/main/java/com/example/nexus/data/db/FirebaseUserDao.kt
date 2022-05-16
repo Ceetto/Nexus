@@ -94,7 +94,6 @@ class FirebaseUserDao @Inject constructor(
         return newUser.value
     }
 
-
     fun getFriend() : User {
         return newFriend.value
     }
