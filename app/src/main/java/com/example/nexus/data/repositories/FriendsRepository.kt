@@ -56,10 +56,16 @@ class FriendsRepository @Inject constructor(
         firebaseFriendsDao.eventTrigger()
     }
 
-    fun doneFetching() : MutableState<Boolean> {
-        return firebaseFriendsDao.doneFetching
+    fun doneFetching() : Boolean {
+        return firebaseFriendsDao.doneFetching.value
     }
 
+    fun getFetchedFriends() : Int {
+        return firebaseFriendsDao.getfetchedFriends()
+    }
+    fun doneFetchingFriend() : Boolean {
+        return firebaseFriendsDao.doneFetchingFriend.value
+    }
     fun emptyList() {
         firebaseFriendsDao.emptyList()
     }

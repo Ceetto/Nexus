@@ -34,6 +34,10 @@ class NexusFriendsViewModel @Inject constructor(
         repo.eventTrigger()
     }
 
+    fun doneFetchingFriends() : Boolean{
+        return repo.doneFetchingFriend()
+    }
+
     fun getFriends(): StateFlow<List<String>> {
         return repo.getFriends()
     }
@@ -48,6 +52,10 @@ class NexusFriendsViewModel @Inject constructor(
 
     fun getSearchTerm(): String {
         return searchTerm.value
+    }
+
+    fun getFetchedFriends() : Int {
+        return repo.getFetchedFriends()
     }
 
     fun getFriendsData() : StateFlow<List<Friend>> {
@@ -69,5 +77,9 @@ class NexusFriendsViewModel @Inject constructor(
 
     fun isRefreshing(): Boolean{
         return isRefreshing.value
+    }
+
+    fun doneFetching(): Boolean {
+        return repo.doneFetching()
     }
 }

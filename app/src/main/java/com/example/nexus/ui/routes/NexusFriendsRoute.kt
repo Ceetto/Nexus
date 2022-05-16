@@ -69,15 +69,24 @@ fun NexusFriendsRoute(
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                 ) {
-                    friends.forEach { friend ->
-                        for (f in friendsData) {
-                            if (f.userId == friend) {
-                                FriendItem(
-                                    friend = f,
-                                    setUserId = {s:String -> vM.setUserid(s)},
-                                    onFriendProfile = onFriendProfile
-                                )
-                                break
+                    //check of friendsData up to date is met friends list
+                    println("fetched friends = " + vM.getFetchedFriends())
+                    if (vM.doneFetchingFriends()
+                        && friends.size == friendsData.size
+                        && vM.getFetchedFriends() == friends.size) {
+                        friends.forEach { friend ->
+                            println("friend = " + friend)
+                            println("friendsdata size = " + friendsData.size )
+                            for (f in friendsData) {
+                                println("friendid = " + f.userId)
+                                if (f.userId == friend) {
+                                    println("in friend item")
+                                    FriendItem(
+                                        friend = f,
+                                        setUserId = { s: String -> vM.setUserid(s) },
+                                        onFriendProfile = onFriendProfile
+                                    )
+                                }
                             }
                         }
                     }
@@ -100,27 +109,31 @@ fun NexusFriendsRoute(
                             ) {}
                         } else {
                             val matches by vM.getSearchResults().collectAsState()
-                            if(matches.isEmpty()){
-                                if(vM.hasSearched()){
-                                    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally){
-                                        Text("no results", fontSize = 20.sp)
+                            if (vM.doneFetching()) {
+                                if (matches.isEmpty()) {
+                                    if (vM.hasSearched()) {
+                                        Column(
+                                            Modifier.fillMaxSize(),
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            Text("no results", fontSize = 20.sp)
+                                        }
                                     }
-                                }
-                            } else {
-                                Column(
-                                    Modifier
-                                        .fillMaxHeight()
-                                ) {
-                                    matches.forEach() { friend ->
-                                        SearchUserItem(
-                                            friend = friend,
-                                            setUserId = {s:String -> vM.setUserid(s)},
-                                            onFriendProfile = onFriendProfile
-                                        )
+                                } else {
+                                    Column(
+                                        Modifier
+                                            .fillMaxHeight()
+                                    ) {
+                                        matches.forEach() { friend ->
+                                            SearchUserItem(
+                                                friend = friend,
+                                                setUserId = { s: String -> vM.setUserid(s) },
+                                                onFriendProfile = onFriendProfile
+                                            )
+                                        }
                                     }
                                 }
                             }
-
                         }
                     }
                 }

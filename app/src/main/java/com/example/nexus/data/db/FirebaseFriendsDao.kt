@@ -41,14 +41,15 @@ class FirebaseFriendsDao @Inject constructor(
             clearListeners()
             friendsReferences = ArrayList()
             friendsData.value =  ArrayList()
+            fetchedFriends.value = 0
             for(child in snapshot.children){
                 newFriends.add(child.value as String)
                 val ref = database.getReference(("user/${child.value as String}"))
                 friendsReferences.add(ref)
                 ref.addValueEventListener(friendEventListener)
-
             }
                 friends.update{newFriends}
+                doneFetchingFriend.value = true
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -74,6 +75,7 @@ class FirebaseFriendsDao @Inject constructor(
                 newFriend.profilePicture = snapshot.child("profilePicture").value as String
                 newFriend.profileBackground = snapshot.child("profileBackground").value as String
                 friendsData.value.add(newFriend)
+                fetchedFriends.value += 1
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Failed to read value.", error.toException())
@@ -110,9 +112,12 @@ class FirebaseFriendsDao @Inject constructor(
 
     private val realtimeFriends = mutableStateOf(friendsRef.value.addValueEventListener(eventListener))
     var doneFetching = mutableStateOf(false)
+    var doneFetchingFriend = mutableStateOf(false)
     var searchTerm = mutableStateOf("")
+    var fetchedFriends = mutableStateOf(0)
 
     fun updateUser(){
+        println("friendsdao update user")
         friendsRef.value = database.getReference("user/${getUserId(auth.currentUser)}/friends")
         realtimeFriends.value = friendsRef.value.addValueEventListener(eventListener)
         allMatchesRef.value.addValueEventListener(allUserEventListener)
@@ -124,6 +129,9 @@ class FirebaseFriendsDao @Inject constructor(
         return friends
     }
 
+    fun getfetchedFriends(): Int{
+        return fetchedFriends.value
+    }
     fun getFriendData() : StateFlow<List<Friend>>{
         return friendsData
     }
