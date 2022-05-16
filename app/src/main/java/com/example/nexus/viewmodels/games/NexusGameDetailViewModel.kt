@@ -13,7 +13,7 @@ import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.example.nexus.R
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.list.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.ui.routes.lists.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel

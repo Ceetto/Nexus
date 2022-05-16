@@ -7,6 +7,7 @@ import com.api.igdb.apicalypse.Sort
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.games
+import com.example.nexus.data.repositories.list.ListRepository
 import proto.Game
 import javax.inject.Inject
 import javax.inject.Singleton

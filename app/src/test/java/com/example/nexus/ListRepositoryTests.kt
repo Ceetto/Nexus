@@ -3,7 +3,7 @@ import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
 import com.example.nexus.data.db.list.FirebaseFriendListDao
 import com.example.nexus.data.db.list.FirebaseListDao
-import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.list.ListRepository
 import com.example.nexus.ui.routes.lists.ListCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

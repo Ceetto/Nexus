@@ -4,18 +4,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.list.FriendListRepository
 import com.example.nexus.ui.routes.lists.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusFriendListViewModel @Inject constructor(
-    private val repo: ListRepository,
+    private val repo: FriendListRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel(){
 
@@ -36,11 +35,11 @@ class NexusFriendListViewModel @Inject constructor(
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
         val games: StateFlow<List<ListEntry>> by lazy {
             when(category){
-                ListCategory.PLAYING.value -> repo.removeStatusSortOption(repo.getFriendGames().map { it.filter { entry: ListEntry -> entry.status == ListCategory.PLAYING.value } }).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-                ListCategory.COMPLETED.value -> repo.removeStatusSortOption(repo.getFriendGames().map { it.filter { entry: ListEntry -> entry.status == ListCategory.COMPLETED.value } }).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-                ListCategory.PLANNED.value -> repo.removeStatusSortOption(repo.getFriendGames().map { it.filter { entry: ListEntry -> entry.status == ListCategory.PLANNED.value } }).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-                ListCategory.DROPPED.value -> repo.removeStatusSortOption(repo.getFriendGames().map { it.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-                else -> {repo.setDescAsc(repo.getFriendGames()).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())}
+                ListCategory.PLAYING.value -> repo.getPlaying().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+                ListCategory.COMPLETED.value -> repo.getCompleted().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+                ListCategory.PLANNED.value -> repo.getPlanned().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+                ListCategory.DROPPED.value -> repo.getDropped().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+                else -> {repo.getAllGames().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())}
             }
         }
         return games
@@ -49,6 +48,6 @@ class NexusFriendListViewModel @Inject constructor(
     fun onGetListEvent(){
         setFriendId()
     }
-    fun setFriendId() = repo.setFriendId(friendId)
+    private fun setFriendId() = repo.setFriendId(friendId)
 
 }

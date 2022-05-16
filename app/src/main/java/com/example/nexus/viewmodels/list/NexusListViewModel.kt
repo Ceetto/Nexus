@@ -1,14 +1,9 @@
 package com.example.nexus.viewmodels.list
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.list.ListRepository
 import com.example.nexus.ui.routes.lists.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted

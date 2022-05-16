@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.repositories.*
 import com.example.nexus.data.repositories.gameData.SearchRepository
-import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.list.ListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

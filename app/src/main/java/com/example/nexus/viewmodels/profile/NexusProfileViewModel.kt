@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.User
-import com.example.nexus.data.repositories.ListRepository
+import com.example.nexus.data.repositories.list.ListRepository
 import com.example.nexus.data.repositories.LoginRepository
 import com.example.nexus.data.repositories.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,14 +21,13 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
                                                 private val loginRepo: LoginRepository) : ViewModel(){
 
     private val username = mutableStateOf("")
-    private val favorites = listRepo.favorites.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
         return listRepo.getCategoryByName(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     fun getFavourites(): StateFlow<List<ListEntry>> {
-        return favorites
+        return listRepo.favorites.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     fun getUsername() = profileRepo.getUsername()

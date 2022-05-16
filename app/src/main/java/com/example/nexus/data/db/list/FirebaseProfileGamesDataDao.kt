@@ -13,38 +13,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class FirebaseFriendListDao @Inject constructor(
+class FirebaseProfileGamesDataDao @Inject constructor(
     private val database: FirebaseDatabase,
 ){
     private val friendId = mutableStateOf("")
     private val friendRef = mutableStateOf(database.getReference("user/${friendId.value}/list"))
-
 
     fun setFriendId(id: String) {
         friendId.value = id
         updateFriend()
     }
 
-    fun updateFriend(){
+    private fun updateFriend(){
         friendRef.value = database.getReference("user/${friendId.value}/list")
         friendRef.value.addValueEventListener(eventListener)
     }
 
     private val TAG = "ListRepository"
-
-    private var allGames = MutableStateFlow(emptyList<ListEntry>())
-    private var playing = MutableStateFlow(emptyList<ListEntry>())
-    private var completed = MutableStateFlow(emptyList<ListEntry>())
-    private var planned = MutableStateFlow(emptyList<ListEntry>())
-    private var dropped = MutableStateFlow(emptyList<ListEntry>())
-    private var favorites = MutableStateFlow(emptyList<ListEntry>())
-
-    //extra variables are needed to provide 2 StateFlows at the same time
-    private var allGamesProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var playingProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var completedProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var plannedProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var droppedProfile = MutableStateFlow(emptyList<ListEntry>())
 
     private val eventListener = object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -74,54 +59,32 @@ class FirebaseFriendListDao @Inject constructor(
             dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
             allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
             favorites.update{newList.filter { entry: ListEntry -> entry.favorited}}
-            allGamesProfile.update { allGames.value }
-            playingProfile.update { playing.value }
-            completedProfile.update { completed.value }
-            plannedProfile.update { planned.value }
-            droppedProfile.update { dropped.value }
         }
         override fun onCancelled(error: DatabaseError) {
             Log.w(TAG, "Failed to read value.", error.toException())
         }
     }
 
+    private var allGames = MutableStateFlow(emptyList<ListEntry>())
+    private var playing = MutableStateFlow(emptyList<ListEntry>())
+    private var completed = MutableStateFlow(emptyList<ListEntry>())
+    private var planned = MutableStateFlow(emptyList<ListEntry>())
+    private var dropped = MutableStateFlow(emptyList<ListEntry>())
+    private var favorites = MutableStateFlow(emptyList<ListEntry>())
+
     fun getCategoryForProfileByByName(category: String): Flow<List<ListEntry>> {
         val games: Flow<List<ListEntry>> =
             when(category){
-                ListCategory.PLAYING.value -> playingProfile
-                ListCategory.COMPLETED.value -> completedProfile
-                ListCategory.PLANNED.value -> plannedProfile
-                ListCategory.DROPPED.value -> droppedProfile
-                else -> {allGamesProfile}
+                ListCategory.PLAYING.value -> playing
+                ListCategory.COMPLETED.value -> completed
+                ListCategory.PLANNED.value -> planned
+                ListCategory.DROPPED.value -> dropped
+                else -> {allGames}
             }
         return games
     }
 
-    fun getAllProfile(): Flow<List<ListEntry>> {
-        return playingProfile
-    }
-
-    fun getAll(): Flow<List<ListEntry>> {
+    fun getAll(): MutableStateFlow<List<ListEntry>> {
         return allGames
-    }
-
-    fun getPlaying(): Flow<List<ListEntry>> {
-        return playing
-    }
-
-    fun getCompleted(): Flow<List<ListEntry>> {
-        return completed
-    }
-
-    fun getPlanned(): Flow<List<ListEntry>> {
-        return planned
-    }
-
-    fun getDropped(): Flow<List<ListEntry>> {
-        return dropped
-    }
-
-    fun getFavorites(): Flow<List<ListEntry>>{
-        return favorites
     }
 }
