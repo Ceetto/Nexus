@@ -39,7 +39,7 @@ fun NexusSettingsRoute(
                 Button(onClick = {onUsernameClick()} ,modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
-                    Text("Change Username", textAlign = TextAlign.Start)
+                    Text("Change username", textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(">")
                 }
@@ -51,7 +51,7 @@ fun NexusSettingsRoute(
                 Button(onClick = onBackgroundClick, modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
-                    Text("Change Profile Background", textAlign = TextAlign.Start)
+                    Text("Change profile banner", textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(">")
                 }
@@ -63,7 +63,7 @@ fun NexusSettingsRoute(
                 Button(onClick = onPictureClick,modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
-                    Text("Change Profile Picture", textAlign = TextAlign.Start)
+                    Text("Change profile picture", textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(">")
                 }
@@ -75,7 +75,7 @@ fun NexusSettingsRoute(
                 Button(onClick = { vM.setShowLogoutPopup(true) }, modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
-                    Text("Log Out", textAlign = TextAlign.Start)
+                    Text("Logout", textAlign = TextAlign.Start)
                     Spacer(modifier = Modifier.weight(1f))
                     Text(">")
                 }
