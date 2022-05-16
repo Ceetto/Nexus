@@ -1,6 +1,5 @@
 package com.example.nexus
 
-import com.api.igdb.apicalypse.APICalypse
 import com.example.nexus.data.repositories.HomeRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
 import com.example.nexus.data.repositories.gameData.SearchRepository
@@ -32,13 +31,13 @@ class ApiTests {
     fun searchGamesBySearchTermShouldExecuteAPIFunctionToFindGames() = runTest()
     {
 
-        fun fetchGames(a : APICalypse): List<Game>{
+        fun fetchGames(): List<Game>{
             return arrayListOf(Game.getDefaultInstance(), Game.getDefaultInstance(), Game.getDefaultInstance())
         }
 
         val searchRepo = SearchRepository()
         searchRepo.setSearchTerm("potato")
-        searchRepo.setFetchGames { a : APICalypse ->  fetchGames(a) }
+        searchRepo.setFetchGames { fetchGames() }
         withContext(Dispatchers.Default){
             searchRepo.getGames()
         }
@@ -48,12 +47,12 @@ class ApiTests {
 
     @Test
     fun searchGameByIdShouldExecuteAPICallFunctionToFindGameWithThatId() = runTest(){
-        fun fetchGames(a : APICalypse): List<Game>{
+        fun fetchGames(): List<Game>{
             return arrayListOf(Game.getDefaultInstance())
         }
 
         val gameRepo = GameDetailRepository()
-        gameRepo.setFetchGames { a : APICalypse ->  fetchGames(a) }
+        gameRepo.setFetchGames { fetchGames() }
         withContext(Dispatchers.Default){
             gameRepo.getGameById(Game.getDefaultInstance().id)
         }
@@ -65,12 +64,12 @@ class ApiTests {
     fun searchGamesForHomePageShouldExecuteAll() = runTest()
     {
 
-        fun fetchGames(a : APICalypse): List<Game>{
+        fun fetchGames(): List<Game>{
             return arrayListOf(Game.getDefaultInstance(), Game.getDefaultInstance(), Game.getDefaultInstance())
         }
 
         val homeRepo = HomeRepository(mock())
-        homeRepo.setFetchGames { a : APICalypse ->  fetchGames(a) }
+        homeRepo.setFetchGames { fetchGames() }
         withContext(Dispatchers.Default){
             homeRepo.getGames()
         }

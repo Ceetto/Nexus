@@ -7,12 +7,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.example.nexus.ui.components.list.ListTopNavigationBar
 import com.example.nexus.ui.routes.lists.ListCategory
-import okhttp3.internal.wait
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.*
 
 class ListTests {
     @get:Rule

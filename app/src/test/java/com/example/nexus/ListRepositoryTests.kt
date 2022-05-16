@@ -23,11 +23,11 @@ class ListRepositoryTests {
     lateinit var dao: FirebaseListDao
     lateinit var friendDao: FirebaseFriendListDao
     lateinit var repo: ListRepository
-
-    @OptIn(ExperimentalCoroutinesApi::class)
+    
+    @ExperimentalCoroutinesApi
     private val testDispatcher = StandardTestDispatcher()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Before
     fun setup(){
         games = MutableStateFlow(listOf(
@@ -36,11 +36,11 @@ class ListRepositoryTests {
             ListEntry(0, "a", 4, 69, ListCategory.PLAYING.value, "", false, 777),))
         dao = mock()
         friendDao = mock()
-        repo = ListRepository(dao, friendDao)
+        repo = ListRepository(dao)
         Dispatchers.setMain(testDispatcher)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @After
     fun tearDown() {
         Dispatchers.resetMain()
@@ -73,7 +73,7 @@ class ListRepositoryTests {
     }
 
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testAlphabeticalSortAscending() = runTest {
         repo.setSortOption(SortOptions.ALPHABETICALLY.value)
@@ -85,7 +85,7 @@ class ListRepositoryTests {
         assertEquals(sortedGames.value[2].title, "c")
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testAlphabeticalSortDescending() = runTest {
         repo.setSortOption(SortOptions.ALPHABETICALLY.value)
@@ -97,7 +97,7 @@ class ListRepositoryTests {
         assertEquals(sortedGames.value[2].title, "a")
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testScoreSortAscending() = runTest {
         repo.setSortOption(SortOptions.SCORE.value)
@@ -109,7 +109,7 @@ class ListRepositoryTests {
         assertEquals(sortedGames.value[2].score, 10)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testScoreSortDescending() = runTest {
         repo.setSortOption(SortOptions.SCORE.value)
@@ -121,7 +121,7 @@ class ListRepositoryTests {
         assertEquals(sortedGames.value[2].score, 1)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testTimePlayedSortAscending() = runTest {
         repo.setSortOption(SortOptions.TIME_PLAYED.value)
@@ -133,7 +133,7 @@ class ListRepositoryTests {
         assertEquals(sortedGames.value[2].minutesPlayed, 666)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testTimePlayedSortDescending() = runTest {
         repo.setSortOption(SortOptions.TIME_PLAYED.value)
@@ -145,7 +145,7 @@ class ListRepositoryTests {
         assertEquals(sortedGames.value[2].minutesPlayed, 42)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testReleaseDateSortAscending() = runTest {
         repo.setSortOption(SortOptions.RELEASE_DATE.value)
@@ -157,7 +157,7 @@ class ListRepositoryTests {
         assertEquals(sortedGames.value[2].releaseDate, 777)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @ExperimentalCoroutinesApi
     @Test
     fun testReleaseDateSortDescending() = runTest {
         repo.setSortOption(SortOptions.RELEASE_DATE.value)

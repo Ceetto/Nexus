@@ -6,14 +6,13 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performClick
 import com.example.nexus.ui.components.gameDetails.GameDetailComponent
-import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.kotlin.mock
 import proto.Game
 
 class GameDetailsTest {
@@ -29,10 +28,10 @@ class GameDetailsTest {
                 onOpenGameDetails = {},
                 focusManager = LocalFocusManager.current,
                 isRefreshing = false,
-                onGetGameEvent = { /*TODO*/ },
+                onGetGameEvent = {},
                 onGameFormOpenChanged = {},
                 getEditOrAddGames = { "" },
-                onFavourite = { /*TODO*/ },
+                onFavourite = { },
                 getIcon = Icons.Default.Star,
                 getLinkIcon = {0}
             )
@@ -52,7 +51,7 @@ class GameDetailsTest {
                 onOpenGameDetails = {},
                 focusManager = LocalFocusManager.current,
                 isRefreshing = false,
-                onGetGameEvent = { /*TODO*/ },
+                onGetGameEvent = { },
                 onGameFormOpenChanged = {},
                 getEditOrAddGames = { "" },
                 onFavourite = { favorited.value = !favorited.value

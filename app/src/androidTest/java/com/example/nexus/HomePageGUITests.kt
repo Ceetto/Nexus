@@ -1,7 +1,6 @@
 package com.example.nexus
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
