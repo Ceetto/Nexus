@@ -37,7 +37,8 @@ fun NexusSettingsUsername(vM: NexusProfileViewModel, navController: NavHostContr
 
             Row(modifier = Modifier
                 .padding(5.dp)
-                .weight(1.5f, true)){
+//                .weight(1.5f, true)
+            ){
                 Text(text = "New username: ", modifier = Modifier.padding(top = 15.dp).weight(2f, true))
                 TextField(
                     value = vM.getNewUsername(),
