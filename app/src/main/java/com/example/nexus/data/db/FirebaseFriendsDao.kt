@@ -74,8 +74,12 @@ class FirebaseFriendsDao @Inject constructor(
                 newFriend.username = snapshot.child("username").value as String
                 newFriend.profilePicture = snapshot.child("profilePicture").value as String
                 newFriend.profileBackground = snapshot.child("profileBackground").value as String
+                if (friendsData.value.any { it.userId == snapshot.key.toString() }) {
+                    fetchedFriends.value--
+                }
+                fetchedFriends.value++
+                friendsData.value = friendsData.value.filter { it.userId != snapshot.key.toString()} as ArrayList<Friend>
                 friendsData.value.add(newFriend)
-                fetchedFriends.value += 1
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Failed to read value.", error.toException())
