@@ -43,7 +43,7 @@ fun NexusNotificationsRoute(
             if (notificationList.isEmpty()) {
                 NoNotifications()
             } else {
-                for (notification in notificationList) {
+                for (notification in notificationList.sortedBy { - it.notificationTime }) {
                     if (notification.notificationType == NotificationType.RELEASE_DATE.value) {
                         ReleaseNotificationItem(
                             notification = notification,
