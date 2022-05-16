@@ -16,8 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ListRepository @Inject constructor(
-    private val firebaseListDao: FirebaseListDao,
-    private val firebaseFriendListDao: FirebaseFriendListDao
+    private val firebaseListDao: FirebaseListDao
 ) {
     private val descendingOrAscendingIcon = mutableStateOf(Icons.Default.ArrowDropUp)
     private val selectedCategory = mutableStateOf(ListCategory.ALL)
