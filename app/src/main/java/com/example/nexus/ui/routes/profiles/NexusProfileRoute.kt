@@ -13,7 +13,8 @@ import com.example.nexus.viewmodels.profile.NexusProfileViewModel
 fun NexusProfileRoute(
     vM: NexusProfileViewModel,
     navController: NavHostController,
-    onOpenGameDetails: (gameId: Long) -> Unit
+    onOpenGameDetails: (gameId: Long) -> Unit,
+    onOpenList : (userId: String) -> Unit
 ){
     ProfileScreen(
         canBeFriend = false,
@@ -28,5 +29,7 @@ fun NexusProfileRoute(
         removeFriend = {},
         getFriend = {Friend("", "", "", "")},
         getNewFriend = {Friend("", "", "", "")},
+        onOpenList = onOpenList,
+        getUserId = vM.getUserId()
     )
 }

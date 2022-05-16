@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.example.nexus.ui.components.list.ListTopNavigationBar
-import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategory
 import okhttp3.internal.wait
 import org.junit.Assert
 import org.junit.Before

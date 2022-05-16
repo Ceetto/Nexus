@@ -9,7 +9,7 @@ import com.example.nexus.data.db.list.FirebaseListDao
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
 import com.example.nexus.data.db.list.FirebaseFriendListDao
-import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategory
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -90,7 +90,7 @@ class ListRepository @Inject constructor(
         return descending.value
     }
 
-    private fun setDescAsc(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
+    fun setDescAsc(entries: Flow<List<ListEntry>>): Flow<List<ListEntry>> {
         return if(descending.value){
             entries.map { it.reversed() }
         } else {

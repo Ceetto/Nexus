@@ -37,8 +37,11 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
         profileRepo.setFriendId(friendId)
     }
 
+    fun getUserId():String{
+        return friendId
+    }
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
-        return listRepo.getCategoryByName(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        return listRepo.getFriendGames().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
     fun getFavourites(): StateFlow<List<ListEntry>> {

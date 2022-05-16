@@ -50,7 +50,9 @@ fun ProfileScreen(
     removeFriend : (Friend) -> Unit,
     getCurrentUser : () -> User,
     getFriend : () -> Friend,
-    getNewFriend : () -> Friend
+    getNewFriend : () -> Friend,
+    onOpenList: (userId: String) -> Unit,
+    getUserId: String
 ){
     val background = getUser().profileBackground
     val focusManager = LocalFocusManager.current
@@ -141,13 +143,12 @@ fun ProfileScreen(
                 }
             }
 
-            ProfilePicture(onOpenGameDetails, getUser, getCategoryByName, getFavourites)
+            ProfilePicture(onOpenGameDetails, getUser, getCategoryByName, getFavourites, onOpenList, getUserId)
 
         }
     }
 
 }
-
 
 @Composable
 fun ProfilePicture(
@@ -156,6 +157,8 @@ fun ProfilePicture(
     getUser : () -> User,
     getCategoryByName : (String) -> StateFlow<List<ListEntry>>,
     getFavourites: () -> StateFlow<List<ListEntry>>,
+    onOpenList: (userId: String) -> Unit,
+    getUserId: String
 ){
     val profilePic = getUser().profilePicture
     Column(modifier = Modifier
@@ -186,7 +189,7 @@ fun ProfilePicture(
 
         Text(text = getUser().username, modifier = Modifier.padding(10.dp))
 
-        ProfileStats(getCategoryByName)
+        ProfileStats(getCategoryByName, onOpenList, getUserId)
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 25.dp),

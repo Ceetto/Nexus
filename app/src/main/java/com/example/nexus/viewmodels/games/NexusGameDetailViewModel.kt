@@ -15,7 +15,7 @@ import com.example.nexus.R
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.repositories.ListRepository
 import com.example.nexus.data.repositories.gameData.GameDetailRepository
-import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted

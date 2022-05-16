@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 class FirebaseFriendListDao @Inject constructor(
@@ -24,7 +25,7 @@ class FirebaseFriendListDao @Inject constructor(
     }
 
     fun updateFriend(){
-        friendRef.value = database.getReference("user/${friendId.value}")
+        friendRef.value = database.getReference("user/${friendId.value}/list")
         friendRef.value.addValueEventListener(eventListener)
     }
 
@@ -54,6 +55,7 @@ class FirebaseFriendListDao @Inject constructor(
                 )
             }
             newList.sortBy { entry: ListEntry -> entry.title }
+            allGames.update { newList }
         }
         override fun onCancelled(error: DatabaseError) {
             Log.w(TAG, "Failed to read value.", error.toException())

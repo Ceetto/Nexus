@@ -27,7 +27,6 @@ import com.example.nexus.ui.components.AgeConfirmComponent
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.gameDetails.GameDetailComponent
 import com.example.nexus.ui.components.gameForm.GameFormComponent
-import com.example.nexus.ui.routes.ListCategory
 import com.example.nexus.viewmodels.games.NexusGameDetailViewModel
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

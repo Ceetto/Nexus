@@ -54,4 +54,8 @@ class ProfileRepository @Inject constructor(
     fun setFriendId(id: String) {
         fireBaseUserDao.setFriendId(id)
     }
+
+    fun getUserId(): String {
+        return fireBaseUserDao.getUserId()
+    }
 }

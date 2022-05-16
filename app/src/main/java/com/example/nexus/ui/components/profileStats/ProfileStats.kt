@@ -3,6 +3,7 @@ package com.example.nexus.ui.components.profileStats
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.nexus.data.dataClasses.ListEntry
-import com.example.nexus.ui.routes.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategory
 import com.example.nexus.ui.theme.Completed
 import com.example.nexus.ui.theme.Dropped
 import com.example.nexus.ui.theme.Planned
@@ -26,7 +27,9 @@ import kotlin.math.roundToLong
 @Composable
 fun ProfileStats(
 //    vM: NexusProfileViewModel,
-    getCategoryByName : (String) -> StateFlow<List<ListEntry>>
+    getCategoryByName : (String) -> StateFlow<List<ListEntry>>,
+    onOpenList: (userId: String) -> Unit,
+    getUserId: String
 ) {
     val total by getCategoryByName(ListCategory.ALL.value).collectAsState();
     val playing by getCategoryByName(ListCategory.PLAYING.value).collectAsState();
@@ -47,10 +50,14 @@ fun ProfileStats(
 
     val hours : Double = ((minutes / 60) * 10.0).roundToLong() /10.0
     val days : Double = ((hours / 24) * 10.0).roundToLong() /10.0
-    //TODO add mean score
+
     Column(modifier = Modifier
         .padding(25.dp)
         .fillMaxWidth()) {
+        
+        Button(onClick = {onOpenList(getUserId);}){
+            Text(text = "List")
+        }
 
         Row(modifier = Modifier
             .fillMaxWidth()
@@ -172,7 +179,6 @@ fun ProfileStats(
                 modifier = Modifier
                     .weight(1f, true)
                     .padding(10.dp))
-
         }
     }
 }

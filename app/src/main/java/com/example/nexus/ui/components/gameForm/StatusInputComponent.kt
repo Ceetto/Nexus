@@ -9,8 +9,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.nexus.ui.routes.ListCategory
-import com.example.nexus.ui.routes.ListCategoryColors
+import com.example.nexus.ui.routes.lists.ListCategory
+import com.example.nexus.ui.routes.lists.ListCategoryColors
 
 @Composable
 fun StatusInput(
