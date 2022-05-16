@@ -25,7 +25,7 @@ fun NexusFriendListRoute(
 
     val focusManager = LocalFocusManager.current
     Scaffold(
-        topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
+        topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
         Scaffold(topBar = {
             ListTopNavigationBar(vM.getSelectedCategory(), vM::onSelectedCategoryChanged)

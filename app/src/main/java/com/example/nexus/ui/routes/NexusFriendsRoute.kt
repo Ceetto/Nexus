@@ -43,9 +43,7 @@ fun NexusFriendsRoute(
     Scaffold(
         topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
     ) {
-        Column(
-//            Modifier.fillMaxSize()
-        ){
+        Column(){
             val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
             SearchBarComponent(
                 placeholder = "Add New Friends",
