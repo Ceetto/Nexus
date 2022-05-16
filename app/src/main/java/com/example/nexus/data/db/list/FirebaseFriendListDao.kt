@@ -39,15 +39,9 @@ class FirebaseFriendListDao @Inject constructor(
     private var dropped = MutableStateFlow(emptyList<ListEntry>())
     private var favorites = MutableStateFlow(emptyList<ListEntry>())
 
-    //extra variables are needed to provide 2 StateFlows at the same time
-    private var allGamesProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var playingProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var completedProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var plannedProfile = MutableStateFlow(emptyList<ListEntry>())
-    private var droppedProfile = MutableStateFlow(emptyList<ListEntry>())
-
     private val eventListener = object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
+            println(friendId.value)
             // This method is called once with the initial value and again
             // whenever data at this location is updated.
 
@@ -74,31 +68,10 @@ class FirebaseFriendListDao @Inject constructor(
             dropped.update { newList.filter { entry: ListEntry -> entry.status == ListCategory.DROPPED.value } }
             allGames.update{ playing.value.plus(completed.value).plus(planned.value).plus(dropped.value) }
             favorites.update{newList.filter { entry: ListEntry -> entry.favorited}}
-            allGamesProfile.update { allGames.value }
-            playingProfile.update { playing.value }
-            completedProfile.update { completed.value }
-            plannedProfile.update { planned.value }
-            droppedProfile.update { dropped.value }
         }
         override fun onCancelled(error: DatabaseError) {
             Log.w(TAG, "Failed to read value.", error.toException())
         }
-    }
-
-    fun getCategoryForProfileByByName(category: String): Flow<List<ListEntry>> {
-        val games: Flow<List<ListEntry>> =
-            when(category){
-                ListCategory.PLAYING.value -> playingProfile
-                ListCategory.COMPLETED.value -> completedProfile
-                ListCategory.PLANNED.value -> plannedProfile
-                ListCategory.DROPPED.value -> droppedProfile
-                else -> {allGamesProfile}
-            }
-        return games
-    }
-
-    fun getAllProfile(): Flow<List<ListEntry>> {
-        return playingProfile
     }
 
     fun getAll(): Flow<List<ListEntry>> {

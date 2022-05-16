@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.SortOptions
-import com.example.nexus.data.db.list.FirebaseProfileGamesDataDao
 import com.example.nexus.data.db.list.FirebaseFriendListDao
 import com.example.nexus.ui.routes.lists.ListCategory
 import kotlinx.coroutines.flow.Flow
@@ -15,8 +14,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FriendListRepository @Inject constructor(
-    private val firebaseFriendListDao: FirebaseFriendListDao,
-    private val fIrebaseProfileGamesDataDao: FirebaseProfileGamesDataDao
+    private val firebaseFriendListDao: FirebaseFriendListDao
 ) {
     private val descendingOrAscendingIcon = mutableStateOf(Icons.Default.ArrowDropUp)
     private val selectedCategory = mutableStateOf(ListCategory.ALL)
@@ -108,13 +106,20 @@ class FriendListRepository @Inject constructor(
         return sortGames(entries)
     }
 
-    fun getCategoryByName(category: String) = firebaseFriendListDao.getAllProfile()
-
-    //fun getCategoryByName(category: String) = fIrebaseProfileGamesDataDao.getCategoryForProfileByByName(category)
+    fun getCategoryByName(category: String): Flow<List<ListEntry>> {
+        val games: Flow<List<ListEntry>> =
+            when(category){
+                ListCategory.PLAYING.value -> firebaseFriendListDao.getPlaying()
+                ListCategory.COMPLETED.value -> firebaseFriendListDao.getCompleted()
+                ListCategory.PLANNED.value -> firebaseFriendListDao.getPlanned()
+                ListCategory.DROPPED.value -> firebaseFriendListDao.getDropped()
+                else -> {firebaseFriendListDao.getAll()}
+            }
+        return games
+    }
 
 
     fun setFriendId(s: String){
         firebaseFriendListDao.setFriendId(s)
-        fIrebaseProfileGamesDataDao.setFriendId(s)
     }
 }

@@ -7,31 +7,24 @@ import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.data.db.list.FirebaseFriendListDao
-import com.example.nexus.data.db.list.FirebaseProfileGamesDataDao
 import com.example.nexus.data.repositories.list.FriendListRepository
 import com.example.nexus.data.repositories.ProfileRepository
-import com.example.nexus.data.repositories.list.ListRepository
-import com.example.nexus.ui.routes.lists.ListCategory
 import com.example.nexus.data.repositories.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: ProfileRepository,
                                                       private  val listRepo: FriendListRepository,
-                                                      private val dao: FirebaseProfileGamesDataDao,
-                                                      private val dao2: FirebaseFriendListDao,
                                                       private val friendRepo: FriendsRepository,
                                                       private val notifRepo: NotificationsRepository,
                                                       savedStateHandle: SavedStateHandle,
 ) : ViewModel(){
 
     private val friendId: String = savedStateHandle["userId"]!!
-    private val favorites = listRepo.favorites.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun onGetFriendEvent(){
         setFriend()
@@ -50,9 +43,8 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
     }
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
-        val test = dao.getAll()
-        return test.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-        //return listRepo.getCategoryByName(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        listRepo.setFriendId(friendId)
+        return listRepo.getCategoryByName(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
     }
 
 
@@ -111,7 +103,5 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
     fun getCurrentUser():User{
         return profileRepo.getUser()
     }
-
-
 
 }
