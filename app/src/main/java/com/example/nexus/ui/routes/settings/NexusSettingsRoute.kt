@@ -3,10 +3,7 @@ package com.example.nexus.ui.routes.settings;
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -75,7 +72,7 @@ fun NexusSettingsRoute(
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 3.dp, bottom = 3.dp)) {
-                Button(onClick = { vM.logOut() }, modifier = Modifier
+                Button(onClick = { vM.setShowLogoutPopup(true) }, modifier = Modifier
                     .fillMaxWidth()
                     .height(60.dp), shape = RoundedCornerShape(0)) {
                     Text("Log Out", textAlign = TextAlign.Start)
@@ -83,8 +80,25 @@ fun NexusSettingsRoute(
                     Text(">")
                 }
             }
+        }
 
-
+        if (vM.getShowLogoutPopup()){
+            AlertDialog(
+                onDismissRequest = { vM.setShowLogoutPopup(false)},
+                confirmButton = {
+                    TextButton(onClick = {
+                        vM.setShowLogoutPopup(false)
+                        vM.logOut()})
+                    { Text(text = "Yes", color=MaterialTheme.colors.onBackground) }
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        vM.setShowLogoutPopup(false) }) {
+                        Text(text = "Cancel", color=MaterialTheme.colors.onBackground)
+                    }},
+                title = { Text(text = "Logout") },
+                text = { Text(text = "Are you sure you want to logout?") }
+            )
         }
 
     }

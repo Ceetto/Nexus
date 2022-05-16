@@ -20,7 +20,16 @@ class NexusProfileViewModel @Inject constructor(private val profileRepo: Profile
                                                 private  val listRepo: ListRepository,
                                                 private val loginRepo: LoginRepository) : ViewModel(){
 
+    private val showLogoutPopup = mutableStateOf(false)
     private val username = mutableStateOf("")
+
+    fun getShowLogoutPopup(): Boolean {
+        return showLogoutPopup.value
+    }
+
+    fun setShowLogoutPopup(b: Boolean){
+        showLogoutPopup.value = b
+    }
 
     fun getCategoryByName(category: String): StateFlow<List<ListEntry>> {
         return listRepo.getCategoryByName(category).stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
