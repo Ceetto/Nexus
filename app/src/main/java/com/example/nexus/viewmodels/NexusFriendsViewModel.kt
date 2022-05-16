@@ -25,6 +25,17 @@ class NexusFriendsViewModel @Inject constructor(
     //moet true zijn als een search gedaan is om te weten of er no results afgebeeld moet worden of niet
     private var searched : Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
 
+    private val isRefreshing = mutableStateOf(false)
+
+    fun onSearchEvent(){
+        isRefreshing.value = true
+        fetchFriends()
+        isRefreshing.value = false
+    }
+
+    fun fetchFriends(){
+        repo.eventTrigger()
+    }
 
     fun getFriends(): StateFlow<List<String>> {
         return repo.getFriends()
@@ -67,9 +78,7 @@ class NexusFriendsViewModel @Inject constructor(
         return repo.getUserMatches()
     }
 
-    fun searchEvent(){
-        repo.eventTrigger()
-    }
+
 
     fun doneFetching() : MutableState<Boolean> {
         return repo.doneFetching()
@@ -83,4 +92,8 @@ class NexusFriendsViewModel @Inject constructor(
         return profileRepo.getUser()
     }
     fun emptyList() = repo.emptyList()
+
+    fun isRefreshing(): Boolean{
+        return isRefreshing.value
+    }
 }

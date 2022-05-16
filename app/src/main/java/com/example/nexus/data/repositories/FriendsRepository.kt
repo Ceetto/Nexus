@@ -18,13 +18,11 @@ class FriendsRepository @Inject constructor(
     var searching: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false) }
 
     fun getFriends(): StateFlow<List<String>>{
-//        firebaseUpdater.updateFirebaseData()
         return firebaseFriendsDao.getFriends()
     }
 
     fun storeFriend(f: String){
         firebaseFriendsDao.storeFriend(f)
-//        firebaseUpdater.updateFirebaseData()
     }
 
     fun updateUser() = firebaseFriendsDao.updateUser()

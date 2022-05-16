@@ -76,8 +76,9 @@ fun NexusHomeRoute(
              }
 
 
-             //Home page
+
              if(vM.getSearchTerm().isEmpty()){
+                 //Home page
                  SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.fetchGames() }) {
                      Column(
                          Modifier.verticalScroll(rememberScrollState())

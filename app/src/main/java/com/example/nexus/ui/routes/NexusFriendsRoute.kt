@@ -1,34 +1,32 @@
 package com.example.nexus.ui.routes
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
-import com.example.nexus.R
 import com.example.nexus.data.dataClasses.Friend
+import com.example.nexus.data.dataClasses.User
 import com.example.nexus.ui.components.NexusTopBar
 import com.example.nexus.ui.components.SearchBarComponent
+import com.example.nexus.ui.components.friends.FriendItem
+import com.example.nexus.ui.components.friends.SearchUserItem
 import com.example.nexus.viewmodels.NexusFriendsViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @ExperimentalComposeUiApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
@@ -46,16 +44,14 @@ fun NexusFriendsRoute(
         topBar = { NexusTopBar(navController = navController, canPop = false, focusManager) }
     ) {
         Column(
-            Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-               ) {
+//            Modifier.fillMaxSize()
+        ){
             val keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
             SearchBarComponent(
                 placeholder = "Add New Friends",
                 onSearch = {
                     vM.setSearched(true);
-                    vM.searchEvent();
+                    vM.onSearchEvent();
                     keyboardController?.hide();
                 },
                 getSearchTerm = vM.getSearchTerm(),
@@ -71,143 +67,72 @@ fun NexusFriendsRoute(
                 Row(modifier = Modifier.padding(5.dp)) {
                     Text(text = "Friends: ${friends.size}")
                 }
-                LazyColumn(
+                Column(
                     Modifier
                         .fillMaxHeight()
                         .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
                 ) {
-                    items(friends) { friend ->
+                    friends.forEach { friend ->
                         for (f in friendsData) {
                             if (f.userId == friend) {
-                                FriendItem(friend = f, vM, onFriendProfile)
+                                FriendItem(
+                                    friend = f,
+                                    setUserId = {s:String -> vM.setUserid(s)},
+                                    removeFriend = {fr:Friend -> vM.removeFriend(fr)},
+                                    onFriendProfile = onFriendProfile
+                                )
                                 break
                             }
                         }
                     }
                 }
             } else {
-                if (!vM.hasSearched()){
-                } else {
-                    val doneFetching by vM.doneFetching()
-                    if (doneFetching) {
-                        val matches by vM.getSearchResults().collectAsState()
-                        println(matches.size)
-                        LazyColumn(
-                            Modifier
-                                .fillMaxHeight()
-                                .fillMaxWidth()
-                        ) {
-                            items(matches) { user ->
-                                searchUserItem(user, vM, onFriendProfile)
+
+                SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = vM.isRefreshing()), onRefresh = { vM.onSearchEvent() }) {
+                    Column(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+//                            .fillMaxHeight()
+                    ) {
+                        if(vM.isRefreshing()){
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp)
+                                    .height(50.dp),
+                                horizontalArrangement = Arrangement.Center
+                            ) {}
+                        } else {
+                            val matches by vM.getSearchResults().collectAsState()
+                            if(matches.isEmpty()){
+                                if(vM.hasSearched()){
+                                    Text("no results")
+                                }
+                            } else {
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                ) {
+                                    matches.forEach() { friend ->
+                                        SearchUserItem(
+                                            friend = friend,
+                                            getUser = {vM.getUser()},
+                                            sendFriendRequest = {f:Friend, u:User -> vM.sendFriendRequest(f, u)},
+                                            setUserId = {s:String -> vM.setUserid(s)},
+                                            onFriendProfile = onFriendProfile
+                                        )
+                                    }
+                                }
                             }
+
                         }
-                    } else {
-
-                        CircularProgressIndicator()
                     }
+
                 }
-
             }
         }
     }
 }
 
-@Composable
-fun FriendItem(friend : Friend, vM: NexusFriendsViewModel, onFriendProfile: (userId: String) -> Unit) {
-        Row(
-            modifier = Modifier
-                .height(100.dp)
-                .fillMaxWidth()
-                .padding(10.dp)
-                .clickable {
-                    vM.setUserid(friend.userId);
-                    onFriendProfile(friend.userId)
-                           },
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (friend.profilePicture != "") {
-                Image(
-                    painter = rememberAsyncImagePainter(friend.profilePicture),
-                    contentDescription = "friend logo",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(CircleShape)
-                )
-            } else {
-                Image(
-                    painter = rememberAsyncImagePainter(R.mipmap.ic_launcher_round),
-                    contentDescription = "friend logo",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(CircleShape)
-                )
-            }
 
-            Text(text = friend.username, Modifier.padding(10.dp))
-
-            Spacer(
-                Modifier
-                    .weight(1f)
-                    .fillMaxHeight())
-
-            IconButton(onClick = { vM.removeFriend(friend) }) {
-                Icon(Icons.Rounded.Close, "removeFriend", Modifier.size(25.dp))
-            }
-        }
-}
-
-@Composable
-fun searchUserItem(
-    user: Friend,
-    vM: NexusFriendsViewModel,
-    onFriendProfile: (userId: String) -> Unit
-){
-    Row(
-        modifier = Modifier
-            .height(100.dp)
-            .fillMaxWidth()
-            .padding(10.dp)
-            .clickable{
-                vM.setUserid(user.userId);
-                onFriendProfile(user.userId)
-                      },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        if (user.profilePicture != "") {
-            Image(
-                painter = rememberAsyncImagePainter(user.profilePicture),
-                contentDescription = "friend logo",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-            )
-        } else {
-            Image(
-                painter = rememberAsyncImagePainter(R.mipmap.ic_launcher_round),
-                contentDescription = "friend logo",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-            )
-        }
-
-        Text(text = user.username, Modifier.padding(10.dp))
-
-        Spacer(Modifier.weight(1f).fillMaxHeight())
-
-        var sent by remember {mutableStateOf(false)}
-        IconButton(onClick = {if (!sent) {vM.sendFriendRequest(user, vM.getUser())}; sent = true}) {
-
-            if (sent) {
-                Icon(Icons.Rounded.Check, "added friend", Modifier.size(25.dp))
-            } else {
-                Icon(Icons.Rounded.Add, "add friend", Modifier.size(25.dp))
-            }
-        }
-    }
-
-}

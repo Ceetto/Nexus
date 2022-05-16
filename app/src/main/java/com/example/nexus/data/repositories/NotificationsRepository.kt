@@ -22,7 +22,8 @@ class NotificationsRepository @Inject constructor(
         return firebaseListDao.getPlanned().map {
             it.filter {
                     game ->
-                ((game.releaseDate - (currentTimeMillis() / 1000)) <= 31556926) && !game.notificationGiven
+                ((game.releaseDate - (currentTimeMillis() / 1000)) <= 604800 && (game.releaseDate - (currentTimeMillis() / 1000)) > 0)
+                        && !game.notificationGiven
             } }
     }
 

@@ -5,11 +5,15 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.PersonRemove
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,9 +29,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.nexus.R
+import com.example.nexus.data.dataClasses.Friend
 import com.example.nexus.data.dataClasses.ListEntry
 import com.example.nexus.data.dataClasses.User
 import com.example.nexus.ui.components.NexusTopBar
+import com.example.nexus.ui.theme.NexusGray
 import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -38,6 +44,13 @@ fun ProfileScreen(
     navController: NavHostController,
     getCategoryByName : (String) -> StateFlow<List<ListEntry>>,
     getFavourites: () -> StateFlow<List<ListEntry>>,
+    canBeFriend: Boolean,
+    isFriend: () -> Boolean,
+    addFriend : (Friend, User) -> Unit,
+    removeFriend : (Friend) -> Unit,
+    getCurrentUser : () -> User,
+    getFriend : () -> Friend,
+    getNewFriend : () -> Friend
 ){
     val background = getUser().profileBackground
     val focusManager = LocalFocusManager.current
@@ -45,7 +58,9 @@ fun ProfileScreen(
         topBar = { NexusTopBar(navController = navController, canPop = true, focusManager) }
     ) {
         Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
-            Column(modifier = Modifier.fillMaxWidth().height(200.dp)
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
 
             ) {
                 if (background != "") {
@@ -53,7 +68,9 @@ fun ProfileScreen(
                         painter = rememberAsyncImagePainter(background),
                         contentDescription = "profile-background",
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.height(200.dp).fillMaxWidth()
+                        modifier = Modifier
+                            .height(200.dp)
+                            .fillMaxWidth()
                     )
                 } else {
                     Box(
@@ -65,12 +82,72 @@ fun ProfileScreen(
                     )
                 }
             }
+            if(canBeFriend){
+                var removed by remember { mutableStateOf(false)}
+                var added by remember { mutableStateOf(false)}
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp), horizontalAlignment = Alignment.End) {
+                    if (isFriend()) {
+                        IconButton(onClick = {
+                            val f : Friend = getFriend()
+                            if(f.username.isNotEmpty())
+                                removeFriend(getFriend())
+                            removed = true
+                        }) {
+                            Box(
+                                modifier = Modifier.size(65.dp).clip(CircleShape).background(Color.LightGray)
+                            ){
+                                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                    if(!removed){
+                                        Icon(
+                                            imageVector = Icons.Default.PersonRemove,
+                                            contentDescription = "remove friend",
+                                            tint = NexusGray,
+                                            modifier = Modifier.size(40.dp)
+                                        )
+                                        Text("remove friend", color = NexusGray, fontSize = 9.sp)
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if(!added){
+                            IconButton(onClick = { addFriend(getNewFriend(), getCurrentUser()); added = true }) {
+                                Box(
+                                    modifier = Modifier.size(60.dp).clip(CircleShape).background(Color.LightGray)
+                                ) {
+                                    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Icon(
+                                            imageVector = Icons.Default.PersonAdd,
+                                            contentDescription = "add friend",
+                                            tint = NexusGray,
+                                            modifier = Modifier.size(40.dp)
+                                        )
+                                        Text("add friend", color = NexusGray, fontSize = 9.sp)
+                                    }
+                                }
+                            }
+                        } else {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "add friend",
+                                tint = NexusGray,
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
             ProfilePicture(onOpenGameDetails, getUser, getCategoryByName, getFavourites)
 
         }
     }
 
 }
+
 
 @Composable
 fun ProfilePicture(
@@ -84,7 +161,8 @@ fun ProfilePicture(
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(top = 150.dp),
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
         if (profilePic != ""){
             Image(
                 painter = rememberAsyncImagePainter(profilePic),
@@ -123,7 +201,7 @@ fun FavoriteList(
     getFavourites: () -> StateFlow<List<ListEntry>>,
     onOpenGameDetails: (gameId: Long) -> Unit
 ){
-    val favorites by getFavourites().collectAsState();
+    val favorites by getFavourites().collectAsState()
     Column(
         Modifier.padding(start = 5.dp, top = 5.dp, bottom = 10.dp)
     ){

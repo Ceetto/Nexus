@@ -55,7 +55,7 @@ fun EmailTextField(
         } else if (getUserAlreadyExists()) {
             ErrorMessage(text = "Email already in use")
         } else if (getUserDoesNotExists()) {
-            ErrorMessage(text = "Email does not exist")
+            ErrorMessage(text = "Incorrect email or password")
         }
     }
 }
