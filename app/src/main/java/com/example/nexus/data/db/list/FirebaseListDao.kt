@@ -65,7 +65,6 @@ class FirebaseListDao @Inject constructor(
     private val realtimeEntries = mutableStateOf(listEntryRef.value.addValueEventListener(eventListener))
 
     fun updateUser(){
-        println("LIST DAO UPDATE USER")
         listEntryRef.value = database.getReference("user/${getUserId(auth.currentUser)}/list")
         realtimeEntries.value = listEntryRef.value.addValueEventListener(eventListener)
     }

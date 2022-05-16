@@ -242,7 +242,6 @@ fun GameDetailComponent(
                     .padding(5.dp)
                     .horizontalScroll(rememberScrollState())) {
                 for (website in game.websitesList) {
-                    println("WEBSITE: ${website.category}")
                     LinkComponent(website, getLinkIcon)
                 }
             }

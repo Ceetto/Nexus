@@ -203,7 +203,6 @@ private fun NavGraphBuilder.addSettingsScreen(
     navController: NavHostController,
     root: Screen
 ){
-    println(LeafScreen.Settings.createRoute(root))
     composable(
         route = LeafScreen.Settings.createRoute(root)
 

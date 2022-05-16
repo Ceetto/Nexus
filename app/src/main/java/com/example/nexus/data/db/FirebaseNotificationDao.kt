@@ -62,7 +62,6 @@ class FirebaseNotificationDao @Inject constructor(
     private val realtimeNotifications = mutableStateOf(notificationRef.value.addValueEventListener(eventListener))
 
     fun updateUser(){
-        println("NOTIF DAO UPDATE USER")
         notificationRef.value = database.getReference("user/${getUserId(auth.currentUser)}/notifications")
         realtimeNotifications.value = notificationRef.value.addValueEventListener(eventListener)
     }

@@ -70,17 +70,12 @@ fun NexusFriendsRoute(
                         .verticalScroll(rememberScrollState())
                 ) {
                     //check of friendsData up to date is met friends list
-                    println("fetched friends = " + vM.getFetchedFriends())
                     if (vM.doneFetchingFriends()
                         && friends.size == friendsData.size
                         && vM.getFetchedFriends() == friends.size) {
                         friends.forEach { friend ->
-                            println("friend = " + friend)
-                            println("friendsdata size = " + friendsData.size )
                             for (f in friendsData) {
-                                println("friendid = " + f.userId)
                                 if (f.userId == friend) {
-                                    println("in friend item")
                                     FriendItem(
                                         friend = f,
                                         setUserId = { s: String -> vM.setUserid(s) },

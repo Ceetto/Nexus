@@ -41,7 +41,6 @@ class FirebaseFriendListDao @Inject constructor(
 
     private val eventListener = object: ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
-            println(friendId.value)
             // This method is called once with the initial value and again
             // whenever data at this location is updated.
 

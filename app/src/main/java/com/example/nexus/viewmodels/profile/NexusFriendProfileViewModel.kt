@@ -84,7 +84,6 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
 
     fun getNewFriend(): Friend {
         for (f in getSearchResults().value){
-            println(f.username)
             if (f.userId == friendId){
                 return f
             }
@@ -103,8 +102,6 @@ class NexusFriendProfileViewModel @Inject constructor(private val profileRepo: P
 
 
     fun sendFriendRequest(f: Friend, user: User){
-        println("sent friend request")
-        println("to: ${f.username}")
         notifRepo.sendFriendRequest(f, user)
     }
 

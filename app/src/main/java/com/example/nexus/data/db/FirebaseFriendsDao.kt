@@ -121,7 +121,6 @@ class FirebaseFriendsDao @Inject constructor(
     var fetchedFriends = mutableStateOf(0)
 
     fun updateUser(){
-        println("friendsdao update user")
         friendsRef.value = database.getReference("user/${getUserId(auth.currentUser)}/friends")
         realtimeFriends.value = friendsRef.value.addValueEventListener(eventListener)
         allMatchesRef.value.addValueEventListener(allUserEventListener)

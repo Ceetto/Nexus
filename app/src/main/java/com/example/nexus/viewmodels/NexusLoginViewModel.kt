@@ -87,16 +87,6 @@ class NexusLoginViewModel  @Inject constructor(
 
     fun getIsLoggedIn() = repo.getIsLoggedIn()
 
-//    fun createAccount() {
-//        repo.createAccount(email.value, password.value)
-//
-//
-//        if (repo.getIsLoggedIn()){
-//            println("in if in create account")
-//            profileRepo.storeNewUser(User(email.value, "NewUser", emptyList(), emptyList(), "", "", 0L))
-//        }
-//    }
-
     fun createAccount() = repo.createAccount()
 
     fun signIn() = repo.signIn()
@@ -105,5 +95,3 @@ class NexusLoginViewModel  @Inject constructor(
 
     fun getUserDoesNotExists() = repo.getUserDoesNotExists()
 }
-
-//val UserState = compositionLocalOf<NexusLoginViewModel> { error("User State Context Not Found!") }

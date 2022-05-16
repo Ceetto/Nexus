@@ -37,18 +37,9 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun MyApplicationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
-//    val colors = if (darkTheme) {
-//        systemUiController.setSystemBarsColor(
-//            color = NexusBlack
-//        )
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
 
     systemUiController.setSystemBarsColor(
         color = NexusBlack

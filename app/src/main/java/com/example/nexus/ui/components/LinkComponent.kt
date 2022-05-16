@@ -22,7 +22,6 @@ fun LinkComponent(
     // UriHandler parse and opens URI inside AnnotatedString Item in Browse
     val uriHandler = LocalUriHandler.current
 
-    println(display)
     Image(
         painter = rememberAsyncImagePainter(
             getIcon(display)
@@ -31,7 +30,6 @@ fun LinkComponent(
         modifier = Modifier.size(50.dp, 50.dp).padding(5.dp)
             .pointerInput(Unit){
             detectTapGestures (onTap = {
-                println("TAPPED DEEZ NUTS HAHA")
                     uriHandler.openUri(site.url)
             })
         }

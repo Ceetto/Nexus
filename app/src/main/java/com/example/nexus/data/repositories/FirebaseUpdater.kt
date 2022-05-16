@@ -16,7 +16,6 @@ class FirebaseUpdater @Inject constructor(
 ){
 
     fun updateFirebaseData(){
-        println("FIREBASE UPDATER CALLED")
         userDao.updateUser()
         listDao.updateUser()
         friendsDao.updateUser()
