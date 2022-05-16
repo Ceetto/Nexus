@@ -41,14 +41,20 @@ fun MyApplicationTheme(
     content: @Composable () -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
-    val colors = if (darkTheme) {
-        systemUiController.setSystemBarsColor(
-            color = NexusBlack
-        )
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+//    val colors = if (darkTheme) {
+//        systemUiController.setSystemBarsColor(
+//            color = NexusBlack
+//        )
+//        DarkColorPalette
+//    } else {
+//        LightColorPalette
+//    }
+
+    systemUiController.setSystemBarsColor(
+        color = NexusBlack
+    )
+    val colors = DarkColorPalette
+
 
     MaterialTheme(
         colors = colors,
