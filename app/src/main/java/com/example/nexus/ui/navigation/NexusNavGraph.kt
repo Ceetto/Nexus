@@ -370,6 +370,7 @@ private fun NavGraphBuilder.addFriendsScreenTopLevel(
         addFriendsScreen(navController, Screen.Friends)
         addFriendProfileScreen(navController, Screen.Friends)
         addFriendListScreen(navController, Screen.Friends)
+        addGameDetails(navController, Screen.Friends)
     }
 }
 @ExperimentalComposeUiApi

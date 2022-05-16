@@ -5,10 +5,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.PersonAdd
@@ -99,7 +96,10 @@ fun ProfileScreen(
                             removed = true
                         }) {
                             Box(
-                                modifier = Modifier.size(65.dp).clip(CircleShape).background(Color.LightGray)
+                                modifier = Modifier
+                                    .size(65.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.LightGray)
                             ){
                                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                                     if(!removed){
@@ -118,7 +118,10 @@ fun ProfileScreen(
                         if(!added){
                             IconButton(onClick = { addFriend(getNewFriend(), getCurrentUser()); added = true }) {
                                 Box(
-                                    modifier = Modifier.size(60.dp).clip(CircleShape).background(Color.LightGray)
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .clip(CircleShape)
+                                        .background(Color.LightGray)
                                 ) {
                                     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                                         Icon(
@@ -143,7 +146,7 @@ fun ProfileScreen(
                 }
             }
 
-            ProfilePicture(onOpenGameDetails, getUser, getCategoryByName, getFavourites, onOpenList, getUserId)
+            ProfilePicture(onOpenGameDetails, getUser, getCategoryByName, getFavourites, onOpenList, getUserId, canBeFriend)
 
         }
     }
@@ -152,13 +155,13 @@ fun ProfileScreen(
 
 @Composable
 fun ProfilePicture(
-//    vM: NexusProfileViewModel,
     onOpenGameDetails: (gameId: Long) -> Unit,
     getUser : () -> User,
     getCategoryByName : (String) -> StateFlow<List<ListEntry>>,
     getFavourites: () -> StateFlow<List<ListEntry>>,
     onOpenList: (userId: String) -> Unit,
-    getUserId: String
+    getUserId: String,
+    canBeFriend: Boolean
 ){
     val profilePic = getUser().profilePicture
     Column(modifier = Modifier
@@ -189,7 +192,15 @@ fun ProfilePicture(
 
         Text(text = getUser().username, modifier = Modifier.padding(10.dp))
 
-        ProfileStats(getCategoryByName, onOpenList, getUserId)
+        ProfileStats(getCategoryByName)
+        if(canBeFriend){
+            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Button(onClick = {onOpenList(getUserId);}){
+                    Text(text = "View List")
+                }
+            }
+        }
+
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 25.dp),

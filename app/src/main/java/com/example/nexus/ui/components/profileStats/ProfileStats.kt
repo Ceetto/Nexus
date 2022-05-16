@@ -27,9 +27,7 @@ import kotlin.math.roundToLong
 @Composable
 fun ProfileStats(
 //    vM: NexusProfileViewModel,
-    getCategoryByName : (String) -> StateFlow<List<ListEntry>>,
-    onOpenList: (userId: String) -> Unit,
-    getUserId: String
+    getCategoryByName : (String) -> StateFlow<List<ListEntry>>
 ) {
     val total by getCategoryByName(ListCategory.ALL.value).collectAsState();
     val playing by getCategoryByName(ListCategory.PLAYING.value).collectAsState();
@@ -55,9 +53,7 @@ fun ProfileStats(
         .padding(25.dp)
         .fillMaxWidth()) {
         
-        Button(onClick = {onOpenList(getUserId);}){
-            Text(text = "List")
-        }
+
 
         Row(modifier = Modifier
             .fillMaxWidth()
