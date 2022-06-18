@@ -15,14 +15,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val TAG = MainActivity::class.java.name
-//    private val userState by viewModels<NexusLoginViewModel>()
     companion object {
         val TAG : String = MainActivity::class.java.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "thxgflb6lueztb6aehzm0rcaqgocmb")
+
         setContent {
             MyApplicationTheme {
                 ApplicationSwitcher(vM = hiltViewModel())
@@ -30,7 +31,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 
     override fun onStart() {
         super.onStart()
