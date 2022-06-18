@@ -14,13 +14,6 @@ import javax.inject.Singleton
 class GameDetailRepository @Inject constructor() {
     var gameList : Lazy<MutableState<List<Game>>> = lazy { mutableStateOf(ArrayList())}
 
-
-
-
-    init {
-        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
-    }
-
     fun getGameById(gameId : Long){
         val apicalypse = APICalypse().fields("platforms.abbreviation,cover.image_id," +
                 "screenshots.image_id,screenshots.width,screenshots.height," +

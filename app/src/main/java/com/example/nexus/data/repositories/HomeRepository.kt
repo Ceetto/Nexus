@@ -36,9 +36,6 @@ class HomeRepository @Inject constructor(
     var dbDoneFetching = listRepo.doneFetching
     var gotIds: Lazy<MutableState<List<Long>>> = lazy{ mutableStateOf(ArrayList())}
 
-    init {
-        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
-    }
 
     fun getGames(){
         val apicalypsePopular = APICalypse().fields("cover.image_id,name").where("rating_count > 0")

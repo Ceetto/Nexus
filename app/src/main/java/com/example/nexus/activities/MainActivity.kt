@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.api.igdb.request.IGDBWrapper
 import com.example.nexus.ApplicationSwitcher
 import com.example.nexus.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "thxgflb6lueztb6aehzm0rcaqgocmb")
         setContent {
             MyApplicationTheme {
                 ApplicationSwitcher(vM = hiltViewModel())

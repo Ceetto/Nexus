@@ -21,9 +21,6 @@ class SearchRepository @Inject constructor() {
     val searchTerm = mutableStateOf("")
     var searching: Lazy<MutableState<Boolean>> = lazy { mutableStateOf(false)}
     var toLoad = lazy{mutableStateOf(10)}
-    init {
-        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "tm3zxdsllw4czte0n4mmqkly6crehf")
-    }
 
     fun getGames(){
         if(searchTerm.value.isNotEmpty()){
