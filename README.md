@@ -9,11 +9,10 @@ This was a university project @Ghent-University made by: <br>
 [Gilles Arnout](https://github.com/gilles-arnout) <br>
 
 ## What is Nexus?
-Nexus is a platform where you can keep and manage an organised list of all your games. That way you can have all your gaming info in 1 app instead of it being spread out over different platforms. <br>
+Nexus is a platform where you can keep and manage an organised list of all your games. That way you can have all your gaming info in 1 app instead of it being spread across  different platforms. <br>
 Users can also look at each other's lists to see what games their friends are playing.
 
 ### Discover games
-
 It's easy to discover new games on the home screen using different subcategories consisting of Trending, Recommended, Upcoming, Top Rated and Most Popular. Users can also look for games themselves using the search function.
 
 ### Game Data
