@@ -13,7 +13,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     private val TAG = MainActivity::class.java.name
     companion object {
         val TAG : String = MainActivity::class.java.simpleName
