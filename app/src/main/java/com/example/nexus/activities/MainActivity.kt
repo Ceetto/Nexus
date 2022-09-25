@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "thxgflb6lueztb6aehzm0rcaqgocmb")
+        IGDBWrapper.setCredentials("trt599r053jhg3fmjnhehpyzs3xh4w", "dkpkznvjkcsgjgeauw8fz2dpgj7wvk")
 
         setContent {
             MyApplicationTheme {
